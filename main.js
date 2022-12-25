@@ -62,7 +62,8 @@ function getProblem(url) {
 
 function getActiveCompaniesTags() { 
     data = []
-    let swiper = document.getElementsByClassName('swiper-slide-active')[2]
+    let swipers = document.getElementsByClassName('swiper-slide-active')
+    let swiper = swipers[swipers.length-1]
     let links = swiper.getElementsByTagName('a')
     for(let ii = 0; ii <= links.length-1; ii ++) {
         let link = links[ii].href.split("/") 
@@ -80,6 +81,7 @@ function getActiveCompaniesTags() {
 function addObserverToCompaniesSection(data) {
     var composeBox =  document.getElementsByClassName('mt-0')[0]
     const observer = new MutationObserver(() => {
+        console.log("testing"); 
         addClickListenerToCompanyButton(getActiveCompaniesTags(), data)
     });
 
@@ -87,7 +89,8 @@ function addObserverToCompaniesSection(data) {
         window.setTimeout(() => {addObserverToCompaniesSection(data)} ,500);
         return;
     }
-    var config = {childList: true, subtree: true, attributes: true};
+    
+    var config = {childList: true, subtree: true};
     observer.observe(composeBox,config);
 }
 
@@ -206,6 +209,6 @@ function addClickListenerToCompanyButton(companyList, premiumData) {
 
 
 
-var data = grabData()
-// new PageAnalyzer().getPageInfo()
-addObserverToCompaniesSection(data)
+var vipData = grabData()
+addClickListenerToCompanyButton(getActiveCompaniesTags(), vipData)
+addObserverToCompaniesSection(vipData)

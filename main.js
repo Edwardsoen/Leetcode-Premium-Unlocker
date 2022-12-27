@@ -12,12 +12,6 @@ function Company() {
     this.button
 }
 
-function PageData() { 
-    this.problemData = []
-    this.companiesData = []
-}
-
-
 //#endregion
 
 function grabData() { 
@@ -60,73 +54,14 @@ function getProblem(url) {
     return data[data.length-2]
 }
 
-function getActiveCompaniesTags() { 
-    data = []
-    let swipers = document.getElementsByClassName('swiper-slide-active')
-    let swiper = swipers[swipers.length-1]
-    let links = swiper.getElementsByTagName('a')
-    for(let ii = 0; ii <= links.length-1; ii ++) {
-        let link = links[ii].href.split("/") 
-        links[ii].href = "#"
-        let companyName = links[ii].firstChild.firstChild.textContent
-        let companyObject = new Company()
-        companyObject.name = companyName; 
-        companyObject.button = links[ii]
-        data.push(companyObject)
-    }
-    return data
-}
-
-
-function addObserverToCompaniesSection(data) {
-    var composeBox =  document.getElementsByClassName('mt-0')[0]
-    const observer = new MutationObserver(() => {
-        console.log("testing"); 
-        addClickListenerToCompanyButton(getActiveCompaniesTags(), data)
-    });
-
-    if(!composeBox) {
-        window.setTimeout(() => {addObserverToCompaniesSection(data)} ,500);
-        return;
-    }
-    
-    var config = {childList: true, subtree: true};
-    observer.observe(composeBox,config);
-}
-
-function PageAnalyzer () { 
-    this.getPageInfo = function () { 
-        this.url = window.location.href 
-        let expression = this.url.split("/")
-
-        if(expression.includes("problems")) { 
-            let problem = getProblem(this.url)
-            let pageData = new PageData(); 
-            pageData.problemData = data
-            return pageData
-        }
-
-        if (expression.includes("problemset")) { 
-            let data = getProblemSets()
-            let CompanyData = getActiveCompaniesTags()
-            let pageData = new PageData(); 
-            pageData.problemData = data
-            pageData.companiesData = CompanyData
-            return pageData
-        }
-    }
-
-
-}
 
 
 
 
 //#region on Company button clicked
 
-function setCompanyData(data) {
+function createCompanyDataDiv(data) {
     let parentDiv = document.createElement('div')
-
     for(let i = 0; i <= data.length-1; i ++) {        
         let row = document.createElement('div')
         row.style = `
@@ -172,37 +107,143 @@ function createCell(text) {
 }
 
 
-function openPopupWindow(divContent) {
-    popupWindow = window.open("",'_blank','height=500,width=1000,left=100,top=100');
-    popupWindow.document.body.appendChild(divContent); 
-}
 
-function createOnClickFunction(data) { 
-    return () => {
-        openPopupWindow(setCompanyData(data))
+
+
+
+
+
+function CompanySwipperManager() { 
+    this.onCompanyButtonClick = []
+
+    this.addOnCompanyButtonClickEvent = function(func) { 
+        this.onCompanyButtonClick.push(func)
     }
-}
 
-//#endregion
-
-
-
-
-
-
-
-
-
-
-
-
-function addClickListenerToCompanyButton(companyList, premiumData) { 
-    for(let i =0; i <= companyList.length -1; i ++) { 
-        let companyName = companyList[i].name 
-        companyList[i].button.addEventListener("click", createOnClickFunction(premiumData[companyName]));
+    this.initialize= function () { 
+        registerClickEventListenerToCompanyButton(this.onCompanyButtonClick)
+        addObserverToCompaniesSection()
     }
+    
+
+    function getActiveCompaniesTags() { 
+        data = []  // Company objects // obj.companyName & obj.button
+        let swipers = document.getElementsByClassName('swiper-slide-active')
+        let swiper = swipers[swipers.length-1]
+        let links = swiper.getElementsByTagName('a')
+        for(let ii = 0; ii <= links.length-1; ii ++) {
+            let link    = links[ii].href.split("/") 
+            links[ii].href = "#"
+            let companyName = links[ii].firstChild.firstChild.textContent
+            let companyObject = new Company()
+            companyObject.name = companyName; 
+            companyObject.button = links[ii]
+            data.push(companyObject)
+        }
+        return data
+    }
+
+    function addObserverToCompaniesSection(data) {
+        var composeBox =  document.getElementsByClassName('mt-0')[0]
+        const observer = new MutationObserver(() => {
+            registerClickEventListenerToCompanyButton(this.onCompanyButtonClick)
+        });
+    
+        if(!composeBox) {
+            window.setTimeout(() => {addObserverToCompaniesSection(data)} ,500);
+            return;
+        }
+    
+        var config = {childList: true, subtree: true};
+        observer.observe(composeBox,config);
+    }
+
+    function registerClickEventListenerToCompanyButton(onCompanyButtonClick) { 
+        let companyList = getActiveCompaniesTags()
+        for(let i =0; i <= companyList.length -1; i ++) { 
+            let companyName = companyList[i].name 
+            if (companyList[i].button.getAttribute("listener-registered") != true) { 
+                companyList[i].button.setAttribute("listener-registered", "true")
+                companyList[i].button.setAttribute("company-name", companyName)
+                for(let funcCount = 0; funcCount <= onCompanyButtonClick.length -1; funcCount ++) { 
+                    companyList[i].button.addEventListener("click", onCompanyButtonClick[funcCount]);
+                }
+            }
+        }
+    }
+    
+
+
 }
 
+function ModalManager (){ 
+    function initializeModal() { 
+        let modal = document.createElement('div')
+
+        modal.style = ` 
+        display: none; 
+        position: fixed; 
+        z-index: 1;
+        left: 0;
+        top: 0;
+        width: 100%; 
+        height: 100%; 
+        overflow: auto; 
+        background-color: rgb(0,0,0);
+        background-color: rgba(0,0,0,0.4); 
+        `
+
+        let closeButton = document.createElement('span')
+        closeButton.style = ` 
+        color: #aaa;
+        float: right;
+        font-size: 28px;
+        font-weight: bold;
+        `
+
+        closeButton.innerText = "x"
+        closeButton.addEventListener('click', closeAndClearModal)
+        
+        window.onclick = function(event) {
+            if (event.target == modal) {
+                closeAndClearModal()
+            }
+        }
+
+        let modalContentBox = document.createElement('div')
+        modalContentBox.style = `
+        background-color: #fefefe;
+        margin: 15% auto; 
+        padding: 20px;
+        border: 1px solid #888; 
+        width: 80%;
+        mid-height: 15%
+        `
+
+        modalContentBox.appendChild(closeButton)
+        modal.appendChild(modalContentBox)
+        document.body.appendChild(modal)
+        modal.id = "CompanyModal"
+    }
+
+    this.openAndAddContentToModal = function(content) { 
+        let modal = document.getElementById("CompanyModal")
+        content.id = "CompanyModal-content"
+        modal.firstChild.appendChild(content)
+        modal.style.display = ""
+    }
+
+    function closeAndClearModal() {  
+        let modal = document.getElementById("CompanyModal")
+        let modalContent = document.getElementById("CompanyModal-content")
+        modal.style.display = "none"
+        if (modalContent != undefined) {
+            modal.firstChild.removeChild(modalContent)
+        } 
+    }
+
+    initializeModal()
+}
 
 
 
@@ -210,5 +251,10 @@ function addClickListenerToCompanyButton(companyList, premiumData) {
 
 
 var vipData = grabData()
-addClickListenerToCompanyButton(getActiveCompaniesTags(), vipData)
-addObserverToCompaniesSection(vipData)
+var modalManager = new ModalManager()
+var companySwipperManager = new CompanySwipperManager(); 
+companySwipperManager.addOnCompanyButtonClickEvent((event) => {
+    let companyName = event.currentTarget.getAttribute("company-name")
+    modalManager.openAndAddContentToModal(createCompanyDataDiv(vipData[companyName]))
+})
+companySwipperManager.initialize()

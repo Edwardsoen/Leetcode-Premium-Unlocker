@@ -25,7 +25,9 @@ function companyProblemDataManager() {
         let div = document.createElement('div')
         let h3 = document.createElement('h3')
         h3.textContent = text
-        h3.style = `color: black;`
+        h3.style = `color: black;
+        text-align: center;
+        `
         div.appendChild(h3)
         return div
     }
@@ -38,12 +40,33 @@ function companyProblemDataManager() {
        return div
     }
 
-    function generate_problem_frequency_cell(text){ 
-        let div = generate_text_cell(text)
-        div.style = `
-        width: 10%
+    function generate_problem_frequency_cell(percentage){ 
+        let progressBar = document.createElement('div')
+        progressBar.style = `
+        display: flex;
+        height: 1rem;
+        overflow: hidden;
+        font-size: .75rem;
+        background-color: #e9ecef;
+        border-radius: 0.25rem;
+        margin-top: auto;
+        margin-bottom: auto;
+        width:10%; 
         `
-        return div
+
+        let progress = document.createElement('div')
+        progress.style = `
+        height:100%; 
+        width:20%; 
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        overflow: hidden;
+        color: #fff;
+        background-color: #0d6efd;
+        `
+        progressBar.appendChild(progress)
+        return progressBar
     }
 
     function generate_problem_name_cell(problem_name, problem_url) { 
@@ -57,6 +80,17 @@ function companyProblemDataManager() {
         `
         return problemCell
     }
+
+    function generate_button(data) {
+        let button = document.createElement('button')   
+        button.innerText =data
+        button.style = ` 
+
+        width:3%
+        `
+        return button
+    }
+
 
     function generate_problem_difficulty_cell(text) {
         let div = generate_text_cell(text)
@@ -74,28 +108,58 @@ function companyProblemDataManager() {
         return div
     }
 
+    function generate_row_div(){ 
+        let row = document.createElement('div')
+        row.style = `
+        display:flex;
+        border-top: solid 1px black;
+        `
+        return row
+    }
 
-    this.create_problem_table = function(data) { 
-        let header = []
-        let parentDiv = document.createElement('div')
-        for(let i = 0; i <= data.length-1; i ++) {        
-            let row = document.createElement('div')
-            row.style = `
-            display:flex;
-            border-top: solid 1px black;
-            `
-
+    function generate_buttons(data) { 
+        
+    }
 
     
+    
+    function generate_header_row() { 
+        let row = generate_row_div()
+        row.appendChild(generate_problem_id_cell("#"))
+        row.appendChild(generate_problem_name_cell("Title", "#"))
+        row.appendChild(generate_problem_acceptance_cell("Acceptance"))
+        row.appendChild(generate_problem_difficulty_cell("Difficulty"))
+        row.appendChild(generate_problem_acceptance_cell("Frequency"))
+        row.appendChild(generate_button("test"))
+        row.appendChild(generate_button("test2"))
+        row.appendChild(generate_button("test3"))
+        return row
+    }
+    
+
+    this.create_problem_table = function(data) { 
+        let parentDiv = document.createElement('div')
+        parentDiv.appendChild(generate_header_row())
+        
+
+        for(let i = 0; i <= data.length-1; i ++) {        
+            let row = generate_row_div()
             
             let frequency = data[i]["occurance"]
+            let id = "0"
             let difficulty = "hard"
             let problemUrl = data[i]["url"]
             let problemName = data[i]["problem"]
+            let acceptance = "100%"
 
+
+            
+            row.appendChild(generate_problem_id_cell(id))
             row.appendChild(generate_problem_name_cell(problemName, problemUrl))
+            row.appendChild(generate_problem_acceptance_cell(acceptance))
             row.appendChild(generate_problem_difficulty_cell(difficulty))
             row.appendChild(generate_problem_frequency_cell(frequency))
+
             parentDiv.append(row)
         }
         return parentDiv
@@ -103,7 +167,6 @@ function companyProblemDataManager() {
 
     
 }
-
 
 function CompanySwipperManager() { 
     this.onCompanyButtonClick = []
@@ -167,7 +230,6 @@ function CompanySwipperManager() {
 
 }
 
-
 function ModalManager (){ 
     function initializeModal() { 
         let modal = document.createElement('div')
@@ -175,7 +237,7 @@ function ModalManager (){
         modal.style = ` 
         display: none; 
         position: fixed; 
-        z-index: 1;
+        z-index: 32;
         left: 0;
         top: 0;
         width: 100%; 
@@ -203,7 +265,7 @@ function ModalManager (){
         let modalContentBox = document.createElement('div')
         modalContentBox.style = `
         background-color: #fefefe;
-        margin-top:5%; 
+        margin-top:1%; 
         margin-left: auto;
         margin-right: auto;
         padding: 20px;

@@ -19,7 +19,7 @@ function grabData() {
 
 //#region on Company button clicked
 
-function companyProblemDataManager() { 
+function companyProblemTableManager() { 
 
     function generate_text_cell(text) { 
         let div = document.createElement('div')
@@ -199,17 +199,17 @@ function CompanySwipperManager() {
     }
 
     function addObserverToCompaniesSection(onCompanyButtonClick) {
-        var composeBox =  document.getElementsByClassName("mt-0")[0]
+        var swipper =  document.getElementsByClassName("mt-0")[0]
         const observer = new MutationObserver(() => {
             registerClickEventListenerToCompanyButton(onCompanyButtonClick)
         });
     
-        if(!composeBox) {
+        if(!swipper) {
             window.setTimeout(() => {addObserverToCompaniesSection()} ,500);
             return;
         }
         var config = {childList: true, subtree: true,  attributes: true, attributeFilter: ['class']};
-        observer.observe(composeBox,config);
+        observer.observe(swipper,config);
     }
 
     function registerClickEventListenerToCompanyButton(onCompanyButtonClick) { 
@@ -306,6 +306,6 @@ var companySwipperManager = new CompanySwipperManager();
 companySwipperManager.addOnCompanyButtonClickEvent((event) => {
     let companyName = event.currentTarget.getAttribute("company-name")
     let data = vipData[companyName] || []
-    modalManager.openAndAddContentToModal(new companyProblemDataManager().create_problem_table(data))
+    modalManager.openAndAddContentToModal(new companyProblemTableManager().create_problem_table(data))
 })
 companySwipperManager.initialize()

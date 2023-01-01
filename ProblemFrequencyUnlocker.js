@@ -1,40 +1,88 @@
 
 
-function Problem() { 
-    this.name
-    this.isPremium
-    this.slider 
-}
 
 
 
-function getProblemSets() {     
-    let problemsets = document.querySelectorAll('[role="row"]')
-    let problems = []
 
-    for(let i =1; i <= problemsets.length -1 ; i ++) { 
-        let cells = problemsets[i].querySelectorAll('[role="cell"]')
-        let href = problemsets[i].getElementsByTagName('a')[0].href
+function ProblemTableManager() { 
 
-        let problemName = getProblem(href)
-        let slider = cells[cells.length-1]
+    this.observer = new MutationObserver(() => {
+        console.log("Testing")
+        getProblemSets()
+    });
 
-        let isPremiumProblem = cells[1].getElementsByTagName('svg').length >= 1
 
-        let problemOject = new Problem(); 
-        problemOject.name = problemName; 
-        problemOject.isPremium = isPremiumProblem; 
-        problemOject.slider = slider; 
-
-        problems.push(problemOject)
-    
+    function initialize() { 
+        getProblemSets()
+        addObserverToProblemTable()
     }
-    return problems
+
+    function getProblemSets() {     
+        disconnectObserverToProblemTable()
+        let table = document.querySelector('[role="rowgroup"]')
+        let problemsets = table.querySelectorAll('[role="row"]')
+        let problems = []
+        
+        for(let i =0; i <= problemsets.length -1 ; i ++) { 
+            let cells = problemsets[i].querySelectorAll('[role="cell"]')
+            let problemName = cells[1].textContent
+            let problemUrl = cells[1].getElementsByTagName('a')[0].href 
+            let problemFrequencyProgressbar = cells[cells.length -1]
+            removeProgressbarUnlockButton(problemFrequencyProgressbar)
+            insertInnerProgressbar(problemFrequencyProgressbar)
+        }
+        addObserverToProblemTable()
+        return problems
+    }
+
+    function insertInnerProgressbar(progressBar, width) { 
+        let innerProgressbarClassName = "inner-progresbar"
+        let innerProgressbar = progressBar.getElementsByClassName(innerProgressbarClassName)
+
+        if(innerProgressbar.length > 0) { 
+            // modify current bar instead of adding new progressbar 
+            return 
+        }
+        let outerProgressbar = progressBar.getElementsByClassName('rounded-l-lg')[0]
+        let progress = document.createElement('div')
+        progress.style = `
+        background-color: red;
+        width: 20%;
+        height: 0.5rem;
+        border-bottom-right-radius: 0.5rem;
+        border-top-right-radius: 0.5rem;
+        border-bottom-left-radius: 0.5rem;
+        border-top-left-radius: 0.5rem;
+        `
+        progress.classList.add(innerProgressbarClassName)
+        outerProgressbar.appendChild(progress)
+    }
+
+    function disconnectObserverToProblemTable() { 
+        this.observer.disconnect()
+    }
+
+    function addObserverToProblemTable() { 
+        let table = document.querySelector('[role="table"]')
+        var config = {childList: true, subtree: true};
+        this.observer.observe(table,config);
+    }
+
+    function removeProgressbarUnlockButton(progressbar) {
+        let lockLogo = progressbar.getElementsByTagName("svg")[0]
+        let leftBar = progressbar.getElementsByClassName('rounded-r-lg')[0]
+        let rightBar = progressbar.getElementsByClassName('rounded-l-lg')[0]
+        if (lockLogo!= undefined) lockLogo.remove(); 
+        if (leftBar!= undefined) leftBar.remove()
+        if (rightBar != undefined){
+            rightBar.style = `
+            border-bottom-right-radius: 0.5rem;
+            border-top-right-radius: 0.5rem
+            `
+        }
+
+    }
+    initialize()
 }
 
-
-function getProblem(url) {
-    data = url.split("/") 
-    return data[data.length-2]
-}
-
+ProblemTableManager()

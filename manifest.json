@@ -1,14 +1,14 @@
 {
     "name": "Leetcode Premium Unlocker",
-    "version": "1.0",
+    "version": "0.1.0",
     "description": "Unlock Leetcode premium features",
     "permissions": ["activeTab"],
-    "browser_action": {
+    "action": {
     },
-    "manifest_version": 2, 
+    "manifest_version": 3, 
     "content_scripts": [
         {
-          "js": ["CompanyProblemUnlocker.js", "ProblemFrequencyUnlocker.js"],
+          "js": [ "CompanyProblemUnlocker.js", "ProblemFrequencyUnlocker.js"],
           "matches": [
             "https://leetcode.com/*"
           ]

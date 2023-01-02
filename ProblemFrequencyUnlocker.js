@@ -1,23 +1,27 @@
 
-
-
-
+function fetchData() { 
+    let url = "https://www.npoint.io/documents/d318594e0f0c84ac0e25"
+    var xmlHttp = new XMLHttpRequest();
+    xmlHttp.open( "GET", url, false ); 
+    xmlHttp.send( null );
+    return JSON.parse(xmlHttp.responseText)["contents"]
+}
 
 
 function ProblemTableManager() { 
-
+    this.data = []
+    
     this.observer = new MutationObserver(() => {
-        console.log("Testing")
-        getProblemSets()
+        getProblemSets(this.data)
     });
 
-
+    
     function initialize() { 
-        getProblemSets()
+        getProblemSets(this.data)
         addObserverToProblemTable()
     }
 
-    function getProblemSets() {     
+    function getProblemSets(data) {     
         disconnectObserverToProblemTable()
         let table = document.querySelector('[role="rowgroup"]')
         let problemsets = table.querySelectorAll('[role="row"]')
@@ -26,10 +30,11 @@ function ProblemTableManager() {
         for(let i =0; i <= problemsets.length -1 ; i ++) { 
             let cells = problemsets[i].querySelectorAll('[role="cell"]')
             let problemName = cells[1].textContent
-            let problemUrl = cells[1].getElementsByTagName('a')[0].href 
+            let frequency = this.data[problemName] == undefined? "0%" : this.data[problemName][6]
+            let width = frequency == undefined? 0:frequency.replace("%", "")          
             let problemFrequencyProgressbar = cells[cells.length -1]
             removeProgressbarUnlockButton(problemFrequencyProgressbar)
-            insertInnerProgressbar(problemFrequencyProgressbar)
+            insertInnerProgressbar(problemFrequencyProgressbar, width)
         }
         addObserverToProblemTable()
         return problems
@@ -41,13 +46,16 @@ function ProblemTableManager() {
 
         if(innerProgressbar.length > 0) { 
             // modify current bar instead of adding new progressbar 
+            innerProgressbar.style = `
+            width: ${width}%;
+            `
             return 
         }
         let outerProgressbar = progressBar.getElementsByClassName('rounded-l-lg')[0]
         let progress = document.createElement('div')
         progress.style = `
         background-color: red;
-        width: 20%;
+        width: ${width}%;
         height: 0.5rem;
         border-bottom-right-radius: 0.5rem;
         border-top-right-radius: 0.5rem;
@@ -84,5 +92,8 @@ function ProblemTableManager() {
     }
     initialize()
 }
+
+
+
 
 ProblemTableManager()

@@ -1,12 +1,13 @@
 
-//#region Objects
+
+
 
 function Company() { 
     this.name 
     this.button
 }
 
-//#endregion
+
 
 function grabData() { 
     let url = "https://www.npoint.io/documents/b37ca078aab84f3e1a80"
@@ -17,11 +18,20 @@ function grabData() {
 }
 
 
-//#region on Company button clicked
+function tableContentManager() { 
 
-function companyProblemTableManager() { 
+    this.getTableContent = function(data) { 
 
-    function generate_text_cell(text) { 
+
+    }
+}
+
+
+
+function tableManager() { 
+    this.parentDiv = document.createElement('div')
+
+    function generateTextCell(text) { 
         let div = document.createElement('div')
         let h3 = document.createElement('h3')
         h3.textContent = text
@@ -32,15 +42,15 @@ function companyProblemTableManager() {
         return div
     }
 
-    function generate_problem_id_cell(text) { 
-       let div = generate_text_cell(text)
+    function generateProblemIdCell(text) { 
+       let div = generateTextCell(text)
        div.style = `
        width: 5%
        `
        return div
     }
 
-    function generate_problem_frequency_cell(percentage){ 
+    function generateProblemFrequencyCell(percentage){ 
         let progressBar = document.createElement('div')
         progressBar.style = `
         display: flex;
@@ -81,34 +91,34 @@ function companyProblemTableManager() {
         return problemCell
     }
 
-    function generate_button(data) {
+    function generateDurationButton(data) {
         let button = document.createElement('button')   
         button.innerText =data
         button.style = ` 
-
-        width:3%
+        width:5%
         `
+        button.setAttribute("duration", data)
+        button.addEventListener('click', onDurationButtonClicked.bind(this))
         return button
     }
 
-
-    function generate_problem_difficulty_cell(text) {
-        let div = generate_text_cell(text)
+    function generateProblemDifficultyCell(text) {
+        let div = generateTextCell(text)
         div.style = `
         width: 12%
         `
         return div
     }
 
-    function generate_problem_acceptance_cell(text) { 
-        let div = generate_text_cell(text)
+    function generateProblemAcceptanceCell(text) { 
+        let div = generateTextCell(text)
         div.style = `
         width: 10%
         `
         return div
     }
 
-    function generate_row_div(){ 
+    function generateRowDiv(){ 
         let row = document.createElement('div')
         row.style = `
         display:flex;
@@ -117,33 +127,40 @@ function companyProblemTableManager() {
         return row
     }
 
-    function generate_buttons(data) { 
-        
+    function onDurationButtonClicked(event) { 
+        console.log(this.parentDiv)
+        while (this.parentDiv.firstChild) {
+            this.parentDiv.removeChild(myNode.lastChild);
+          }
     }
 
-    
-    
+    function generateDurationButtons() { 
+        let row = generateRowDiv()
+        row.appendChild(generateDurationButton("6 months"))
+        row.appendChild(generateDurationButton("1 year"))
+        row.appendChild(generateDurationButton("2 years"))
+        row.appendChild(generateDurationButton("All time"))
+        return row
+    }
+
     function generate_header_row() { 
-        let row = generate_row_div()
-        row.appendChild(generate_problem_id_cell("#"))
+        let row = generateRowDiv()
+        row.appendChild(generateProblemIdCell("#"))
         row.appendChild(generate_problem_name_cell("Title", "#"))
-        row.appendChild(generate_problem_acceptance_cell("Acceptance"))
-        row.appendChild(generate_problem_difficulty_cell("Difficulty"))
-        row.appendChild(generate_problem_acceptance_cell("Frequency"))
-        row.appendChild(generate_button("test"))
-        row.appendChild(generate_button("test2"))
-        row.appendChild(generate_button("test3"))
+        row.appendChild(generateProblemAcceptanceCell("Acceptance"))
+        row.appendChild(generateProblemDifficultyCell("Difficulty"))
+        row.appendChild(generateProblemAcceptanceCell("Frequency"))
         return row
     }
     
 
     this.create_problem_table = function(data) { 
-        let parentDiv = document.createElement('div')
-        parentDiv.appendChild(generate_header_row())
+        this.parentDiv.appendChild(generateDurationButtons())
+        this.parentDiv.appendChild(generate_header_row())
         
 
         for(let i = 0; i <= data.length-1; i ++) {        
-            let row = generate_row_div()
+            let row = generateRowDiv()
             
             let frequency = data[i]["occurance"]
             let id = "0"
@@ -153,16 +170,15 @@ function companyProblemTableManager() {
             let acceptance = "100%"
 
 
-            
-            row.appendChild(generate_problem_id_cell(id))
+            row.appendChild(generateProblemIdCell(id))
             row.appendChild(generate_problem_name_cell(problemName, problemUrl))
-            row.appendChild(generate_problem_acceptance_cell(acceptance))
-            row.appendChild(generate_problem_difficulty_cell(difficulty))
-            row.appendChild(generate_problem_frequency_cell(frequency))
+            row.appendChild(generateProblemAcceptanceCell(acceptance))
+            row.appendChild(generateProblemDifficultyCell(difficulty))
+            row.appendChild(generateProblemFrequencyCell(frequency))
 
-            parentDiv.append(row)
+            this.parentDiv.append(row)
         }
-        return parentDiv
+        return this.parentDiv
     }
 
     
@@ -306,6 +322,7 @@ var companySwipperManager = new CompanySwipperManager();
 companySwipperManager.addOnCompanyButtonClickEvent((event) => {
     let companyName = event.currentTarget.getAttribute("company-name")
     let data = vipData[companyName] || []
-    modalManager.openAndAddContentToModal(new companyProblemTableManager().create_problem_table(data))
+    let tableDiv = new tableManager().create_problem_table(data)
+    modalManager.openAndAddContentToModal(tableDiv)
 })
 companySwipperManager.initialize()

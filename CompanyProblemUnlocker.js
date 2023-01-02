@@ -7,6 +7,15 @@ function Company() {
     this.button
 }
 
+function Problem() { 
+    this.frequency
+    this.id
+    this.difficulty
+    this.problemUrl
+    this.problemName
+    this.acceptance
+}
+
 
 
 function grabData() { 
@@ -18,18 +27,31 @@ function grabData() {
 }
 
 
-function tableContentManager() { 
-
-    this.getTableContent = function(data) { 
-
-
+function parseCompanyProblemData(data) { 
+    // parse incoming data 
+    let allTimeData = []
+    let returnData = {"All Time": allTimeData} // {duration:[rows]}
+    for(let i = 0; i <= data.length-1; i ++) {  
+        let frequency = data[i]["occurance"]
+        let id = "0"
+        let difficulty = "hard"
+        let problemUrl = data[i]["url"]
+        let problemName = data[i]["problem"]
+        let acceptance = "100%"
+        let problemObject = new Problem () 
+        problemObject.frequency = frequency
+        problemObject.id = id
+        problemObject.difficulty = difficulty
+        problemObject.problemUrl = problemUrl
+        problemObject.problemName = problemName
+        problemObject.acceptance = acceptance
+        allTimeData.push(problemObject)
     }
+    return returnData
 }
 
-
-
-function tableManager() { 
-    this.parentDiv = document.createElement('div')
+function tableElementGenerator() { 
+    //create table content from data passed
 
     function generateTextCell(text) { 
         let div = document.createElement('div')
@@ -79,7 +101,7 @@ function tableManager() {
         return progressBar
     }
 
-    function generate_problem_name_cell(problem_name, problem_url) { 
+    function generateProblemNameCell(problem_name, problem_url) { 
         let problemCell = document.createElement('div')
         let a = document.createElement('a')
         a.href = problem_url
@@ -89,17 +111,6 @@ function tableManager() {
         width: 50%
         `
         return problemCell
-    }
-
-    function generateDurationButton(data) {
-        let button = document.createElement('button')   
-        button.innerText =data
-        button.style = ` 
-        width:5%
-        `
-        button.setAttribute("duration", data)
-        button.addEventListener('click', onDurationButtonClicked.bind(this))
-        return button
     }
 
     function generateProblemDifficultyCell(text) {
@@ -127,6 +138,65 @@ function tableManager() {
         return row
     }
 
+    function generateHeaderRow() { 
+        let row = generateRowDiv()
+        row.appendChild(generateProblemIdCell("#"))
+        row.appendChild(generateProblemNameCell("Title", "#"))
+        row.appendChild(generateProblemAcceptanceCell("Acceptance"))
+        row.appendChild(generateProblemDifficultyCell("Difficulty"))
+        row.appendChild(generateProblemAcceptanceCell("Frequency"))
+        return row
+    }
+
+    this.getTableContentElement = function(data) { 
+        // data = [problemObject1, problemObject2....]
+        let parentDiv = document.createElement('div')
+        parentDiv.appendChild(generateHeaderRow())
+        for(let i = 0; i <= data.length-1; i ++) {        
+            let row = generateRowDiv()        
+
+            let frequency = data[i].frequency
+            let id = data[i].id
+            let difficulty = data[i].difficulty
+            let problemUrl = data[i].problemUrl
+            let problemName = data[i].problemName
+            let acceptance = data[i].acceptance
+
+            row.appendChild(generateProblemIdCell(id))
+            row.appendChild(generateProblemNameCell(problemName, problemUrl))
+            row.appendChild(generateProblemAcceptanceCell(acceptance))
+            row.appendChild(generateProblemDifficultyCell(difficulty))
+            row.appendChild(generateProblemFrequencyCell(frequency))
+
+            parentDiv.append(row)
+        }
+        return parentDiv
+    }
+}
+
+
+function tableManager() { 
+    // manage which data is shown in table
+
+    this.setData = function(data) { 
+        this.data = data
+    }
+
+    this.setTargetParent = function(parent) { 
+        this.targetParent = parent
+    }
+
+    function generateDurationButton(data) {
+        let button = document.createElement('button')   
+        button.innerText =data
+        button.style = ` 
+        width:5%
+        `
+        button.setAttribute("duration", data)
+        button.addEventListener('click', onDurationButtonClicked.bind(this))
+        return button
+    }
+
     function onDurationButtonClicked(event) { 
         console.log(this.parentDiv)
         while (this.parentDiv.firstChild) {
@@ -143,48 +213,14 @@ function tableManager() {
         return row
     }
 
-    function generate_header_row() { 
-        let row = generateRowDiv()
-        row.appendChild(generateProblemIdCell("#"))
-        row.appendChild(generate_problem_name_cell("Title", "#"))
-        row.appendChild(generateProblemAcceptanceCell("Acceptance"))
-        row.appendChild(generateProblemDifficultyCell("Difficulty"))
-        row.appendChild(generateProblemAcceptanceCell("Frequency"))
-        return row
+    this.getTable = function() { 
+        let shownData = this.data["All Time"]
+        return new tableElementGenerator().getTableContentElement(shownData)
     }
-    
-
-    this.create_problem_table = function(data) { 
-        this.parentDiv.appendChild(generateDurationButtons())
-        this.parentDiv.appendChild(generate_header_row())
-        
-
-        for(let i = 0; i <= data.length-1; i ++) {        
-            let row = generateRowDiv()
-            
-            let frequency = data[i]["occurance"]
-            let id = "0"
-            let difficulty = "hard"
-            let problemUrl = data[i]["url"]
-            let problemName = data[i]["problem"]
-            let acceptance = "100%"
-
-
-            row.appendChild(generateProblemIdCell(id))
-            row.appendChild(generate_problem_name_cell(problemName, problemUrl))
-            row.appendChild(generateProblemAcceptanceCell(acceptance))
-            row.appendChild(generateProblemDifficultyCell(difficulty))
-            row.appendChild(generateProblemFrequencyCell(frequency))
-
-            this.parentDiv.append(row)
-        }
-        return this.parentDiv
-    }
-
-    
 }
 
 function CompanySwipperManager() { 
+    //detect changes in swipper & react accordingly 
     this.onCompanyButtonClick = []
 
     this.addOnCompanyButtonClickEvent = function(func) { 
@@ -247,6 +283,7 @@ function CompanySwipperManager() {
 }
 
 function ModalManager (){ 
+    
     function initializeModal() { 
         let modal = document.createElement('div')
 
@@ -302,6 +339,8 @@ function ModalManager (){
         modal.style.display = ""
     }
 
+
+
     function closeAndClearModal() {  
         let modal = document.getElementById("CompanyModal")
         let modalContent = document.getElementById("CompanyModal-content")
@@ -319,10 +358,13 @@ function ModalManager (){
 var vipData = grabData()
 var modalManager = new ModalManager()
 var companySwipperManager = new CompanySwipperManager(); 
+
 companySwipperManager.addOnCompanyButtonClickEvent((event) => {
     let companyName = event.currentTarget.getAttribute("company-name")
-    let data = vipData[companyName] || []
-    let tableDiv = new tableManager().create_problem_table(data)
-    modalManager.openAndAddContentToModal(tableDiv)
+    let temp = vipData[companyName] || []
+    let data = parseCompanyProblemData(temp)
+    let tableManagerObject = new tableManager()
+    tableManagerObject.setData(data)
+    modalManager.openAndAddContentToModal(tableManagerObject.getTable())
 })
 companySwipperManager.initialize()

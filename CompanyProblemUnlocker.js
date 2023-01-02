@@ -1,7 +1,6 @@
 
 
-
-
+//#region objects 
 function Company() { 
     this.name 
     this.button
@@ -16,8 +15,10 @@ function Problem() {
     this.acceptance
 }
 
+//#endregion 
 
 
+//#region testing functions 
 function grabData() { 
     let url = "https://www.npoint.io/documents/b37ca078aab84f3e1a80"
     var xmlHttp = new XMLHttpRequest();
@@ -25,6 +26,8 @@ function grabData() {
     xmlHttp.send( null );
     return JSON.parse(xmlHttp.responseText)["contents"]
 }
+
+//#endregion
 
 
 function parseCompanyProblemData(data) { 
@@ -177,9 +180,10 @@ function tableElementGenerator() {
 
 function tableManager() { 
     // manage which data is shown in table
+    this.tableId = "table-content"
 
     this.setData = function(data) { 
-        this.data = data
+        this.tableData = data
     }
 
     this.setTargetParent = function(parent) { 
@@ -213,9 +217,19 @@ function tableManager() {
         return row
     }
 
-    this.getTable = function() { 
-        let shownData = this.data["All Time"]
-        return new tableElementGenerator().getTableContentElement(shownData)
+    this.getTable = function() {  
+        let shownData = this.tableData["All Time"]
+        return  new tableElementGenerator().getTableContentElement(shownData)
+    }
+
+    this.appendTableToParent = function() { 
+        let table = this.getTable()
+        table.id = this.tableId; 
+        this.targetParent.appendChild()
+    }
+    
+    function clearTable() {
+        document.getElementById(this.tableId).remove() 
     }
 }
 
@@ -283,7 +297,6 @@ function CompanySwipperManager() {
 }
 
 function ModalManager (){ 
-    
     function initializeModal() { 
         let modal = document.createElement('div')
 
@@ -332,14 +345,14 @@ function ModalManager (){
         modal.id = "CompanyModal"
     }
 
-    this.openAndAddContentToModal = function(content) { 
+    this.openModal = function() { 
         let modal = document.getElementById("CompanyModal")
-        content.id = "CompanyModal-content"
-        modal.firstChild.appendChild(content)
         modal.style.display = ""
     }
 
-
+    this.getModal = function() { 
+        return document.getElementById("CompanyModal").firstChild
+    }
 
     function closeAndClearModal() {  
         let modal = document.getElementById("CompanyModal")
@@ -365,6 +378,8 @@ companySwipperManager.addOnCompanyButtonClickEvent((event) => {
     let data = parseCompanyProblemData(temp)
     let tableManagerObject = new tableManager()
     tableManagerObject.setData(data)
-    modalManager.openAndAddContentToModal(tableManagerObject.getTable())
+    tableManagerObject.setTargetParent(modalManager.getModal())
+    tableManagerObject.appendTableToParent()
+    modalManager.openModal()
 })
 companySwipperManager.initialize()

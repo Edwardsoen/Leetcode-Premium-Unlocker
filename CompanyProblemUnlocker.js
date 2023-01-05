@@ -27,6 +27,67 @@ function grabData() {
     return JSON.parse(xmlHttp.responseText)["contents"]
 }
 
+function googleSheetsDataGrabber() {
+    this.companyData = {}
+
+    function getUrl (range) {
+        sheetsId = "1hW-bfeFKSkEDzfjaDMjDQmgsupEZz3gysXpG0mrf6QE"
+        api_key = "AIzaSyDDAE3rf1fjLGKM0FUHQeTcsmS6fCQjtDs"
+        return `https://sheets.googleapis.com/v4/spreadsheets/${sheetsId}/values/${range}?key=${api_key}`
+    }
+
+    function initialize() { 
+        let companyPageData = getPageTable()
+        console.log(companyPageData)
+        setCompanyPageTableData(companyPageData)
+    }
+
+
+    function getPageTable() { 
+        let range = "Map!A:C"
+        let url = getUrl(range)
+        var xmlHttp = new XMLHttpRequest();
+        xmlHttp.open( "GET", url, false ); 
+        xmlHttp.send();
+        return JSON.parse(xmlHttp.responseText)
+
+    }
+
+    function setCompanyPageTableData(responseData) { 
+        let companyList = responseData["values"]
+        let companyData = {}
+        for(let i =1; i <= companyList.length-1; i ++) { 
+            let companyName = companyList[i][0]
+            let starRow = companyList[i][1]
+            let endRow = companyList[i][2]
+            companyData[companyName] = [starRow, endRow]
+        }
+        return companyData
+    }
+
+    this.getCompanyProblemData = function(companyName){
+        let companyPageData = getPageTable()
+        let companyData = setCompanyPageTableData(companyPageData)
+        if(companyName in companyData == false) return []
+        let startRow = companyData[companyName][0]
+        let endRow = companyData[companyName][1]
+        let range = `CompanyData!A${startRow}:I${endRow}`
+        let url = getUrl(range)
+        var xmlHttp = new XMLHttpRequest();
+        xmlHttp.open( "GET", url, false ); 
+        xmlHttp.send();
+        console.log(xmlHttp.responseText)
+        return JSON.parse(xmlHttp.responseText)
+    }
+}
+
+
+
+
+
+
+
+
 //#endregion
 
 

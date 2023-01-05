@@ -1,18 +1,31 @@
 
 
-//#region objects 
-function Company() { 
-    this.name 
-    this.button
+//#region structs 
+class CompanyButtonInfo { 
+    constructor(companyName, companyButtonElement) { 
+        this.name = companyName
+        this.button = companyButtonElement
+    }
 }
 
-function Problem() { 
-    this.frequency
-    this.id
-    this.difficulty
-    this.problemUrl
-    this.problemName
-    this.acceptance
+
+class ProblemInfo{ 
+    constructor(frequency, id, difficulty, problemUrl, problemName, acceptance) { 
+        this.frequency = frequency 
+        this.id = id
+        this.difficulty = difficulty
+        this.problemUrl = problemUrl 
+        this.problemName = problemName
+        this.acceptance = acceptance
+    }
+}
+
+class CompanyProblemInfo extends ProblemInfo { 
+    constructor(frequency, id, difficulty, problemUrl, problemName, acceptance, companyName, duration) { 
+        super(frequency, id, difficulty, problemUrl, problemName, acceptance) 
+        this.companyName = companyName
+        this.duration = duration
+    }
 }
 
 //#endregion 
@@ -27,68 +40,98 @@ function grabData() {
     return JSON.parse(xmlHttp.responseText)["contents"]
 }
 
-function googleSheetsDataGrabber() {
-    this.companyData = {}
-
-    function getUrl (range) {
-        sheetsId = "1hW-bfeFKSkEDzfjaDMjDQmgsupEZz3gysXpG0mrf6QE"
-        api_key = "AIzaSyDDAE3rf1fjLGKM0FUHQeTcsmS6fCQjtDs"
-        return `https://sheets.googleapis.com/v4/spreadsheets/${sheetsId}/values/${range}?key=${api_key}`
+class GoogleSheetsDataFetcher{ 
+    //TODO: change to asnyc
+    constructor() { 
+        this.sheetsId = "1hW-bfeFKSkEDzfjaDMjDQmgsupEZz3gysXpG0mrf6QE"
+        this.api_key = "AIzaSyDDAE3rf1fjLGKM0FUHQeTcsmS6fCQjtDs"
+        this.companyPageTableData = {}
+        let pageTable = this.fetchPageTable() //cache company data location to avoid 2 round trip when company button is clicked
+        this.setCompanyPageTableData(pageTable)
     }
 
-    function initialize() { 
-        let companyPageData = getPageTable()
-        console.log(companyPageData)
-        setCompanyPageTableData(companyPageData)
+    getUrl (range) {
+        return `https://sheets.googleapis.com/v4/spreadsheets/${this.sheetsId}/values/${range}?key=${this.api_key}`
     }
 
-
-    function getPageTable() { 
+    fetchPageTable() { 
         let range = "Map!A:C"
-        let url = getUrl(range)
+        let url = this.getUrl(range)
         var xmlHttp = new XMLHttpRequest();
         xmlHttp.open( "GET", url, false ); 
         xmlHttp.send();
         return JSON.parse(xmlHttp.responseText)
-
     }
 
-    function setCompanyPageTableData(responseData) { 
+    setCompanyPageTableData(responseData) { 
         let companyList = responseData["values"]
-        let companyData = {}
         for(let i =1; i <= companyList.length-1; i ++) { 
             let companyName = companyList[i][0]
             let starRow = companyList[i][1]
             let endRow = companyList[i][2]
-            companyData[companyName] = [starRow, endRow]
+            this.companyPageTableData[companyName] = [starRow, endRow]
         }
-        return companyData
     }
 
-    this.getCompanyProblemData = function(companyName){
-        let companyPageData = getPageTable()
-        let companyData = setCompanyPageTableData(companyPageData)
-        if(companyName in companyData == false) return []
-        let startRow = companyData[companyName][0]
-        let endRow = companyData[companyName][1]
-        let range = `CompanyData!A${startRow}:I${endRow}`
-        let url = getUrl(range)
+    haveData(companyName) { 
+        return companyName in this.companyPageTableData
+    }
+
+    getCompanyProblemData(companyName) { 
+        let response = this.fetchCompanyProblemData(companyName)
+        return this.parseData(response)
+    }
+
+    fetchCompanyProblemData(companyName){ 
+        if(!this.haveData(companyName)) return []
+        let startRow =  this.companyPageTableData[companyName][0]
+        let endRow =  this.companyPageTableData[companyName][1]
+        let companyDataSheetName = "CompanyData"
+        let range = `${companyDataSheetName}!A${startRow}:I${endRow}` 
+        let url = this.getUrl(range)
         var xmlHttp = new XMLHttpRequest();
         xmlHttp.open( "GET", url, false ); 
-        xmlHttp.send();
-        console.log(xmlHttp.responseText)
-        return JSON.parse(xmlHttp.responseText)
+        xmlHttp.send(); //do error handling
+        let response = JSON.parse(xmlHttp.responseText)
+        return response["values"]
+    }
+
+    parseData(data) { 
+        let targetCompanyData = []
+        for(let i =0; i <= data.length - 1; i ++ ){ 
+            let frequency =  data[i][4]
+            let id = data[i][0]
+            let difficulty = data[i][3]
+            let problemUrl =  data[i][5]
+            let problemName = data[i][1]
+            let acceptance = data[i][2]
+            let companyName = data[i][6]
+            let duration = data[i][7]
+            let problemInfo = new CompanyProblemInfo(frequency,id,difficulty,problemUrl,problemName,acceptance,companyName,duration)
+            targetCompanyData.push(problemInfo)
+        }
+        return targetCompanyData
+    }
+}
+
+let test = new GoogleSheetsDataFetcher()
+console.log(test.getCompanyProblemData("adobe"))
+
+
+//#endregion
+
+
+
+
+class DataFetcher { 
+    constructor(){ 
+        this.fetcher = new googleSheetsDataFetcher()
     }
 }
 
 
 
 
-
-
-
-
-//#endregion
 
 
 function parseCompanyProblemData(data) { 
@@ -102,13 +145,7 @@ function parseCompanyProblemData(data) {
         let problemUrl = data[i]["url"]
         let problemName = data[i]["problem"]
         let acceptance = "100%"
-        let problemObject = new Problem () 
-        problemObject.frequency = frequency
-        problemObject.id = id
-        problemObject.difficulty = difficulty
-        problemObject.problemUrl = problemUrl
-        problemObject.problemName = problemName
-        problemObject.acceptance = acceptance
+        let problemObject = new ProblemInfo (frequency, id, difficulty, problemUrl, problemName, acceptance)
         allTimeData.push(problemObject)
     }
     return returnData
@@ -286,7 +323,7 @@ function tableManager() {
     this.appendTableToParent = function() { 
         let table = this.getTable()
         table.id = this.tableId; 
-        this.targetParent.appendChild()
+        this.targetParent.appendChild(table)
     }
     
     function clearTable() {
@@ -317,9 +354,7 @@ function CompanySwipperManager() {
             let link    = links[ii].href.split("/") 
             links[ii].href = "javascript:void(0)"
             let companyName = links[ii].firstChild.firstChild.textContent
-            let companyObject = new Company()
-            companyObject.name = companyName; 
-            companyObject.button = links[ii]
+            let companyObject = new CompanyButtonInfo(companyName, links[ii])
             data.push(companyObject)
         }
         return data

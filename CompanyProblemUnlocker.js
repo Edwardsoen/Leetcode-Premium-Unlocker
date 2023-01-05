@@ -114,25 +114,11 @@ class GoogleSheetsDataFetcher{
     }
 }
 
-let test = new GoogleSheetsDataFetcher()
-console.log(test.getCompanyProblemData("adobe"))
-
-
-//#endregion
-
-
-
-
 class DataFetcher { 
-    constructor(){ 
-        this.fetcher = new googleSheetsDataFetcher()
+    constructor(fetcher){ 
+        this.fetcher = new fetcher()
     }
 }
-
-
-
-
-
 
 function parseCompanyProblemData(data) { 
     // parse incoming data 
@@ -150,6 +136,13 @@ function parseCompanyProblemData(data) {
     }
     return returnData
 }
+
+
+//#endregion
+
+
+
+
 
 function tableElementGenerator() { 
     //create table content from data passed
@@ -392,38 +385,16 @@ function CompanySwipperManager() {
 
 }
 
-function ModalManager (){ 
-    function initializeModal() { 
-        let modal = document.createElement('div')
 
-        modal.style = ` 
-        display: none; 
-        position: fixed; 
-        z-index: 32;
-        left: 0;
-        top: 0;
-        width: 100%; 
-        height: 100%; 
-        overflow: auto; 
-        `
+class ModalManager{ 
+    constructor() { 
+        this.modal = this.createModal()
+        this.modalContentBox = this.createModalContentBox()
+        this.appendToModal(this.modalContentBox)
+        this.appendModal(document.body)
+    }
 
-        let closeButton = document.createElement('span')
-        closeButton.style = ` 
-        float: right;
-        font-size: 28px;
-        font-weight: bold;
-        cursor: pointer;
-        `
-
-        closeButton.innerText = "x"
-        closeButton.addEventListener('click', closeAndClearModal)
-        
-        window.onclick = function(event) {
-            if (event.target == modal) {
-                closeAndClearModal()
-            }
-        }
-
+    createModalContentBox() {
         let modalContentBox = document.createElement('div')
         modalContentBox.style = `
         background-color: #fefefe;
@@ -434,33 +405,80 @@ function ModalManager (){
         width: 80%;
         mid-height: 15%
         `
+        return modalContentBox
+    }
 
-        // modalContentBox.appendChild(closeButton)
-        modal.appendChild(modalContentBox)
-        document.body.appendChild(modal)
+    getModalContentBox() { 
+        return this.modalContentBox
+    }
+
+    appendModal(targetParent) {
+        targetParent.appendChild(this.modal)
+    }
+
+    appendToModal(targetElement) { 
+        this.modal.appendChild(targetElement)
+    } 
+
+    createCloseButton() { 
+        let closeButton = document.createElement('span')
+        closeButton.style = ` 
+        float: right;
+        font-size: 28px;
+        font-weight: bold;
+        cursor: pointer;
+        `
+
+        closeButton.innerText = "x"
+        closeButton.addEventListener('click', resetModal)
+        return closeButton
+    }
+
+    createModal() { 
+        let modal = document.createElement('div')
+        modal.style = ` 
+        display: none; 
+        position: fixed; 
+        z-index: 32;
+        left: 0;
+        top: 0;
+        width: 100%; 
+        height: 100%; 
+        overflow: auto; 
+        `
+        window.addEventListener('click', this.onModalClicked)
         modal.id = "CompanyModal"
+        return modal
     }
 
-    this.openModal = function() { 
-        let modal = document.getElementById("CompanyModal")
-        modal.style.display = ""
+    openModal() { 
+        this.modal.style.display = ""
     }
 
-    this.getModal = function() { 
-        return document.getElementById("CompanyModal").firstChild
+    closeModal() { 
+        this.modal.style.display = "none"
     }
 
-    function closeAndClearModal() {  
-        let modal = document.getElementById("CompanyModal")
-        let modalContent = document.getElementById("CompanyModal-content")
-        modal.style.display = "none"
-        if (modalContent != undefined) {
-            modal.firstChild.removeChild(modalContent)
-        } 
+    clearModalContent() { 
+        while(this.modalContentBox.firstChild != undefined) { 
+            this.modalContentBox.firstChild.remove()
+        }
     }
 
-    initializeModal()
+    onModalClicked = (event) =>  { 
+        if (event.target == this.modal) {
+            console.log(this.resetModal)
+            this.resetModal()
+        }
+    } 
+
+    resetModal = () => {  
+        this.closeModal()
+        this.clearModalContent()
+    }
+
 }
+
 
 
 
@@ -474,7 +492,7 @@ companySwipperManager.addOnCompanyButtonClickEvent((event) => {
     let data = parseCompanyProblemData(temp)
     let tableManagerObject = new tableManager()
     tableManagerObject.setData(data)
-    tableManagerObject.setTargetParent(modalManager.getModal())
+    tableManagerObject.setTargetParent(modalManager.getModalContentBox())
     tableManagerObject.appendTableToParent()
     modalManager.openModal()
 })

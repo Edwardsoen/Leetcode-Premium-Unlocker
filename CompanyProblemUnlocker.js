@@ -31,6 +31,7 @@ class CompanyProblemInfo extends ProblemInfo {
 //#endregion 
 
 
+
 //#region testing functions 
 function grabData() { 
     let url = "https://www.npoint.io/documents/b37ca078aab84f3e1a80"
@@ -137,14 +138,9 @@ function parseCompanyProblemData(data) {
     return returnData
 }
 
-
 //#endregion
 
-
-
-
-
-function tableElementGenerator() { 
+function TableElementGenerator() { 
     //create table content from data passed
 
     function generateTextCell(text) { 
@@ -268,20 +264,14 @@ function tableElementGenerator() {
     }
 }
 
-
-function tableManager() { 
-    // manage which data is shown in table
-    this.tableId = "table-content"
-
-    this.setData = function(data) { 
+class TableContentManager{ 
+    constructor(data) { 
+        this.tableId = "table-content"
         this.tableData = data
-    }
+        this.elementGenerator = new TableElementGenerator(); 
+    } 
 
-    this.setTargetParent = function(parent) { 
-        this.targetParent = parent
-    }
-
-    function generateDurationButton(data) {
+    generateDurationButton(data) {
         let button = document.createElement('button')   
         button.innerText =data
         button.style = ` 
@@ -292,14 +282,13 @@ function tableManager() {
         return button
     }
 
-    function onDurationButtonClicked(event) { 
-        console.log(this.parentDiv)
+    onDurationButtonClicked(event) { 
         while (this.parentDiv.firstChild) {
             this.parentDiv.removeChild(myNode.lastChild);
           }
     }
 
-    function generateDurationButtons() { 
+    generateDurationButtons() { 
         let row = generateRowDiv()
         row.appendChild(generateDurationButton("6 months"))
         row.appendChild(generateDurationButton("1 year"))
@@ -308,21 +297,21 @@ function tableManager() {
         return row
     }
 
-    this.getTable = function() {  
+    getContentElement() {  
         let shownData = this.tableData["All Time"]
-        return  new tableElementGenerator().getTableContentElement(shownData)
+        let table = this.elementGenerator.getTableContentElement(shownData)
+        table.id = this.tableId
+        return table
     }
 
-    this.appendTableToParent = function() { 
-        let table = this.getTable()
-        table.id = this.tableId; 
-        this.targetParent.appendChild(table)
-    }
-    
-    function clearTable() {
+    clearTable() {
         document.getElementById(this.tableId).remove() 
     }
 }
+
+//#region 
+
+
 
 function CompanySwipperManager() { 
     //detect changes in swipper & react accordingly 
@@ -336,7 +325,6 @@ function CompanySwipperManager() {
         registerClickEventListenerToCompanyButton(this.onCompanyButtonClick)
         addObserverToCompaniesSection(this.onCompanyButtonClick)
     }
-    
 
     function getActiveCompaniesTags() { 
         data = []  // Company objects // obj.companyName & obj.button
@@ -344,14 +332,19 @@ function CompanySwipperManager() {
         let swiper = swipers[swipers.length-1]
         let links = swiper.getElementsByTagName('a')
         for(let ii = 0; ii <= links.length-1; ii ++) {
-            let link    = links[ii].href.split("/") 
+            let companyName = extractCompanyNameFromHref(links[ii].href)
             links[ii].href = "javascript:void(0)"
-            let companyName = links[ii].firstChild.firstChild.textContent
             let companyObject = new CompanyButtonInfo(companyName, links[ii])
             data.push(companyObject)
         }
         return data
     }
+
+    function extractCompanyNameFromHref(href) { 
+        let url = href.split("/") 
+        return url[url.length-1]
+    } 
+
 
     function addObserverToCompaniesSection(onCompanyButtonClick) {
         var swipper =  document.getElementsByClassName("mt-0")[0]
@@ -385,6 +378,10 @@ function CompanySwipperManager() {
 
 }
 
+//#endregion
+
+
+//#region  
 
 class ModalManager{ 
     constructor() { 
@@ -419,6 +416,10 @@ class ModalManager{
     appendToModal(targetElement) { 
         this.modal.appendChild(targetElement)
     } 
+    
+    appendToContainer(targetElement) { 
+        this.modalContentBox.appendChild(targetElement)
+    }
 
     createCloseButton() { 
         let closeButton = document.createElement('span')
@@ -467,7 +468,6 @@ class ModalManager{
 
     onModalClicked = (event) =>  { 
         if (event.target == this.modal) {
-            console.log(this.resetModal)
             this.resetModal()
         }
     } 
@@ -476,11 +476,13 @@ class ModalManager{
         this.closeModal()
         this.clearModalContent()
     }
+}
+
+class ContainerManager{ 
 
 }
 
-
-
+//#endregion
 
 var vipData = grabData()
 var modalManager = new ModalManager()
@@ -490,10 +492,9 @@ companySwipperManager.addOnCompanyButtonClickEvent((event) => {
     let companyName = event.currentTarget.getAttribute("company-name")
     let temp = vipData[companyName] || []
     let data = parseCompanyProblemData(temp)
-    let tableManagerObject = new tableManager()
-    tableManagerObject.setData(data)
-    tableManagerObject.setTargetParent(modalManager.getModalContentBox())
-    tableManagerObject.appendTableToParent()
+    let tableManagerObject = new TableContentManager(data)
+    let table = tableManagerObject.getContentElement()
+    modalManager.appendToContainer(table)
     modalManager.openModal()
 })
 companySwipperManager.initialize()

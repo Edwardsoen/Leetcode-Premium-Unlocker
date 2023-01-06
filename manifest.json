@@ -8,7 +8,7 @@
     "manifest_version": 3, 
     "content_scripts": [
         {
-          "js": [ "CompanyProblemUnlocker.js", "ProblemFrequencyUnlocker.js"],
+          "js": ["/dist/main.js"],
           "matches": [
             "https://leetcode.com/*"
           ]

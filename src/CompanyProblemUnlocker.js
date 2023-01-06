@@ -1,144 +1,7 @@
 
+import { GoogleSheetsDataFetcher } from "./modules/DataFetcher";
+import {CompanyButtonInfo, ProblemInfo, CompanyProblemInfo, CompanyProblemInfoList} from "./modules/Objects";
 
-//#region structs 
-class CompanyButtonInfo { 
-    constructor(companyName, companyButtonElement) { 
-        this.name = companyName
-        this.button = companyButtonElement
-    }
-}
-
-
-class ProblemInfo{ 
-    constructor(frequency, id, difficulty, problemUrl, problemName, acceptance) { 
-        this.frequency = frequency 
-        this.id = id
-        this.difficulty = difficulty
-        this.problemUrl = problemUrl 
-        this.problemName = problemName
-        this.acceptance = acceptance
-    }
-}
-
-class CompanyProblemInfo extends ProblemInfo { 
-    constructor(frequency, id, difficulty, problemUrl, problemName, acceptance, companyName, duration) { 
-        super(frequency, id, difficulty, problemUrl, problemName, acceptance) 
-        this.companyName = companyName
-        this.duration = duration
-    }
-}
-
-//#endregion 
-
-
-
-//#region testing functions 
-function grabData() { 
-    let url = "https://www.npoint.io/documents/b37ca078aab84f3e1a80"
-    var xmlHttp = new XMLHttpRequest();
-    xmlHttp.open( "GET", url, false ); 
-    xmlHttp.send( null );
-    return JSON.parse(xmlHttp.responseText)["contents"]
-}
-
-class GoogleSheetsDataFetcher{ 
-    //TODO: change to asnyc
-    constructor() { 
-        this.sheetsId = "1hW-bfeFKSkEDzfjaDMjDQmgsupEZz3gysXpG0mrf6QE"
-        this.api_key = "AIzaSyDDAE3rf1fjLGKM0FUHQeTcsmS6fCQjtDs"
-        this.companyPageTableData = {}
-        let pageTable = this.fetchPageTable() //cache company data location to avoid 2 round trip when company button is clicked
-        this.setCompanyPageTableData(pageTable)
-    }
-
-    getUrl (range) {
-        return `https://sheets.googleapis.com/v4/spreadsheets/${this.sheetsId}/values/${range}?key=${this.api_key}`
-    }
-
-    fetchPageTable() { 
-        let range = "Map!A:C"
-        let url = this.getUrl(range)
-        var xmlHttp = new XMLHttpRequest();
-        xmlHttp.open( "GET", url, false ); 
-        xmlHttp.send();
-        return JSON.parse(xmlHttp.responseText)
-    }
-
-    setCompanyPageTableData(responseData) { 
-        let companyList = responseData["values"]
-        for(let i =1; i <= companyList.length-1; i ++) { 
-            let companyName = companyList[i][0]
-            let starRow = companyList[i][1]
-            let endRow = companyList[i][2]
-            this.companyPageTableData[companyName] = [starRow, endRow]
-        }
-    }
-
-    haveData(companyName) { 
-        return companyName in this.companyPageTableData
-    }
-
-    getCompanyProblemData(companyName) { 
-        let response = this.fetchCompanyProblemData(companyName)
-        return this.parseData(response)
-    }
-
-    fetchCompanyProblemData(companyName){ 
-        if(!this.haveData(companyName)) return []
-        let startRow =  this.companyPageTableData[companyName][0]
-        let endRow =  this.companyPageTableData[companyName][1]
-        let companyDataSheetName = "CompanyData"
-        let range = `${companyDataSheetName}!A${startRow}:I${endRow}` 
-        let url = this.getUrl(range)
-        var xmlHttp = new XMLHttpRequest();
-        xmlHttp.open( "GET", url, false ); 
-        xmlHttp.send(); //do error handling
-        let response = JSON.parse(xmlHttp.responseText)
-        return response["values"]
-    }
-
-    parseData(data) { 
-        let targetCompanyData = []
-        for(let i =0; i <= data.length - 1; i ++ ){ 
-            let frequency =  data[i][4]
-            let id = data[i][0]
-            let difficulty = data[i][3]
-            let problemUrl =  data[i][5]
-            let problemName = data[i][1]
-            let acceptance = data[i][2]
-            let companyName = data[i][6]
-            let duration = data[i][7]
-            let problemInfo = new CompanyProblemInfo(frequency,id,difficulty,problemUrl,problemName,acceptance,companyName,duration)
-            targetCompanyData.push(problemInfo)
-        }
-        return targetCompanyData
-    }
-}
-
-class DataFetcher { 
-    constructor(fetcher){ 
-        this.fetcher = new fetcher()
-    }
-}
-
-function parseCompanyProblemData(data) { 
-    // parse incoming data 
-    let allTimeData = []
-    let returnData = {"All Time": allTimeData} // {duration:[rows]}
-    for(let i = 0; i <= data.length-1; i ++) {  
-        let frequency = data[i]["occurance"]
-        let id = "0"
-        let difficulty = "hard"
-        let problemUrl = data[i]["url"]
-        let problemName = data[i]["problem"]
-        let acceptance = "100%"
-        let problemObject = new ProblemInfo (frequency, id, difficulty, problemUrl, problemName, acceptance)
-        allTimeData.push(problemObject)
-    }
-    return returnData
-}
-
-//#endregion
 
 function TableElementGenerator() { 
     //create table content from data passed
@@ -298,7 +161,7 @@ class TableContentManager{
     }
 
     getContentElement() {  
-        let shownData = this.tableData["All Time"]
+        let shownData = this.tableData.getList("All time")
         let table = this.elementGenerator.getTableContentElement(shownData)
         table.id = this.tableId
         return table
@@ -308,10 +171,6 @@ class TableContentManager{
         document.getElementById(this.tableId).remove() 
     }
 }
-
-//#region 
-
-
 
 function CompanySwipperManager() { 
     //detect changes in swipper & react accordingly 
@@ -327,14 +186,14 @@ function CompanySwipperManager() {
     }
 
     function getActiveCompaniesTags() { 
-        data = []  // Company objects // obj.companyName & obj.button
+        let data = []  // Company objects // obj.companyName & obj.button
         let swipers = document.getElementsByClassName('swiper-slide-active')
         let swiper = swipers[swipers.length-1]
         let links = swiper.getElementsByTagName('a')
         for(let ii = 0; ii <= links.length-1; ii ++) {
-            let companyName = extractCompanyNameFromHref(links[ii].href)
-            links[ii].href = "javascript:void(0)"
+            let companyName = links[ii].firstChild.firstChild.textContent.toLowerCase()
             let companyObject = new CompanyButtonInfo(companyName, links[ii])
+            links[ii].href = "javascript:void(0)"
             data.push(companyObject)
         }
         return data
@@ -377,11 +236,6 @@ function CompanySwipperManager() {
 
 
 }
-
-//#endregion
-
-
-//#region  
 
 class ModalManager{ 
     constructor() { 
@@ -482,16 +336,16 @@ class ContainerManager{
 
 }
 
-//#endregion
 
-var vipData = grabData()
+
 var modalManager = new ModalManager()
 var companySwipperManager = new CompanySwipperManager(); 
+var dataFetcher = new GoogleSheetsDataFetcher()
+
 
 companySwipperManager.addOnCompanyButtonClickEvent((event) => {
     let companyName = event.currentTarget.getAttribute("company-name")
-    let temp = vipData[companyName] || []
-    let data = parseCompanyProblemData(temp)
+    let data = dataFetcher.getCompanyProblemData(companyName)
     let tableManagerObject = new TableContentManager(data)
     let table = tableManagerObject.getContentElement()
     modalManager.appendToContainer(table)

@@ -48,4 +48,11 @@ class CompanyProblemInfoList{
     }
 }
 
-export {CompanyButtonInfo, ProblemInfo, CompanyProblemInfo, CompanyProblemInfoList}
+class CompanyProblemDurations {
+    static SIXMONTHS = "6 months" 
+    static TWOYEARS  = "2 years"
+    static  ALLTIME = "All time"
+    static  ONEYEAR = "1 year"
+}
+
+export {CompanyButtonInfo, ProblemInfo, CompanyProblemInfo, CompanyProblemInfoList, CompanyProblemDurations}

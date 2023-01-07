@@ -1,5 +1,5 @@
 
-
+import { CompanyProblemDurations } from "./Objects"
 
 function TableElementGenerator() { 
     //create table content from data passed
@@ -40,7 +40,7 @@ function TableElementGenerator() {
         let progress = document.createElement('div')
         progress.style = `
         height:100%; 
-        width:20%; 
+        width:${percentage*100}%; 
         display: flex;
         flex-direction: column;
         justify-content: center;
@@ -72,8 +72,8 @@ function TableElementGenerator() {
         return div
     }
 
-    function generateProblemAcceptanceCell(text) { 
-        let div = generateTextCell(text)
+    function generateProblemAcceptanceCell(percentage) { 
+        let div = generateTextCell(String(percentage * 100).slice(0,2) + "%")
         div.style = `
         width: 10%
         `
@@ -91,18 +91,35 @@ function TableElementGenerator() {
 
     function generateHeaderRow() { 
         let row = generateRowDiv()
-        row.appendChild(generateProblemIdCell("#"))
-        row.appendChild(generateProblemNameCell("Title", "#"))
-        row.appendChild(generateProblemAcceptanceCell("Acceptance"))
-        row.appendChild(generateProblemDifficultyCell("Difficulty"))
-        row.appendChild(generateProblemAcceptanceCell("Frequency"))
+        let idHeaderCell = generateProblemIdCell("#")
+        let titleHeaderCell = generateProblemNameCell("Title", "#")
+        let acceptanceHeaderCell= generateProblemAcceptanceCell("Acceptance")
+        let difficultyHeaderCell= generateProblemDifficultyCell("Difficulty")
+        let frequencyHeaderCell= generateProblemAcceptanceCell("Frequency")
+
+        idHeaderCell.setAttribute("role", "modal-header")
+        titleHeaderCell.setAttribute("role", "modal-header")
+        acceptanceHeaderCell.setAttribute("role", "modal-header")
+        difficultyHeaderCell.setAttribute("role", "modal-header")
+        frequencyHeaderCell.setAttribute("role", "modal-header")
+
+        row.appendChild(idHeaderCell)
+        row.appendChild(titleHeaderCell)
+        row.appendChild(acceptanceHeaderCell)
+        row.appendChild(difficultyHeaderCell)
+        row.appendChild(frequencyHeaderCell)
+
         return row
     }
 
-    this.getTableContentElement = function(data) { 
+    this.getTableContentElement = function(data, ...headers) { 
         // data = [problemObject1, problemObject2....]
         let parentDiv = document.createElement('div')
+        for(let i =0; i <= headers.length -1; i ++) { 
+            parentDiv.appendChild(headers[i])
+        }
         parentDiv.appendChild(generateHeaderRow())
+
         for(let i = 0; i <= data.length-1; i ++) {        
             let row = generateRowDiv()        
 
@@ -139,7 +156,7 @@ class TableContentManager{
         width:5%
         `
         button.setAttribute("duration", data)
-        button.addEventListener('click', onDurationButtonClicked.bind(this))
+        // button.addEventListener('click', onDurationButtonClicked.bind(this))
         return button
     }
 
@@ -151,15 +168,15 @@ class TableContentManager{
 
     generateDurationButtons() { 
         let row = generateRowDiv()
-        row.appendChild(generateDurationButton("6 months"))
-        row.appendChild(generateDurationButton("1 year"))
-        row.appendChild(generateDurationButton("2 years"))
-        row.appendChild(generateDurationButton("All time"))
+        row.appendChild(generateDurationButton(CompanyProblemDurations.SIXMONTHS))
+        row.appendChild(generateDurationButton(CompanyProblemDurations.ONEYEAR))
+        row.appendChild(generateDurationButton(CompanyProblemDurations.TWOYEARS))
+        row.appendChild(generateDurationButton(CompanyProblemDurations.ALLTIME))
         return row
     }
 
     getContentElement() {  
-        let shownData = this.tableData.getList("All time")
+        let shownData = this.tableData.getList(CompanyProblemDurations.ALLTIME)
         let table = this.elementGenerator.getTableContentElement(shownData)
         table.id = this.tableId
         return table

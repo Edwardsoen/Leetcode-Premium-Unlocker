@@ -1,57 +1,40 @@
-
-function fetchData() { 
-    let url = "https://www.npoint.io/documents/d318594e0f0c84ac0e25"
-    var xmlHttp = new XMLHttpRequest();
-    xmlHttp.open( "GET", url, false ); 
-    xmlHttp.send( null );
-    return JSON.parse(xmlHttp.responseText)["contents"]
-}
-
-
-function ProblemTableManager() { 
-    this.data = []
-    
-    this.observer = new MutationObserver(() => {
-        getProblemSets(this.data)
-    });
-
-    
-    function initialize() { 
-        getProblemSets(this.data)
-        addObserverToProblemTable()
+class ProblemTableManager{ 
+    constructor(data) { 
+        this.data = data
+        this.observer = new MutationObserver(() => {
+            this.modifyActiveProblemElement(this.data)
+        });
+        this.modifyActiveProblemElement(this.data)
+        this.addObserverToProblemTable()
     }
 
-    function getProblemSets(data) {     
-        disconnectObserverToProblemTable()
+    modifyActiveProblemElement = () => {     
+        this.disconnectObserverToProblemTable()
         let table = document.querySelector('[role="rowgroup"]')
         let problemsets = table.querySelectorAll('[role="row"]')
-        let problems = []
-        
+        let ids = []
         for(let i =0; i <= problemsets.length -1 ; i ++) { 
             let cells = problemsets[i].querySelectorAll('[role="cell"]')
             let problemName = cells[1].textContent
-            let frequency = this.data[problemName] == undefined? "0%" : this.data[problemName][6]
-            let width = frequency == undefined? 0:frequency.replace("%", "")          
             let problemFrequencyProgressbar = cells[cells.length -1]
-            removeProgressbarUnlockButton(problemFrequencyProgressbar)
-            insertInnerProgressbar(problemFrequencyProgressbar, width)
+            let id = problemName.split(".")[0]
+            ids.push(problemFrequencyProgressbar)
+            let width = this.data[id] 
+            if(width == undefined) width = 0
+            width *= 100
+            this.removeProgressbarUnlockButton(problemFrequencyProgressbar)
+            this.insertInnerProgressbar(problemFrequencyProgressbar, width)
         }
-        addObserverToProblemTable()
-        return problems
+        console.log(ids)
+        this.addObserverToProblemTable()
     }
 
-    function insertInnerProgressbar(progressBar, width) { 
-        let innerProgressbarClassName = "inner-progresbar"
+    insertInnerProgressbar(progressBar, width) { 
+        let innerProgressbarClassName = "inner-progressbar"
         let innerProgressbar = progressBar.getElementsByClassName(innerProgressbarClassName)
-
-        if(innerProgressbar.length > 0) { 
-            // modify current bar instead of adding new progressbar 
-            innerProgressbar.style = `
-            width: ${width}%;
-            `
-            return 
-        }
         let outerProgressbar = progressBar.getElementsByClassName('rounded-l-lg')[0]
+        if(innerProgressbar.length > 0) { innerProgressbar[0].remove()}
+        outerProgressbar.setAttribute("title", `${Math.round(width)}%`)
         let progress = document.createElement('div')
         progress.style = `
         background-color: red;
@@ -66,17 +49,17 @@ function ProblemTableManager() {
         outerProgressbar.appendChild(progress)
     }
 
-    function disconnectObserverToProblemTable() { 
+    disconnectObserverToProblemTable() { 
         this.observer.disconnect()
     }
 
-    function addObserverToProblemTable() { 
+    addObserverToProblemTable() { 
         let table = document.querySelector('[role="table"]')
         var config = {childList: true, subtree: true};
         this.observer.observe(table,config);
     }
 
-    function removeProgressbarUnlockButton(progressbar) {
+    removeProgressbarUnlockButton(progressbar) {
         let lockLogo = progressbar.getElementsByTagName("svg")[0]
         let leftBar = progressbar.getElementsByClassName('rounded-r-lg')[0]
         let rightBar = progressbar.getElementsByClassName('rounded-l-lg')[0]
@@ -85,15 +68,12 @@ function ProblemTableManager() {
         if (rightBar != undefined){
             rightBar.style = `
             border-bottom-right-radius: 0.5rem;
+            overflow: hidden; 
             border-top-right-radius: 0.5rem
             `
         }
-
     }
-    initialize()
 }
 
 
-
-
-ProblemTableManager()
+export { ProblemTableManager}

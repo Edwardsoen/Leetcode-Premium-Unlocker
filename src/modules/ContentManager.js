@@ -25,6 +25,7 @@ function TableElementGenerator() {
 
     function generateProblemFrequencyCell(percentage){ 
         let progressBar = document.createElement('div')
+        progressBar.setAttribute("title", String(Math.round(percentage*100)) + "%")
         progressBar.style = `
         display: flex;
         height: 1rem;
@@ -73,7 +74,7 @@ function TableElementGenerator() {
     }
 
     function generateProblemAcceptanceCell(percentage) { 
-        let div = generateTextCell(String(percentage * 100).slice(0,2) + "%")
+        let div = generateTextCell(Math.round(percentage * 100) + "%")
         div.style = `
         width: 10%
         `
@@ -93,9 +94,9 @@ function TableElementGenerator() {
         let row = generateRowDiv()
         let idHeaderCell = generateProblemIdCell("#")
         let titleHeaderCell = generateProblemNameCell("Title", "#")
-        let acceptanceHeaderCell= generateProblemAcceptanceCell("Acceptance")
+        let acceptanceHeaderCell= generateProblemDifficultyCell("Acceptance")
         let difficultyHeaderCell= generateProblemDifficultyCell("Difficulty")
-        let frequencyHeaderCell= generateProblemAcceptanceCell("Frequency")
+        let frequencyHeaderCell= generateProblemDifficultyCell("Frequency")
 
         idHeaderCell.setAttribute("role", "modal-header")
         titleHeaderCell.setAttribute("role", "modal-header")

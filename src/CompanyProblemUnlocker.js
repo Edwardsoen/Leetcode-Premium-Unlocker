@@ -3,7 +3,7 @@ import { GoogleSheetsDataFetcher } from "./modules/DataFetcher";
 import {CompanyButtonInfo, ProblemInfo, CompanyProblemInfo, CompanyProblemInfoList} from "./modules/Objects";
 import { TableContentManager } from "./modules/ContentManager";
 import { ModalManager } from "./modules/ContainerManager";
-
+import { ProblemTableManager } from "./ProblemFrequencyUnlocker";
 
 function CompanySwipperManager() { 
     //detect changes in swipper & react accordingly 
@@ -84,3 +84,6 @@ companySwipperManager.addOnCompanyButtonClickEvent((event) => {
     modalManager.openModal()
 })
 companySwipperManager.initialize()
+
+let problemData = dataFetcher.fetchProblemData()
+let tableManager = new ProblemTableManager(problemData)

@@ -16,6 +16,13 @@ class ProblemInfo{
     }
 }
 
+class ProblemFrequencySliderInfo extends ProblemInfo{ 
+    constructor(frequency, id, difficulty, problemUrl, problemName, acceptance, frequencySliderElement) { 
+        super(frequency, id, difficulty, problemUrl, problemName, acceptance) 
+        this.slider = frequencySliderElement; 
+    }
+}
+
 class CompanyProblemInfo extends ProblemInfo { 
     constructor(frequency, id, difficulty, problemUrl, problemName, acceptance, companyName, duration) { 
         super(frequency, id, difficulty, problemUrl, problemName, acceptance) 
@@ -44,9 +51,9 @@ class CompanyProblemInfoList{
             return; 
         }
         self.data[key] = [value]
-
     }
 }
+
 
 class CompanyProblemDurations {
     static SIXMONTHS = "6 months" 

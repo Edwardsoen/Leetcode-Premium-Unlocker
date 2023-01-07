@@ -7,8 +7,32 @@ class GoogleSheetsDataFetcher{
         this.sheetsId = "1hW-bfeFKSkEDzfjaDMjDQmgsupEZz3gysXpG0mrf6QE"
         this.api_key = "AIzaSyDDAE3rf1fjLGKM0FUHQeTcsmS6fCQjtDs"
         this.companyPageTableData = {}
-        let pageTable = this.fetchPageTable() //cache company data location to avoid 2 round trip when company button is clicked
-        this.setCompanyPageTableData(pageTable)
+        this.setCompanyPageTableData() //cache company data location to avoid 2 round trip when company button is clicked
+    }
+
+    getProblemData() { 
+        let responseData = this.fetchProblemData()
+        return this.parseProblemData(responseData)
+    }
+
+    fetchProblemData() { 
+        let range =  "Problem!A:B"
+        let url = this.getUrl(range)
+        var xmlHttp = new XMLHttpRequest();
+        xmlHttp.open( "GET", url, false ); 
+        xmlHttp.send();
+        let data =  JSON.parse(xmlHttp.responseText)["values"]
+        return this.parseProblemData(data)
+    }
+    
+    parseProblemData(data) { 
+        let returnData = {}
+        for(let i =0; i<=data.length -1; i ++) { 
+            let id = data[i][0]
+            let frequency = data[i][1]
+            returnData[id] = frequency
+        }
+        return returnData
     }
 
     getUrl (range) {
@@ -24,7 +48,8 @@ class GoogleSheetsDataFetcher{
         return JSON.parse(xmlHttp.responseText)
     }
 
-    setCompanyPageTableData(responseData) { 
+    setCompanyPageTableData() {
+        let responseData = this.fetchPageTable() 
         let companyList = responseData["values"]
         for(let i =1; i <= companyList.length-1; i ++) { 
             let companyName = companyList[i][0]
@@ -40,7 +65,7 @@ class GoogleSheetsDataFetcher{
 
     getCompanyProblemData(companyName) { 
         let response = this.fetchCompanyProblemData(companyName)
-        return this.parseData(response)
+        return this.parseCompanyProblemData(response)
     }
 
     fetchCompanyProblemData(companyName){ 
@@ -57,7 +82,7 @@ class GoogleSheetsDataFetcher{
         return response["values"]
     }
 
-    parseData(data) { 
+    parseCompanyProblemData(data) { 
         let companyProblemInfoList = new CompanyProblemInfoList()
         for(let i =0; i <= data.length - 1; i ++ ){ 
             let frequency =  data[i][2]
@@ -75,11 +100,26 @@ class GoogleSheetsDataFetcher{
     }
 }
 
-class DataFetcher { 
+class CompanyProblemsDataFetcher { 
     constructor(fetcher){ 
+        this.fetcher = new fetcher()
+    }
+
+    fetchCompanyProblemData(company) { 
+        return this.fetcher.getCompanyProblemData(company)
+    }
+}
+
+
+class ProblemsDataFetcher { 
+    constructor(fetcher){ 
+        this.fetcher = new fetcher()
+    }
+
+    fetchProblemData() { 
         this.fetcher = new fetcher()
     }
 }
 
 
-export {GoogleSheetsDataFetcher, DataFetcher}
+export {GoogleSheetsDataFetcher}

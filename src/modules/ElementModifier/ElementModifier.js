@@ -1,7 +1,7 @@
 // element modifier (swipper modifier, problem table modifier, top questions modifier)
 // have modifyelemnet(), injectaction()
 
-import {CompanyButtonInfo} from "./Objects";
+import {CompanyButtonInfo} from "../Objects";
 
 
 function CompanySwipperElementModifier() { 

@@ -1,5 +1,4 @@
-import {CompanyProblemInfo, CompanyProblemInfoList} from "./Objects"
-
+import {CompanyProblemInfo, CompanyProblemInfoList} from "../Objects"
 
 class GoogleSheetsDataFetcher{ 
     //TODO: change to asnyc
@@ -11,8 +10,7 @@ class GoogleSheetsDataFetcher{
     }
 
     getProblemData() { 
-        let responseData = this.fetchProblemData()
-        return this.parseProblemData(responseData)
+        return this.fetchProblemData()
     }
 
     fetchProblemData() { 
@@ -100,26 +98,5 @@ class GoogleSheetsDataFetcher{
     }
 }
 
-class CompanyProblemsDataFetcher { 
-    constructor(fetcher){ 
-        this.fetcher = new fetcher()
-    }
-
-    fetchCompanyProblemData(company) { 
-        return this.fetcher.getCompanyProblemData(company)
-    }
-}
-
-
-class ProblemsDataFetcher { 
-    constructor(fetcher){ 
-        this.fetcher = new fetcher()
-    }
-
-    fetchProblemData() { 
-        this.fetcher = new fetcher()
-    }
-}
-
-
 export {GoogleSheetsDataFetcher}
+

@@ -54,7 +54,6 @@ class CompanyProblemInfoList{
     }
 }
 
-
 class CompanyProblemDurations {
     static SIXMONTHS = "6 months" 
     static TWOYEARS  = "2 years"

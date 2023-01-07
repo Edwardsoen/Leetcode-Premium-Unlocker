@@ -8,18 +8,25 @@ class CompaniesProblemUnlocker {
         this.elementModifier = new CompanySwipperElementModifier()
         this.dataFetcher = dataFetcher
         this.containerManager = new ModalManager()
-
     }
 
     unlock() { 
-        this.elementModifier.injectFunctionOnElementVisible((event) => {
-            let companyName = event.currentTarget.getAttribute("company-name")
-            let data = this.dataFetcher.getCompanyProblemData(companyName)
-            let tableManagerObject = new TableContentManager(data, this.containerManager.getModalContentBox())
-            tableManagerObject.test()
-            this.containerManager.openModal()
-        })
+        this.elementModifier.injectFunctionToTargetElement(this.getFunctionToBeInjected())
         this.elementModifier.modifyElement()
+    }
+
+    getFunctionToBeInjected() { 
+        return (element) => {
+            element.addEventListener("click", this.onCompanyButtonClick);
+        }
+    }
+
+    onCompanyButtonClick = (event) => {
+        let companyName = event.currentTarget.getAttribute("company-name")
+        let data = this.dataFetcher.getCompanyProblemData(companyName)
+        let tableManagerObject = new TableContentManager(data, this.containerManager.getModalContentBox())
+        tableManagerObject.appendToParent()
+        this.containerManager.openModal()
     }
 }
 

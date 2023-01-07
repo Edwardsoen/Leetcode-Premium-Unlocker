@@ -32,7 +32,7 @@ function TableElementGenerator() {
         overflow: hidden;
         font-size: .75rem;
         background-color: #e9ecef;
-        border-radius: 0.25rem;
+        border-radius: 0.5rem;
         margin-top: auto;
         margin-bottom: auto;
         width:10%; 
@@ -175,7 +175,7 @@ class TableContentManager{
         return row
     }
 
-    test() { 
+    appendToParent() { 
         this.parentElement.appendChild(this.getContentElement())
     }
 

@@ -1,15 +1,22 @@
 
 class ProblemTableElementModifier{ 
-    constructor(data) { 
-        this.data = data
+    constructor() { 
+        this.elementModifier = []
+    }
+
+    modifyElement() {
         this.observer = new MutationObserver(() => {
-            this.modifyActiveProblemElement(this.data)
+            this.modifyActiveElement()
         });
-        this.modifyActiveProblemElement(this.data)
+        this.modifyActiveElement()
         this.addObserverToProblemTable()
     }
 
-    modifyActiveProblemElement = () => {     
+    injectFunctionToTargetElement(func){ 
+        this.elementModifier.push(func)
+    }
+
+    modifyActiveElement = () => {     
         this.disconnectObserverToProblemTable()
         let table = document.querySelector('[role="rowgroup"]')
         let problemsets = table.querySelectorAll('[role="row"]')
@@ -18,11 +25,10 @@ class ProblemTableElementModifier{
             let problemName = cells[1].textContent
             let problemFrequencyProgressbar = cells[cells.length -1]
             let id = problemName.split(".")[0]
-            let width = this.data[id] 
-            if(width == undefined) width = 0
-            width *= 100
-            this.removeProgressbarUnlockButton(problemFrequencyProgressbar)
-            this.insertInnerProgressbar(problemFrequencyProgressbar, width)
+            problemFrequencyProgressbar.setAttribute("problem-id", String(id))
+            for(let ii = 0; ii <= this.elementModifier.length -1; ii ++) { 
+                this.elementModifier[ii](problemFrequencyProgressbar)
+            }
         }
         this.addObserverToProblemTable()
     }

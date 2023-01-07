@@ -1,36 +1,38 @@
 
+class CompanySwipperElementModifier { 
 
-import {CompanyButtonInfo} from "../Objects";
-
-function CompanySwipperElementModifier() { 
-    this.onCompanyButtonClick = []
-    this.injectFunctionOnElementVisible = function(func) { 
-        this.onCompanyButtonClick.push(func)
+    constructor() {
+        this.elementModifier = []
+    }
+  
+    injectFunctionToTargetElement(func) { 
+        this.elementModifier.push(func)
     }
 
-    this.modifyElement= function () { 
-        registerClickEventListenerToCompanyButton(this.onCompanyButtonClick)
-        addObserverToCompaniesSection(this.onCompanyButtonClick)
+    modifyElement() { 
+        this.modifyActiveElement()
+        this.addObserverToCompaniesSection()
     }
 
-    function getActiveCompaniesTags() { 
-        let data = []  // Company objects // obj.companyName & obj.button
+    modifyActiveElement() { 
         let swipers = document.getElementsByClassName('swiper-slide-active')
         let swiper = swipers[swipers.length-1]
         let links = swiper.getElementsByTagName('a')
         for(let ii = 0; ii <= links.length-1; ii ++) {
             let companyName = links[ii].firstChild.firstChild.textContent.toLowerCase()
-            let companyObject = new CompanyButtonInfo(companyName, links[ii])
-            links[ii].href = "javascript:void(0)"
-            data.push(companyObject)
+            let companyButton = links[ii]
+            companyButton.setAttribute("company-name", companyName)
+            companyButton.href = "javascript:void(0)"
+            for(let iii = 0; iii <= this.elementModifier.length -1; iii++) { 
+                this.elementModifier[iii](companyButton)
+            }
         }
-        return data
     }
 
-    function addObserverToCompaniesSection(onCompanyButtonClick) {
+    addObserverToCompaniesSection() {
         var swipper =  document.getElementsByClassName("mt-0")[0]
         const observer = new MutationObserver(() => {
-            registerClickEventListenerToCompanyButton(onCompanyButtonClick)
+            this.modifyActiveElement()
         });
     
         if(!swipper) {
@@ -39,20 +41,6 @@ function CompanySwipperElementModifier() {
         }
         var config = {childList: true, subtree: true,  attributes: true, attributeFilter: ['class']};
         observer.observe(swipper,config);
-    }
-
-    function registerClickEventListenerToCompanyButton(onCompanyButtonClick) { 
-        let companyList = getActiveCompaniesTags()
-        for(let i =0; i <= companyList.length -1; i ++) { 
-            let companyName = companyList[i].name 
-            if (companyList[i].button.getAttribute("listener-registered") != true) { 
-                companyList[i].button.setAttribute("listener-registered", "true")
-                companyList[i].button.setAttribute("company-name", companyName)
-                for(let funcCount = 0; funcCount <= onCompanyButtonClick.length -1; funcCount ++) { 
-                    companyList[i].button.addEventListener("click", onCompanyButtonClick[funcCount]);
-                }
-            }
-        }
     }
 }
 

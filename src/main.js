@@ -7,10 +7,9 @@ import { ProblemFrequncyUnlocker } from "./modules/Unlocker/ProblemsFrequencyUnl
 
 var dataFetcher = new GoogleSheetsDataFetcher()
 
+
 let problemFrequncyUnlocker = new ProblemFrequncyUnlocker(dataFetcher)
 problemFrequncyUnlocker.unlock()
-
-
 
 let companiesProblemUnlocker = new CompaniesProblemUnlocker(dataFetcher)
 companiesProblemUnlocker.unlock()

@@ -1,5 +1,10 @@
 import {CompanyProblemInfo, CompanyProblemInfoList} from "../Objects"
 
+
+//Problem Data fetcher need to implement getProblemData(), 
+//Company problem DataFetcher need to implement getCompanyProblemData()
+
+
 class GoogleSheetsDataFetcher{ 
     //TODO: change to asnyc
     constructor() { 

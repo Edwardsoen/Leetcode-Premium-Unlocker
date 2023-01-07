@@ -89,7 +89,7 @@ function TableElementGenerator() {
         return row
     }
 
-    function generateHeaderRow() { 
+    this.getTableHeaderElement = function() { 
         let row = generateRowDiv()
         let idHeaderCell = generateProblemIdCell("#")
         let titleHeaderCell = generateProblemNameCell("Title", "#")
@@ -113,13 +113,7 @@ function TableElementGenerator() {
     }
 
     this.getTableContentElement = function(data, ...headers) { 
-        // data = [problemObject1, problemObject2....]
         let parentDiv = document.createElement('div')
-        for(let i =0; i <= headers.length -1; i ++) { 
-            parentDiv.appendChild(headers[i])
-        }
-        parentDiv.appendChild(generateHeaderRow())
-
         for(let i = 0; i <= data.length-1; i ++) {        
             let row = generateRowDiv()        
 
@@ -138,17 +132,22 @@ function TableElementGenerator() {
 
             parentDiv.append(row)
         }
+        parentDiv.id = "table-content"
         return parentDiv
     }
 }
 
+
+
+
 class TableContentManager{ 
-    constructor(data) { 
+    constructor(data, parentElement) {
+        this.parentElement = parentElement 
         this.tableId = "table-content"
         this.tableData = data
         this.elementGenerator = new TableElementGenerator(); 
     } 
-
+    
     generateDurationButton(data) {
         let button = document.createElement('button')   
         button.innerText =data
@@ -156,34 +155,52 @@ class TableContentManager{
         width:5%
         `
         button.setAttribute("duration", data)
-        // button.addEventListener('click', onDurationButtonClicked.bind(this))
+        button.addEventListener('click', this.onDurationButtonClicked)
         return button
     }
 
-    onDurationButtonClicked(event) { 
-        while (this.parentDiv.firstChild) {
-            this.parentDiv.removeChild(myNode.lastChild);
-          }
-    }
-
-    generateDurationButtons() { 
-        let row = generateRowDiv()
-        row.appendChild(generateDurationButton(CompanyProblemDurations.SIXMONTHS))
-        row.appendChild(generateDurationButton(CompanyProblemDurations.ONEYEAR))
-        row.appendChild(generateDurationButton(CompanyProblemDurations.TWOYEARS))
-        row.appendChild(generateDurationButton(CompanyProblemDurations.ALLTIME))
+    generateRowDiv(){ 
+        let row = document.createElement('div')
+        row.style = `
+        display:flex;
+        border-top: solid 1px black;
+        `
         return row
     }
 
-    getContentElement() {  
-        let shownData = this.tableData.getList(CompanyProblemDurations.ALLTIME)
-        let table = this.elementGenerator.getTableContentElement(shownData)
-        table.id = this.tableId
-        return table
+    generateDurationButtons() { 
+        let row =  this.generateRowDiv()
+        row.appendChild(this.generateDurationButton(CompanyProblemDurations.SIXMONTHS))
+        row.appendChild(this.generateDurationButton(CompanyProblemDurations.ONEYEAR))
+        row.appendChild(this.generateDurationButton(CompanyProblemDurations.TWOYEARS))
+        row.appendChild(this.generateDurationButton(CompanyProblemDurations.ALLTIME))
+        return row
     }
 
-    clearTable() {
-        document.getElementById(this.tableId).remove() 
+    test() { 
+        this.parentElement.appendChild(this.getContentElement())
+    }
+
+    getContentElement() {  
+        let parentDiv = document.createElement('div')
+        let shownData = this.tableData.getList(CompanyProblemDurations.ALLTIME)
+        let header = this.elementGenerator.getTableHeaderElement()
+        let table = this.elementGenerator.getTableContentElement(shownData)
+        parentDiv.appendChild(this.generateDurationButtons())
+        parentDiv.appendChild(header)
+        parentDiv.appendChild(table)
+        return parentDiv
+    }
+
+    onDurationButtonClicked = (event) => {
+        this.swapTable(event.currentTarget.getAttribute("duration"))
+    }
+
+    swapTable = (duration) => {
+        if(document.getElementById(this.tableId) != undefined) document.getElementById(this.tableId).remove() 
+        let shownData = this.tableData.getList(duration)
+        let table = this.elementGenerator.getTableContentElement(shownData)
+        this.parentElement.appendChild(table)
     }
 }
 

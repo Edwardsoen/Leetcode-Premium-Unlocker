@@ -138,9 +138,6 @@ function TableElementGenerator() {
     }
 }
 
-
-
-
 class TableContentManager{ 
     constructor(data, parentElement) {
         this.parentElement = parentElement 

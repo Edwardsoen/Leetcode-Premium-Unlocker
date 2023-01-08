@@ -97,5 +97,5 @@ class FrequencySorter extends Sorter {
 }
 
 
-export {AcceptanceSorter, DifficultySorter, NameSorter, IDSorter}
+export {AcceptanceSorter, DifficultySorter, NameSorter, IDSorter, FrequencySorter}
 

@@ -18,16 +18,6 @@ class CompanyProblemInfo extends ProblemInfo {
     }
 }
 
-class ProblemInfoList{ 
-    constructor() { 
-        self.data = []
-    }    
-
-    push(data) { 
-        self.data.push(data)
-    }
-}
-
 class CompanyProblemInfoList{ 
     constructor() { 
         self.data = {}
@@ -47,7 +37,9 @@ class CompanyProblemInfoList{
             self.data[key].push(value)
             return; 
         }
-        self.data[key] = [value]
+        let arr = new ProblemArray()
+        arr.push(value)
+        self.data[key] = arr
     }
 }
 
@@ -65,4 +57,11 @@ class CompanyProblemDurations {
     ]
 }
 
-export {ProblemInfo, CompanyProblemInfo, CompanyProblemInfoList, CompanyProblemDurations}
+class ProblemArray extends Array { 
+    sort(by, reverse = false) {  
+        let sorter = new by()
+        sorter.sort(this, reverse)
+    }
+}
+
+export {ProblemInfo, CompanyProblemInfo, CompanyProblemInfoList, CompanyProblemDurations, ProblemArray}

@@ -25,7 +25,7 @@ class CompaniesProblemUnlocker {
         let companyName = event.currentTarget.getAttribute("company-name")
         let data = this.dataFetcher.getCompanyProblemData(companyName)
         let tableManagerObject = new TableContentManager(data, this.containerManager.getModalContentBox())
-        tableManagerObject.appendToParent()
+        tableManagerObject.appendToContainer()
         this.containerManager.openModal()
     }
 }

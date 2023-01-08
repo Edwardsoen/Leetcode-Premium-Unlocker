@@ -56,6 +56,13 @@ class CompanyProblemDurations {
     static TWOYEARS  = "2 years"
     static  ALLTIME = "All time"
     static  ONEYEAR = "1 year"
+
+    static DURATION_LIST = [
+        CompanyProblemDurations.SIXMONTHS, 
+        CompanyProblemDurations.ONEYEAR, 
+        CompanyProblemDurations.TWOYEARS, 
+        CompanyProblemDurations.ALLTIME, 
+    ]
 }
 
 export {ProblemInfo, CompanyProblemInfo, CompanyProblemInfoList, CompanyProblemDurations}

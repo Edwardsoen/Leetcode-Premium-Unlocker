@@ -2,10 +2,10 @@
 import { CompanyProblemDurations } from "./Objects"
 import { AcceptanceSorter,DifficultySorter , NameSorter, IDSorter} from "./ProblemSorter"
 
-function TableElementGenerator() { 
+class TableElementGenerator{ 
     //create table content from data passed
 
-    function generateTextCell(text) { 
+    static generateTextCell(text) { 
         let div = document.createElement('div')
         let h3 = document.createElement('h3')
         h3.textContent = text
@@ -16,15 +16,15 @@ function TableElementGenerator() {
         return div
     }
 
-    function generateProblemIdCell(text) { 
-       let div = generateTextCell(text)
+    static generateProblemIdCell(text) { 
+       let div = TableElementGenerator.generateTextCell(text)
        div.style = `
        width: 5%
        `
        return div
     }
 
-    function generateProblemFrequencyCell(percentage){ 
+    static generateProblemFrequencyCell(percentage){ 
         let progressBar = document.createElement('div')
         progressBar.setAttribute("title", String(Math.round(percentage*100)) + "%")
         progressBar.style = `
@@ -55,7 +55,7 @@ function TableElementGenerator() {
         return progressBar
     }
 
-    function generateProblemNameCell(problem_name, problem_url) { 
+    static generateProblemNameCell(problem_name, problem_url) { 
         let problemCell = document.createElement('div')
         let a = document.createElement('a')
         a.href = problem_url
@@ -67,23 +67,23 @@ function TableElementGenerator() {
         return problemCell
     }
 
-    function generateProblemDifficultyCell(text) {
-        let div = generateTextCell(text)
+    static generateProblemDifficultyCell(text) {
+        let div = TableElementGenerator.generateTextCell(text)
         div.style = `
         width: 12%
         `
         return div
     }
 
-    function generateProblemAcceptanceCell(percentage) { 
-        let div = generateTextCell(Math.round(percentage * 100) + "%")
+    static generateProblemAcceptanceCell(percentage) { 
+        let div = TableElementGenerator.generateTextCell(Math.round(percentage * 100) + "%")
         div.style = `
         width: 10%
         `
         return div
     }
 
-    function generateRowDiv(){ 
+    static generateRowDiv(){ 
         let row = document.createElement('div')
         row.style = `
         display:flex;
@@ -92,33 +92,10 @@ function TableElementGenerator() {
         return row
     }
 
-    this.getTableHeaderElement = function() { 
-        let row = generateRowDiv()
-        let idHeaderCell = generateProblemIdCell("#")
-        let titleHeaderCell = generateProblemNameCell("Title", "#")
-        let acceptanceHeaderCell= generateProblemDifficultyCell("Acceptance")
-        let difficultyHeaderCell= generateProblemDifficultyCell("Difficulty")
-        let frequencyHeaderCell= generateProblemDifficultyCell("Frequency")
-
-        idHeaderCell.setAttribute("role", "modal-header")
-        titleHeaderCell.setAttribute("role", "modal-header")
-        acceptanceHeaderCell.setAttribute("role", "modal-header")
-        difficultyHeaderCell.setAttribute("role", "modal-header")
-        frequencyHeaderCell.setAttribute("role", "modal-header")
-
-        row.appendChild(idHeaderCell)
-        row.appendChild(titleHeaderCell)
-        row.appendChild(acceptanceHeaderCell)
-        row.appendChild(difficultyHeaderCell)
-        row.appendChild(frequencyHeaderCell)
-
-        return row
-    }
-
-    this.getTableContentElement = function(data, ...headers) { 
+    static getTableContentElement(data) { 
         let parentDiv = document.createElement('div')
         for(let i = 0; i <= data.length-1; i ++) {        
-            let row = generateRowDiv()        
+            let row = TableElementGenerator.generateRowDiv()        
 
             let frequency = data[i].frequency
             let id = data[i].id
@@ -127,17 +104,28 @@ function TableElementGenerator() {
             let problemName = data[i].problemName
             let acceptance = data[i].acceptance
 
-            row.appendChild(generateProblemIdCell(id))
-            row.appendChild(generateProblemNameCell(problemName, problemUrl))
-            row.appendChild(generateProblemAcceptanceCell(acceptance))
-            row.appendChild(generateProblemDifficultyCell(difficulty))
-            row.appendChild(generateProblemFrequencyCell(frequency))
+            row.appendChild(TableElementGenerator.generateProblemIdCell(id))
+            row.appendChild(TableElementGenerator.generateProblemNameCell(problemName, problemUrl))
+            row.appendChild(TableElementGenerator.generateProblemAcceptanceCell(acceptance))
+            row.appendChild(TableElementGenerator.generateProblemDifficultyCell(difficulty))
+            row.appendChild(TableElementGenerator.generateProblemFrequencyCell(frequency))
 
             parentDiv.append(row)
         }
         parentDiv.id = "table-content"
         return parentDiv
     }
+
+    static generateDurationButton(data) {
+        let button = document.createElement('button')   
+        button.innerText =data
+        button.style = ` 
+        width:5%
+        `
+        button.setAttribute("duration", data)
+        return button
+    }
+
 }
 
 class TableContentManager{ 
@@ -145,37 +133,36 @@ class TableContentManager{
         this.parentElement = parentElement 
         this.tableId = "table-content"
         this.tableData = data
-        this.elementGenerator = new TableElementGenerator(); 
     } 
-    
-    generateDurationButton(data) {
-        let button = document.createElement('button')   
-        button.innerText =data
-        button.style = ` 
-        width:5%
-        `
-        button.setAttribute("duration", data)
-        button.addEventListener('click', this.onDurationButtonClicked)
-        return button
-    }
 
-    generateRowDiv(){ 
-        let row = document.createElement('div')
-        row.style = `
-        display:flex;
-        border-top: solid 1px black;
-        `
-        return row
-    }
 
     generateDurationButtons() { 
-        let row =  this.generateRowDiv()
-        row.appendChild(this.generateDurationButton(CompanyProblemDurations.SIXMONTHS))
-        row.appendChild(this.generateDurationButton(CompanyProblemDurations.ONEYEAR))
-        row.appendChild(this.generateDurationButton(CompanyProblemDurations.TWOYEARS))
-        row.appendChild(this.generateDurationButton(CompanyProblemDurations.ALLTIME))
+        let row =  TableElementGenerator.generateRowDiv()
+        for(let i =0; i <= CompanyProblemDurations.DURATION_LIST.length -1; i ++) { 
+            let duration = CompanyProblemDurations.DURATION_LIST[i]
+            let element = TableElementGenerator.generateDurationButton(duration)
+            element.addEventListener('click', this.onDurationButtonClicked)
+            row.appendChild(element)
+        }    
+      return row
+    }
+
+    generateHeader() { 
+        let row = TableElementGenerator.generateRowDiv()
+        let idHeaderCell = TableElementGenerator.generateProblemIdCell("#")
+        let titleHeaderCell = TableElementGenerator.generateProblemNameCell("Title", "#")
+        let acceptanceHeaderCell= TableElementGenerator.generateProblemDifficultyCell("Acceptance")
+        let difficultyHeaderCell= TableElementGenerator.generateProblemDifficultyCell("Difficulty")
+        let frequencyHeaderCell= TableElementGenerator.generateProblemDifficultyCell("Frequency")
+
+        row.appendChild(idHeaderCell)
+        row.appendChild(titleHeaderCell)
+        row.appendChild(acceptanceHeaderCell)
+        row.appendChild(difficultyHeaderCell)
+        row.appendChild(frequencyHeaderCell)
         return row
     }
+
 
     appendToParent() { 
         this.parentElement.appendChild(this.getContentElement())
@@ -185,19 +172,8 @@ class TableContentManager{
         let parentDiv = document.createElement('div')
         let shownData = this.tableData.getList(CompanyProblemDurations.ALLTIME)
 
-        //testiing
-        
-        let a = new NameSorter()
-        a.sort(shownData, true)
-        console.log(shownData)
-        
-
-
-        //
-
-
-        let header = this.elementGenerator.getTableHeaderElement()
-        let table = this.elementGenerator.getTableContentElement(shownData)
+        let header = this.generateHeader()
+        let table = TableElementGenerator.getTableContentElement(shownData)
         parentDiv.appendChild(this.generateDurationButtons())
         parentDiv.appendChild(header)
         parentDiv.appendChild(table)
@@ -211,7 +187,7 @@ class TableContentManager{
     swapTable = (duration) => {
         if(document.getElementById(this.tableId) != undefined) document.getElementById(this.tableId).remove() 
         let shownData = this.tableData.getList(duration)
-        let table = this.elementGenerator.getTableContentElement(shownData)
+        let table = TableElementGenerator.getTableContentElement(shownData)
         this.parentElement.appendChild(table)
     }
 }

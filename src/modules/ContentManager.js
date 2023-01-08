@@ -1,5 +1,6 @@
 
 import { CompanyProblemDurations } from "./Objects"
+import { AcceptanceSorter,DifficultySorter , NameSorter, IDSorter} from "./ProblemSorter"
 
 function TableElementGenerator() { 
     //create table content from data passed
@@ -40,6 +41,7 @@ function TableElementGenerator() {
 
         let progress = document.createElement('div')
         progress.style = `
+        border-radius: 0.5rem;
         height:100%; 
         width:${percentage*100}%; 
         display: flex;
@@ -182,6 +184,18 @@ class TableContentManager{
     getContentElement() {  
         let parentDiv = document.createElement('div')
         let shownData = this.tableData.getList(CompanyProblemDurations.ALLTIME)
+
+        //testiing
+        
+        let a = new NameSorter()
+        a.sort(shownData, true)
+        console.log(shownData)
+        
+
+
+        //
+
+
         let header = this.elementGenerator.getTableHeaderElement()
         let table = this.elementGenerator.getTableContentElement(shownData)
         parentDiv.appendChild(this.generateDurationButtons())

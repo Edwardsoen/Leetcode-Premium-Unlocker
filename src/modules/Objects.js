@@ -1,9 +1,3 @@
-class CompanyButtonInfo { 
-    constructor(companyName, companyButtonElement) { 
-        this.name = companyName
-        this.button = companyButtonElement
-    }
-}
 
 class ProblemInfo{ 
     constructor(frequency, id, difficulty, problemUrl, problemName, acceptance) { 
@@ -16,18 +10,21 @@ class ProblemInfo{
     }
 }
 
-class ProblemFrequencySliderInfo extends ProblemInfo{ 
-    constructor(frequency, id, difficulty, problemUrl, problemName, acceptance, frequencySliderElement) { 
-        super(frequency, id, difficulty, problemUrl, problemName, acceptance) 
-        this.slider = frequencySliderElement; 
-    }
-}
-
 class CompanyProblemInfo extends ProblemInfo { 
     constructor(frequency, id, difficulty, problemUrl, problemName, acceptance, companyName, duration) { 
         super(frequency, id, difficulty, problemUrl, problemName, acceptance) 
         this.companyName = companyName
         this.duration = duration
+    }
+}
+
+class ProblemInfoList{ 
+    constructor() { 
+        self.data = []
+    }    
+
+    push(data) { 
+        self.data.push(data)
     }
 }
 
@@ -45,7 +42,7 @@ class CompanyProblemInfoList{
         return []
     }
 
-    appendData(key, value) { 
+    push(key, value) { 
         if (key in self.data) { 
             self.data[key].push(value)
             return; 
@@ -61,4 +58,4 @@ class CompanyProblemDurations {
     static  ONEYEAR = "1 year"
 }
 
-export {CompanyButtonInfo, ProblemInfo, CompanyProblemInfo, CompanyProblemInfoList, CompanyProblemDurations}
+export {ProblemInfo, CompanyProblemInfo, CompanyProblemInfoList, CompanyProblemDurations}

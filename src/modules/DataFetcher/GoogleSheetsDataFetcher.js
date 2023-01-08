@@ -97,7 +97,7 @@ class GoogleSheetsDataFetcher{
             let companyName = data[i][0]
             let duration = data[i][3]
             let problemInfo = new CompanyProblemInfo(frequency,id,difficulty,problemUrl,problemName,acceptance,companyName,duration)
-            companyProblemInfoList.appendData(duration, problemInfo)
+            companyProblemInfoList.push(duration, problemInfo)
         }
         return companyProblemInfoList
     }

@@ -4,12 +4,20 @@ import { CompaniesProblemUnlocker } from "./modules/Unlocker/CompaniesProblemUnl
 import { ProblemFrequncyUnlocker } from "./modules/Unlocker/ProblemsFrequencyUnlocker";
 
 
+function isAccountPremium() { 
+    return false
+    return document.querySelector('a[href*="/subscribe/?ref=lp_pl&source=nav-premium"]') == null; 
+}
 
-var dataFetcher = new GoogleSheetsDataFetcher()
+function main() {
+    if(!isAccountPremium()) { 
+        var dataFetcher = new GoogleSheetsDataFetcher()
+        let problemFrequncyUnlocker = new ProblemFrequncyUnlocker(dataFetcher)
+        problemFrequncyUnlocker.unlock()
+        let companiesProblemUnlocker = new CompaniesProblemUnlocker(dataFetcher)
+        companiesProblemUnlocker.unlock()
+    }
+}
 
 
-let problemFrequncyUnlocker = new ProblemFrequncyUnlocker(dataFetcher)
-problemFrequncyUnlocker.unlock()
-
-let companiesProblemUnlocker = new CompaniesProblemUnlocker(dataFetcher)
-companiesProblemUnlocker.unlock()
+main()

@@ -64,4 +64,15 @@ class ProblemArray extends Array {
     }
 }
 
-export {ProblemInfo, CompanyProblemInfo, CompanyProblemInfoList, CompanyProblemDurations, ProblemArray}
+
+class CSSStyler { 
+    static COLOR_ACCENT = "#62C555"
+
+}
+
+export {ProblemInfo
+    , CompanyProblemInfo
+    , CompanyProblemInfoList
+    , CompanyProblemDurations
+    , ProblemArray
+    ,  CSSStyler}

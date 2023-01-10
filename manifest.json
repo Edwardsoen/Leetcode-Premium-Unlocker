@@ -13,5 +13,8 @@
             "https://leetcode.com/*"
           ]
         }
-      ]
+      ], 
+    "icons": {
+      "96": "/assets/logo.png"
+    }
 }

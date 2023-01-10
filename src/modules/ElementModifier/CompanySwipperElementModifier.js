@@ -1,3 +1,5 @@
+import { CSSStyler } from "../Objects"
+
 
 class CompanySwipperElementModifier { 
 
@@ -29,7 +31,16 @@ class CompanySwipperElementModifier {
             for(let iii = 0; iii <= this.elementModifier.length -1; iii++) { 
                 this.elementModifier[iii](companyButton)
             }
+            this.onModifyElementSuccess(companyButton)
         }
+    }
+
+    onModifyElementSuccess(element) {
+        //generate some kind of indication if element have been modified
+        let spans = element.getElementsByTagName('span')
+        let companyButtonNumbeLabel = spans[spans.length-1]
+        companyButtonNumbeLabel.style.backgroundColor = CSSStyler.COLOR_ACCENT
+
     }
 
     addObserverToCompaniesSection() {

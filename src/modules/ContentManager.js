@@ -1,7 +1,7 @@
 
 import { CompanyProblemDurations } from "./Objects"
 import {AcceptanceSorter, DifficultySorter, NameSorter, IDSorter, FrequencySorter} from "./ProblemSorter"
-
+import { TableElementGenerator, styleHeader } from "./ElementGenerator"
 
 class TableContentManager{ 
     constructor(data, parentElement) {
@@ -18,6 +18,7 @@ class TableContentManager{
         for(let i =0; i <= CompanyProblemDurations.DURATION_LIST.length -1; i ++) { 
             let duration = CompanyProblemDurations.DURATION_LIST[i]
             let element = TableElementGenerator.generateDurationElement(duration)
+            styleHeader(element)
             element.addEventListener('click', this.onDurationButtonClicked)
             row.appendChild(element)
         }    
@@ -31,6 +32,12 @@ class TableContentManager{
         let acceptanceHeaderCell= TableElementGenerator.generateProblemAcceptanceElement("Acceptance")
         let difficultyHeaderCell= TableElementGenerator.generateProblemDifficultyElement("Difficulty")
         let frequencyHeaderCell= TableElementGenerator.generateProblemAcceptanceElement("Frequency")
+
+        styleHeader(idHeaderCell.firstChild)
+        styleHeader(titleHeaderCell.firstChild)
+        styleHeader(acceptanceHeaderCell.firstChild)
+        styleHeader(difficultyHeaderCell.firstChild)
+        styleHeader(frequencyHeaderCell.firstChild)
 
         idHeaderCell.addEventListener('click', this.getOnHeaderClickedFunction(IDSorter).bind(this))
         titleHeaderCell.addEventListener('click', this.getOnHeaderClickedFunction(NameSorter).bind(this))

@@ -1,5 +1,5 @@
 import { ProblemTableElementModifier } from "../ElementModifier/ProblemTableElementModifier";
-
+import { generateInnerProgressbar } from "../ElementGenerator";
 
 
 class ProblemFrequncyUnlocker{ 
@@ -15,7 +15,6 @@ class ProblemFrequncyUnlocker{
         this.elementModifier.modifyElement()
     }
 
-
     insertInnerProgressbar = (progressBar) =>  { 
         let id = progressBar.getAttribute("problem-id")
         let width = this.problemData[id] 
@@ -27,16 +26,7 @@ class ProblemFrequncyUnlocker{
         let outerProgressbar = progressBar.getElementsByClassName('rounded-l-lg')[0]
         if(innerProgressbar.length > 0) { innerProgressbar[0].remove()}
         outerProgressbar.setAttribute("title", `${Math.round(width)}%`)
-        let progress = document.createElement('div')
-        progress.style = `
-        background-color: red;
-        width: ${width}%;
-        height: 0.5rem;
-        border-bottom-right-radius: 0.5rem;
-        border-top-right-radius: 0.5rem;
-        border-bottom-left-radius: 0.5rem;
-        border-top-left-radius: 0.5rem;
-        `
+        let progress = generateInnerProgressbar(width)
         progress.classList.add(innerProgressbarClassName)
         outerProgressbar.appendChild(progress)
     }

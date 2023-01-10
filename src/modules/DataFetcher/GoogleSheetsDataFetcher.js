@@ -27,7 +27,15 @@ class GoogleSheetsDataFetcher{
         let data =  JSON.parse(xmlHttp.responseText)["values"]
         return this.parseProblemData(data)
     }
-    
+
+    async testAsyncFetch() { 
+        let range =  "Problem!A:B"
+        let url = this.getUrl(range)
+        const response = await fetch(url)
+        let data = await response.json(); 
+        return this.parseProblemData(data["values"])
+    }
+
     parseProblemData(data) { 
         let returnData = {}
         for(let i =0; i<=data.length -1; i ++) { 

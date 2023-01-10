@@ -19,9 +19,12 @@ class CompanySwipperElementModifier {
         let swiper = swipers[swipers.length-1]
         let links = swiper.getElementsByTagName('a')
         for(let ii = 0; ii <= links.length-1; ii ++) {
-            let companyName = links[ii].firstChild.firstChild.textContent.toLowerCase()
+            let href = links[ii].href.split("/")
+            let companyName = href[href.length-1]
             let companyButton = links[ii]
-            companyButton.setAttribute("company-name", companyName)
+            if (companyButton.getAttribute("company-name") == null) {
+                companyButton.setAttribute("company-name", companyName)
+            }
             companyButton.href = "javascript:void(0)"
             for(let iii = 0; iii <= this.elementModifier.length -1; iii++) { 
                 this.elementModifier[iii](companyButton)

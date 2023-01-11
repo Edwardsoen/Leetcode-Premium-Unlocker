@@ -6,13 +6,23 @@ class ProblemFrequncyUnlocker{
     constructor(dataFetcher) { 
         this.elementModifier =  new ProblemTableElementModifier()
         this.dataFetcher = dataFetcher; 
-        this.problemData = this.dataFetcher.getProblemData()
+    }
+
+    onFetchFail () {
+        console.log("Problem Frequency Fetch Fail")
     }
     
-    unlock() { 
-        this.elementModifier.injectFunctionToTargetElement(this.removeProgressbarUnlockButton)
+    onFetchSuccess() {
+        this.elementModifier.injectFunctionToTargetElement(ProblemFrequncyUnlocker.removeProgressbarUnlockButton)
         this.elementModifier.injectFunctionToTargetElement(this.insertInnerProgressbar)
         this.elementModifier.modifyElement()
+    }
+
+    unlock() { 
+        this.dataFetcher.getProblemData()
+        .then(data => {this.problemData = data})
+        .then(this.onFetchSuccess.bind(this))
+        .catch(this.onFetchFail)
     }
 
     insertInnerProgressbar = (progressBar) =>  { 
@@ -31,7 +41,7 @@ class ProblemFrequncyUnlocker{
         outerProgressbar.appendChild(progress)
     }
 
-    removeProgressbarUnlockButton(progressbar) {
+    static removeProgressbarUnlockButton(progressbar) {
         let lockLogo = progressbar.getElementsByTagName("svg")[0]
         let leftBar = progressbar.getElementsByClassName('rounded-r-lg')[0]
         let rightBar = progressbar.getElementsByClassName('rounded-l-lg')[0]

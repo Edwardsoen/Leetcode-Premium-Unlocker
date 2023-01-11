@@ -23,7 +23,16 @@ class CompaniesProblemUnlocker {
 
     onCompanyButtonClick = (event) => {
         let companyName = event.currentTarget.getAttribute("company-name")
-        let data = this.dataFetcher.getCompanyProblemData(companyName)
+        this.dataFetcher.getCompanyProblemData(companyName)
+        .then(data => this.onFetchSuccess)
+        
+        // let tableManagerObject = new TableContentManager(data, this.containerManager.getModalContentBox())
+        // tableManagerObject.appendToContainer()
+        // this.containerManager.openModal()
+    }
+
+
+    onFetchSuccess(data) { 
         let tableManagerObject = new TableContentManager(data, this.containerManager.getModalContentBox())
         tableManagerObject.appendToContainer()
         this.containerManager.openModal()

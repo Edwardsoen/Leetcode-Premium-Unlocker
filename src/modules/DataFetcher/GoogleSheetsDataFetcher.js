@@ -5,34 +5,44 @@ import {CompanyProblemInfo, CompanyProblemInfoList} from "../Objects"
 //Company problem DataFetcher need to implement getCompanyProblemData()
 
 
+class GoogleSheetsAPIManager{   
+    static API_KEY =  "AIzaSyDDAE3rf1fjLGKM0FUHQeTcsmS6fCQjtDs"
+    static SHEETS_ID =  "1hW-bfeFKSkEDzfjaDMjDQmgsupEZz3gysXpG0mrf6QE"
+
+    static  getUrl (range) {
+        return `https://sheets.googleapis.com/v4/spreadsheets/${GoogleSheetsAPIManager.SHEETS_ID}/values/${range}?key=${GoogleSheetsAPIManager.API_KEY}`
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
 class GoogleSheetsDataFetcher{ 
     //TODO: change to asnyc
     constructor() { 
         this.sheetsId = "1hW-bfeFKSkEDzfjaDMjDQmgsupEZz3gysXpG0mrf6QE"
-        this.api_key = "AIzaSyDDAE3rf1fjLGKM0FUHQeTcsmS6fCQjtDs"
+        this.apiKey = "AIzaSyDDAE3rf1fjLGKM0FUHQeTcsmS6fCQjtDs"
         this.companyPageTableData = {}
-        this.setCompanyPageTableData() //cache company data location to avoid 2 round trip when company button is clicked
     }
 
     getProblemData() { 
         return this.fetchProblemData()
     }
 
-    fetchProblemData() { 
+    async fetchProblemData() { 
         let range =  "Problem!A:B"
         let url = this.getUrl(range)
-        var xmlHttp = new XMLHttpRequest();
-        xmlHttp.open( "GET", url, false ); 
-        xmlHttp.send();
-        let data =  JSON.parse(xmlHttp.responseText)["values"]
-        return this.parseProblemData(data)
-    }
-
-    async testAsyncFetch() { 
-        let range =  "Problem!A:B"
-        let url = this.getUrl(range)
-        const response = await fetch(url)
-        let data = await response.json(); 
+        let response = await fetch(url)
+        let data = await response.json();
         return this.parseProblemData(data["values"])
     }
 
@@ -47,27 +57,27 @@ class GoogleSheetsDataFetcher{
     }
 
     getUrl (range) {
-        return `https://sheets.googleapis.com/v4/spreadsheets/${this.sheetsId}/values/${range}?key=${this.api_key}`
+        return `https://sheets.googleapis.com/v4/spreadsheets/${this.sheetsId}/values/${range}?key=${this.apiKey}`
     }
 
-    fetchPageTable() { 
+    
+
+    async fetchCompanyPageTable() { 
         let range = "CompaniesProblem_Map!A:C"
-        let url = this.getUrl(range)
-        var xmlHttp = new XMLHttpRequest();
-        xmlHttp.open( "GET", url, false ); 
-        xmlHttp.send();
-        return JSON.parse(xmlHttp.responseText)
+        let url = this.getUrl(range)    
+        let response = await fetch(url)
+        let data = await response.json();
+        return this.parseCompanyPageTableData(data["values"])
     }
 
-    setCompanyPageTableData() {
-        let responseData = this.fetchPageTable() 
-        let companyList = responseData["values"]
-        for(let i =1; i <= companyList.length-1; i ++) { 
-            let companyName = companyList[i][0]
-            let starRow = companyList[i][1]
-            let endRow = companyList[i][2]
+    parseCompanyPageTableData(data) {
+        for(let i =1; i <= data.length-1; i ++) { 
+            let companyName = data[i][0]
+            let starRow = data[i][1]
+            let endRow = data[i][2]
             this.companyPageTableData[companyName] = [starRow, endRow]
         }
+        return this.companyPageTableData
     }
 
     haveData(companyName) { 
@@ -75,22 +85,20 @@ class GoogleSheetsDataFetcher{
     }
 
     getCompanyProblemData(companyName) { 
-        let response = this.fetchCompanyProblemData(companyName)
-        return this.parseCompanyProblemData(response)
+        return this.fetchCompanyPageTable()
+        .then(mapData => this.fetchCompanyProblemData(companyName))
     }
 
-    fetchCompanyProblemData(companyName){ 
+    async fetchCompanyProblemData(companyName){ 
         if(!this.haveData(companyName)) return []
         let startRow =  this.companyPageTableData[companyName][0]
         let endRow =  this.companyPageTableData[companyName][1]
         let companyDataSheetName = "CompaniesProblem"
         let range = `${companyDataSheetName}!A${startRow}:I${endRow}` 
-        let url = this.getUrl(range)
-        var xmlHttp = new XMLHttpRequest();
-        xmlHttp.open( "GET", url, false ); 
-        xmlHttp.send(); //do error handling
-        let response = JSON.parse(xmlHttp.responseText)
-        return response["values"]
+        let url = this.getUrl(range)    
+        let response = await fetch(url)
+        let data = await response.json();
+        return this.parseCompanyProblemData(data["values"]) 
     }
 
     parseCompanyProblemData(data) { 

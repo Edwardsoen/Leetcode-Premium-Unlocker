@@ -6,7 +6,7 @@ import { ProblemFrequncyUnlocker } from "./modules/Unlocker/ProblemsFrequencyUnl
 
 function isAccountPremium() { 
     return false
-    return document.querySelector('a[href*="/subscribe/?ref=lp_pl&source=nav-premium"]') == null; 
+    // return document.querySelector('a[href*="/subscribe/?ref=lp_pl&source=nav-premium"]') == null; 
 }
 
 function main() {
@@ -18,6 +18,8 @@ function main() {
         companiesProblemUnlocker.unlock()
     }
 }
+
+
 
 
 main()

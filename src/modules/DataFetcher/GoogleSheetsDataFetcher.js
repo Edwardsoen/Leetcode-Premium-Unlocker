@@ -1,10 +1,6 @@
 import {CompanyProblemInfo, CompanyProblemInfoList} from "../Objects"
 
 
-//Problem Data fetcher need to implement getProblemData(), 
-//Company problem DataFetcher need to implement getCompanyProblemData()
-
-
 class GoogleSheetsAPIManager{   
     static API_KEY =  "AIzaSyDDAE3rf1fjLGKM0FUHQeTcsmS6fCQjtDs"
     static SHEETS_ID =  "1hW-bfeFKSkEDzfjaDMjDQmgsupEZz3gysXpG0mrf6QE"
@@ -14,33 +10,14 @@ class GoogleSheetsAPIManager{
     }
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-class GoogleSheetsDataFetcher{ 
-    //TODO: change to asnyc
-    constructor() { 
-        this.sheetsId = "1hW-bfeFKSkEDzfjaDMjDQmgsupEZz3gysXpG0mrf6QE"
-        this.apiKey = "AIzaSyDDAE3rf1fjLGKM0FUHQeTcsmS6fCQjtDs"
-        this.companyPageTableData = {}
-    }
-
-    getProblemData() { 
+class GoogleSheetsProblemDataFetcher { 
+    fetchData() { 
         return this.fetchProblemData()
     }
 
     async fetchProblemData() { 
         let range =  "Problem!A:B"
-        let url = this.getUrl(range)
+        let url = GoogleSheetsAPIManager.getUrl(range)
         let response = await fetch(url)
         let data = await response.json();
         return this.parseProblemData(data["values"])
@@ -55,19 +32,42 @@ class GoogleSheetsDataFetcher{
         }
         return returnData
     }
+}
 
-    getUrl (range) {
-        return `https://sheets.googleapis.com/v4/spreadsheets/${this.sheetsId}/values/${range}?key=${this.apiKey}`
+class GoogleSheetsCompanyProblemDataFetcher { 
+    constructor() { 
+        this.tableData = {}
+        this.tableDataFetched = false
+        this.fetchCompanyPageTable()
     }
 
-    
+    fetchData() { 
+        if(!this.tableDataFetched) { 
+            return this.fetchCompanyPageTable().then(this.fetchCompanyProblemData)
+        }
+        return this.fetchCompanyProblemData()
+    }
 
-    async fetchCompanyPageTable() { 
+    fetchCompanyPageTable() { 
         let range = "CompaniesProblem_Map!A:C"
-        let url = this.getUrl(range)    
-        let response = await fetch(url)
-        let data = await response.json();
-        return this.parseCompanyPageTableData(data["values"])
+        let url = GoogleSheetsAPIManager.getUrl(range)    
+        return fetch(url)
+        .then(data => data.json())
+        .then(data => this.parseCompanyPageTableData)
+        .then(data => {this.tableData = data})
+        .then(this.tableDataFetched = true)
+    }
+
+    fetchCompanyProblemData(companyName){ 
+        if(!companyName in this.companyPageTableData) return []
+        let startRow =  this.companyPageTableData[companyName][0]
+        let endRow =  this.companyPageTableData[companyName][1]
+        let companyDataSheetName = "CompaniesProblem"
+        let range = `${companyDataSheetName}!A${startRow}:I${endRow}` 
+        let url = GoogleSheetsAPIManager.getUrl(range)    
+        return fetch(url)
+        .then(data => data.json())
+        .then(data => this.parseCompanyPageTableData)
     }
 
     parseCompanyPageTableData(data) {
@@ -78,27 +78,6 @@ class GoogleSheetsDataFetcher{
             this.companyPageTableData[companyName] = [starRow, endRow]
         }
         return this.companyPageTableData
-    }
-
-    haveData(companyName) { 
-        return companyName in this.companyPageTableData
-    }
-
-    getCompanyProblemData(companyName) { 
-        return this.fetchCompanyPageTable()
-        .then(mapData => this.fetchCompanyProblemData(companyName))
-    }
-
-    async fetchCompanyProblemData(companyName){ 
-        if(!this.haveData(companyName)) return []
-        let startRow =  this.companyPageTableData[companyName][0]
-        let endRow =  this.companyPageTableData[companyName][1]
-        let companyDataSheetName = "CompaniesProblem"
-        let range = `${companyDataSheetName}!A${startRow}:I${endRow}` 
-        let url = this.getUrl(range)    
-        let response = await fetch(url)
-        let data = await response.json();
-        return this.parseCompanyProblemData(data["values"]) 
     }
 
     parseCompanyProblemData(data) { 
@@ -119,5 +98,8 @@ class GoogleSheetsDataFetcher{
     }
 }
 
-export {GoogleSheetsDataFetcher}
+export { 
+    GoogleSheetsProblemDataFetcher, 
+    GoogleSheetsCompanyProblemDataFetcher
+}
 

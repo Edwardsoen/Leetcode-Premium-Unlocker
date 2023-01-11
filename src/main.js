@@ -1,5 +1,4 @@
 
-import { GoogleSheetsDataFetcher } from "./modules/DataFetcher/GoogleSheetsDataFetcher";
 import { CompaniesProblemUnlocker } from "./modules/Unlocker/CompaniesProblemUnlocker";
 import { ProblemFrequncyUnlocker } from "./modules/Unlocker/ProblemsFrequencyUnlocker";
 
@@ -11,10 +10,9 @@ function isAccountPremium() {
 
 function main() {
     if(!isAccountPremium()) { 
-        var dataFetcher = new GoogleSheetsDataFetcher()
-        let problemFrequncyUnlocker = new ProblemFrequncyUnlocker(dataFetcher)
+        let problemFrequncyUnlocker = new ProblemFrequncyUnlocker()
         problemFrequncyUnlocker.unlock()
-        let companiesProblemUnlocker = new CompaniesProblemUnlocker(dataFetcher)
+        let companiesProblemUnlocker = new CompaniesProblemUnlocker()
         companiesProblemUnlocker.unlock()
     }
 }

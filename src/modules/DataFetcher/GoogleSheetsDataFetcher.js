@@ -1,5 +1,5 @@
 import {CompanyProblemInfo, CompanyProblemInfoList} from "../Objects"
-
+import { ProblemArray } from "../Objects"
 
 class GoogleSheetsAPIManager{   
     static API_KEY =  "AIzaSyDDAE3rf1fjLGKM0FUHQeTcsmS6fCQjtDs"
@@ -10,7 +10,7 @@ class GoogleSheetsAPIManager{
     }
 }
 
-class GoogleSheetsProblemDataFetcher { 
+class GoogleSheetsProblemFrequencyDataFetcher { 
     fetchData() { 
         return this.fetchProblemData()
     }
@@ -36,16 +36,17 @@ class GoogleSheetsProblemDataFetcher {
 
 class GoogleSheetsCompanyProblemDataFetcher { 
     constructor() { 
-        this.tableData = {}
+        this.companyPageTableData = {}
         this.tableDataFetched = false
-        this.fetchCompanyPageTable()
+        this.fetchCompanyPageTable() //cache company map data
     }
 
-    fetchData() { 
-        if(!this.tableDataFetched) { 
-            return this.fetchCompanyPageTable().then(this.fetchCompanyProblemData)
+    fetchData(companyName) { 
+        if(this.tableDataFetched == false) { 
+            return this.fetchCompanyPageTable()
+            .then(data => this.fetchCompanyProblemData(companyName))
         }
-        return this.fetchCompanyProblemData()
+        return this.fetchCompanyProblemData(companyName)
     }
 
     fetchCompanyPageTable() { 
@@ -53,13 +54,12 @@ class GoogleSheetsCompanyProblemDataFetcher {
         let url = GoogleSheetsAPIManager.getUrl(range)    
         return fetch(url)
         .then(data => data.json())
-        .then(data => this.parseCompanyPageTableData)
-        .then(data => {this.tableData = data})
+        .then(data => {this.parseCompanyPageTableData(data["values"])})
         .then(this.tableDataFetched = true)
     }
 
     fetchCompanyProblemData(companyName){ 
-        if(!companyName in this.companyPageTableData) return []
+        if(companyName in this.companyPageTableData == false) { return new Promise((resolve, reject) => resolve(new CompanyProblemInfoList()))}
         let startRow =  this.companyPageTableData[companyName][0]
         let endRow =  this.companyPageTableData[companyName][1]
         let companyDataSheetName = "CompaniesProblem"
@@ -67,7 +67,7 @@ class GoogleSheetsCompanyProblemDataFetcher {
         let url = GoogleSheetsAPIManager.getUrl(range)    
         return fetch(url)
         .then(data => data.json())
-        .then(data => this.parseCompanyPageTableData)
+        .then(data =>this.parseCompanyProblemData(data["values"]))
     }
 
     parseCompanyPageTableData(data) {
@@ -99,7 +99,7 @@ class GoogleSheetsCompanyProblemDataFetcher {
 }
 
 export { 
-    GoogleSheetsProblemDataFetcher, 
+    GoogleSheetsProblemFrequencyDataFetcher, 
     GoogleSheetsCompanyProblemDataFetcher
 }
 

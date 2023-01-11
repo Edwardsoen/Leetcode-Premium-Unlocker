@@ -2,11 +2,13 @@
 import { CompanySwipperElementModifier } from "../ElementModifier/CompanySwipperElementModifier"
 import {TableContentManager} from "../ContentManager"
 import {ModalManager} from "../ContainerManager"
+import { GoogleSheetsCompanyProblemDataFetcher } from "../DataFetcher/GoogleSheetsDataFetcher"
+
 
 class CompaniesProblemUnlocker {
-    constructor(dataFetcher) { 
+    constructor() { 
         this.elementModifier = new CompanySwipperElementModifier()
-        this.dataFetcher = dataFetcher
+        this.dataFetcher = new GoogleSheetsCompanyProblemDataFetcher()
         this.containerManager = new ModalManager()
     }
 
@@ -23,12 +25,8 @@ class CompaniesProblemUnlocker {
 
     onCompanyButtonClick = (event) => {
         let companyName = event.currentTarget.getAttribute("company-name")
-        this.dataFetcher.getCompanyProblemData(companyName)
-        .then(data => this.onFetchSuccess)
-        
-        // let tableManagerObject = new TableContentManager(data, this.containerManager.getModalContentBox())
-        // tableManagerObject.appendToContainer()
-        // this.containerManager.openModal()
+        this.dataFetcher.fetchData(companyName)
+        .then(data => this.onFetchSuccess(data))
     }
 
 

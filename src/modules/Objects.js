@@ -20,26 +20,22 @@ class CompanyProblemInfo extends ProblemInfo {
 
 class CompanyProblemInfoList{ 
     constructor() { 
-        self.data = {}
-    }
-
-    getData() { 
-        return self.data
+        this.data = {}
     }
 
     getList(key) { 
-        if (key in self.data) return self.data[key]
+        if (key in this.data) return this.data[key]
         return []
     }
 
     push(key, value) { 
-        if (key in self.data) { 
-            self.data[key].push(value)
+        if (key in this.data) { 
+            this.data[key].push(value)
             return; 
         }
         let arr = new ProblemArray()
         arr.push(value)
-        self.data[key] = arr
+        this.data[key] = arr
     }
 }
 

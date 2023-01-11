@@ -1,11 +1,11 @@
 import { ProblemTableElementModifier } from "../ElementModifier/ProblemTableElementModifier";
 import { generateInnerProgressbar } from "../ElementGenerator";
-
+import { GoogleSheetsProblemFrequencyDataFetcher } from "../DataFetcher/GoogleSheetsDataFetcher";
 
 class ProblemFrequncyUnlocker{ 
     constructor(dataFetcher) { 
         this.elementModifier =  new ProblemTableElementModifier()
-        this.dataFetcher = dataFetcher; 
+        this.dataFetcher = new GoogleSheetsProblemFrequencyDataFetcher()
     }
 
     onFetchFail () {
@@ -19,7 +19,7 @@ class ProblemFrequncyUnlocker{
     }
 
     unlock() { 
-        this.dataFetcher.getProblemData()
+        this.dataFetcher.fetchData()
         .then(data => {this.problemData = data})
         .then(this.onFetchSuccess.bind(this))
         .catch(this.onFetchFail)

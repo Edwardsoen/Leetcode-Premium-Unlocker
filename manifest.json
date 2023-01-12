@@ -4,7 +4,7 @@
     "description": "Unlock Leetcode premium features",
     "permissions": ["activeTab"],
     "action": {
-      "default_popup": "src/index.html"
+      "default_popup": "dist/index.html"
     },
     "manifest_version": 3, 
     "content_scripts": [

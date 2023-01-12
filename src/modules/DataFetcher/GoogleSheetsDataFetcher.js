@@ -1,5 +1,4 @@
 import {CompanyProblemInfo, CompanyProblemInfoList} from "../Objects"
-import { ProblemArray } from "../Objects"
 
 class GoogleSheetsAPIManager{   
     static API_KEY =  "AIzaSyDDAE3rf1fjLGKM0FUHQeTcsmS6fCQjtDs"
@@ -99,6 +98,7 @@ class GoogleSheetsCompanyProblemDataFetcher {
 }
 
 export { 
+    GoogleSheetsAPIManager, 
     GoogleSheetsProblemFrequencyDataFetcher, 
     GoogleSheetsCompanyProblemDataFetcher
 }

@@ -2,43 +2,30 @@
 import { CompaniesProblemUnlocker } from "./modules/Unlocker/CompaniesProblemUnlocker";
 import { ProblemFrequncyUnlocker } from "./modules/Unlocker/ProblemsFrequencyUnlocker";
 
-
-function isAccountPremium() { 
-    return false
-    // return document.querySelector('a[href*="/subscribe/?ref=lp_pl&source=nav-premium"]') == null; 
-}
-
-function main() {
-    if(!isAccountPremium()) { 
-        let problemFrequncyUnlocker = new ProblemFrequncyUnlocker()
-        problemFrequncyUnlocker.unlock()
-        let companiesProblemUnlocker = new CompaniesProblemUnlocker()
-        companiesProblemUnlocker.unlock()
-    }
-}
-
-function evaluator(dataObj, fetcher) { 
-    for(const regexExpression in dataObbj) { 
-        if (window.location.href.match(regexExpression).length >= 1) { 
-            let unlockers = dataObj[regexExpression]
+function evaluate(dataObj) { 
+    for(const url in dataObj) { 
+        if (window.location.href.includes(url)) { 
+            let unlockers = dataObj[url]
             for(let i =0; i <= unlockers.length -1; i ++) { 
                 try { 
-                    let unlocker = new unlockers[i](fetcher)
-                    unlock.unlock()
+                    let unlocker = new unlockers[i]()
+                    unlocker.unlock()
                 }
                 catch (e) { 
                     console.log(unlockers[i].constructor.name + " Error " + e)
                 }
-                
-                
             }
+            break; 
         }
     }
 }
 
-let dataObj = {
-    "https://leetcode.com/problemset*": [ProblemFrequncyUnlocker, CompaniesProblemUnlocker], 
-    "https://leetcode.com/problem-list*": [ProblemFrequncyUnlocker]
+function main() {
+    let urls = {
+        "https://leetcode.com/problemset": [ProblemFrequncyUnlocker, CompaniesProblemUnlocker], 
+        "https://leetcode.com/problem-list": [ProblemFrequncyUnlocker]
+    }
+    evaluate(urls)
 }
 
 main()

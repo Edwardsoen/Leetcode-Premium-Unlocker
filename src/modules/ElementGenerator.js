@@ -82,6 +82,9 @@ class TableElementGenerator{
         let a = document.createElement('a')
         a.href = problem_url
         a.textContent = problem_name
+        a.style = `
+            color:black; 
+        `
         problemCell.appendChild(a)
         problemCell.style = `
         width: 50%

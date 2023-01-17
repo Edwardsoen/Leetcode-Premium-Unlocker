@@ -9,8 +9,9 @@ Unlock some leetcode premium features without subscription/login
 
 <h3> Screenshots </h3> 
 
-
-
+<img src="https://github.com/Edwardsoen/Leetcode-Premium-Unlocker/blob/master/screenshots/Capture.PNG" width="800">
+<img src="https://github.com/Edwardsoen/Leetcode-Premium-Unlocker/blob/master/screenshots/Capture2.PNG" width="800">
+<img src="https://github.com/Edwardsoen/Leetcode-Premium-Unlocker/blob/master/screenshots/Capture3.PNG" width="800">
 
 <h3> Installation </h3> 
 <h4> Firefox: Download the add-on <a href = "https://addons.mozilla.org/en-US/firefox/addon/leetcode-premium-unlocker/">here</a></h4> 

@@ -15,11 +15,6 @@ Unlock some leetcode premium features without subscription/login
 
 <h3> Installation </h3> 
 <h4> Firefox: Download the add-on <a href = "https://addons.mozilla.org/en-US/firefox/addon/leetcode-premium-unlocker/">here</a></h4> 
-<h4> Chrome: Download the extension <s>here</s> (pending review) or choose the latest release and follow the instruction <a href = "https://developer.chrome.com/docs/extensions/mv3/getstarted/development-basics/#load-unpacked">here</a> to load unpacked extension
+<h4> Chrome: Download the extension <a href = "https://chrome.google.com/webstore/detail/leetcode-premium-unlocker/gnpcbhmchfdadabkcmooljbhgdemgiof>here</a> or choose the latest release and follow the instruction <a href = "https://developer.chrome.com/docs/extensions/mv3/getstarted/development-basics/#load-unpacked">here</a> to load unpacked extension
+">here</a> or choose the latest release and follow the instruction <a href = "https://developer.chrome.com/docs/extensions/mv3/getstarted/development-basics/#load-unpacked">here</a> to load unpacked extension
 
-<h3> Additional notes </h3>
-<h4> TODO: <h4> 
-<li> Unlock top question problems</li>
-<li> Add companies tags in problems</li>
-<li> Unlock premium problems</li>
-<li> Migrate to real backend server</li>

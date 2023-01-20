@@ -22,17 +22,20 @@ class TopProblemFoldoutElementModifier{
     }
 
     modifyLockedElement = () => { 
-        let foldout = document.getElementsByClassName("space-y-1.5")
+        let foldout = document.getElementsByClassName("space-y-1.5")[0]
         let foldoutItem = foldout.children 
-        for(let i =0; foldoutItem.children.length -2; i ++){ 
+        for(let i =0; i <= foldoutItem.length -2; i ++){ 
             let lockLogo = foldoutItem[i].getElementsByTagName('svg') 
             if (lockLogo.length > 0) { 
-                foldoutItem[i].getElementsByTagName('a').href = "javascript:void(0)"
+                foldoutItem[i].getElementsByTagName('a')[0].href = "javascript:void(0)"
                 let itemName = foldoutItem[i].textContent.replaceAll(" ", "")
-                foldoutItem.setAttribute("item", itemName)
+                foldoutItem[i].setAttribute("item", itemName)
                 lockLogo[0].remove()
+                let oldNode = foldoutItem[i]
+                let newNode = foldoutItem[i].cloneNode(true)
+                foldout.replaceChild(newNode, oldNode) //replace node to remove all listener
                 for(let iii = 0; iii <= this.elementModifier.length -1; iii++) { 
-                    this.elementModifier[iii](foldoutItem[i])
+                    this.elementModifier[iii](newNode)
                 }
             }
         }
@@ -41,9 +44,6 @@ class TopProblemFoldoutElementModifier{
     disconnectObserverToFoldout() { 
         this.observer.disconnect()
     }
-
-
-
 }
 
 

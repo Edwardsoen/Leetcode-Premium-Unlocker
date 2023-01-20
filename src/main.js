@@ -1,6 +1,7 @@
 
 import { CompaniesProblemUnlocker } from "./modules/Unlocker/CompaniesProblemUnlocker";
 import { ProblemFrequncyUnlocker } from "./modules/Unlocker/ProblemsFrequencyUnlocker";
+import { TopProblemUnlocker } from "./modules/Unlocker/TopProblemUnlocker";
 
 function evaluate(dataObj) { 
     for(const url in dataObj) { 
@@ -27,5 +28,6 @@ function main() {
     }
     evaluate(urls)
 }
+new TopProblemUnlocker().unlock()
 
 main()

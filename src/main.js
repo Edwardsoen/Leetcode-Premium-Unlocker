@@ -23,11 +23,9 @@ function evaluate(dataObj) {
 
 function main() {
     let urls = {
-        "https://leetcode.com/problemset": [ProblemFrequncyUnlocker, CompaniesProblemUnlocker], 
+        "https://leetcode.com/problemset": [ProblemFrequncyUnlocker, CompaniesProblemUnlocker, TopProblemUnlocker], 
         "https://leetcode.com/problem-list": [ProblemFrequncyUnlocker]
     }
     evaluate(urls)
 }
-new TopProblemUnlocker().unlock()
-
 main()

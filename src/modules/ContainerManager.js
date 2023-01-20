@@ -1,5 +1,11 @@
+
+
 class ModalManager{ 
     constructor() { 
+        if(ModalManager._instance) { 
+            throw new Error("Modal Manager Have been instantiated")
+        }
+        ModalManager._instance = this
         this.modal = this.createModal()
         this.modalContentBox = this.createModalContentBox()
         this.appendToModal(this.modalContentBox)
@@ -93,5 +99,6 @@ class ModalManager{
     }
 }
 
+let modalManager = new ModalManager()
 
-export {ModalManager}
+export {modalManager}

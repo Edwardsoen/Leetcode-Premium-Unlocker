@@ -1,4 +1,4 @@
-import {ProblemInfo, CompanyProblemInfo, CompanyProblemInfoList} from "../Objects"
+import {ProblemInfo, CompanyProblemInfo, CompanyProblemInfoList, ProblemArray} from "../Objects"
 
 class GoogleSheetsAPIManager{   
     static API_KEY =  "AIzaSyDDAE3rf1fjLGKM0FUHQeTcsmS6fCQjtDs"
@@ -102,19 +102,25 @@ class GoogleSheetsTopProblemDataFetcher {
     constructor() { 
 
     }
-    
+
     fetchData(itemName) { 
-        let range = `${itemName}!A:F`
+        let range = `${itemName}!A2:F`
         let url = GoogleSheetsAPIManager.getUrl(range)    
         return fetch(url)
         .then(data => data.json())
-        .then(data => {this.parseTopQuestionData(data["values"])})
+        .then(data => this.parseTopQuestionData(data["values"]))
     }
 
     parseTopQuestionData(data){ 
-        let problemInfoList = []
-        for(let i =0; i <= data.length; i ++) { 
-            let problemInfo = new ProblemInfo()
+        let problemInfoList = new ProblemArray()
+        for(let i =0; i <= data.length -1; i ++) { 
+            let id = data[i][0]
+            let freq = data[i][1]
+            let name = data[i][2]
+            let acceptance = data[i][3]
+            let url = data[i][4]
+            let difficulty = data[i][5]
+            let problemInfo = new ProblemInfo(freq, id, difficulty, url, name, acceptance)
             problemInfoList.push(problemInfo)
         }
         return problemInfoList

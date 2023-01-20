@@ -16,8 +16,9 @@ class TableContentBuilder{
 
     setShownData(data) { 
         this.shownData = data
+
         return this
-    }
+}
 
     addDurationData(duration, data) { 
         this.durationData[duration] = data
@@ -25,7 +26,6 @@ class TableContentBuilder{
 
     buildDurationsRow() { 
         let row =  TableElementGenerator.generateRowElement()
-        let durations = Object.keys(this.durationData)
         for(let duration in this.durationData) { 
             let element = TableElementGenerator.generateDurationElement(duration)
             styleHeader(element)

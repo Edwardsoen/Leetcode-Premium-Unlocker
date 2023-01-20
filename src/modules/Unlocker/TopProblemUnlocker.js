@@ -24,13 +24,15 @@ class TopProblemUnlocker {
     }
 
     onFetchSuccess(data){
+        console.log(data)
         let tableBulder = new TableContentBuilder()
         tableBulder.setShownData(data)
         tableBulder.buildHeaderRow()
-        tableBulder.buildHeaderRow()
+        tableBulder.buildTable()
         let table = tableBulder.getResult()
         this.containerManager.clearModalContent()
         this.containerManager.getModalContentBox().appendChild(table)
+        this.containerManager.openModal()
     } 
 
     getFunctionToBeInjected() { 

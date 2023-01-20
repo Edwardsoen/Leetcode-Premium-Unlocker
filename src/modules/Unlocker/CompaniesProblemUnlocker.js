@@ -26,16 +26,17 @@ class CompaniesProblemUnlocker {
     onCompanyButtonClick = (event) => {
         let companyName = event.currentTarget.getAttribute("company-name")
         this.dataFetcher.fetchData(companyName)
-        .then(data => this.onFetchSuccess(data))
+        .then(data => this.onFetchSuccess(data, companyName))
     }
 
-    onFetchSuccess(data) { 
+    onFetchSuccess(data, companyName) { 
         let targetParent = this.containerManager.getModalContentBox()
         let tableBuilder = new TableContentBuilder(data)
         let durations = data.getKeys()
         for(let i =0; i <= durations.length -1; i ++) { 
             tableBuilder.addDurationData(durations[i], data.getList(durations[i]))
         }
+        tableBuilder.buildTitleRow(companyName)
         tableBuilder.buildDurationsRow()
         tableBuilder.setShownData(data.getList(durations[0]))
         tableBuilder.buildHeaderRow()

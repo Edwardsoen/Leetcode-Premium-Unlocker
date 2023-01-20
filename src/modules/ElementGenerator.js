@@ -151,6 +151,15 @@ class TableElementGenerator{
         return button
     }
 
+    static generateTitleElement(title) { 
+        let h2 = document.createElement('h2')
+        h2.innerText = title
+        h2.style = `
+        color:black; 
+        font-size:1.5em;`
+        return h2
+    }
+
 }
 
 export {

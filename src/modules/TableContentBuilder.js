@@ -16,9 +16,16 @@ class TableContentBuilder{
 
     setShownData(data) { 
         this.shownData = data
-
         return this
-}
+    }
+
+    buildTitleRow(title) {
+        let row =  TableElementGenerator.generateRowElement()
+        row.style.justifyContent = "center"; 
+        row.appendChild(TableElementGenerator.generateTitleElement(title))
+        this.parentDiv.appendChild(row)
+        return this
+    }
 
     addDurationData(duration, data) { 
         this.durationData[duration] = data

@@ -19,14 +19,15 @@ class TopProblemUnlocker {
     onTopProblemClicked = (event) => {
         let itemName = event.currentTarget.getAttribute("item")
         this.dataFetcher.fetchData(itemName)
-        .then(data => this.onFetchSuccess(data))
+        .then(data => this.onFetchSuccess(data, itemName))
         .catch(e => {console.log(this, "Fetch Error" + e)})
     }
 
-    onFetchSuccess(data){
+    onFetchSuccess(data, itemName){
         console.log(data)
         let tableBulder = new TableContentBuilder()
         tableBulder.setShownData(data)
+        tableBulder.buildTitleRow(itemName)
         tableBulder.buildHeaderRow()
         tableBulder.buildTable()
         let table = tableBulder.getResult()

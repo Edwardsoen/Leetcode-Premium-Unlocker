@@ -3,6 +3,7 @@ import {CompanyProblemInfo, CompanyProblemInfoList} from "../Objects"
 class GoogleSheetsAPIManager{   
     static API_KEY =  "AIzaSyDDAE3rf1fjLGKM0FUHQeTcsmS6fCQjtDs"
     static SHEETS_ID =  "1hW-bfeFKSkEDzfjaDMjDQmgsupEZz3gysXpG0mrf6QE"
+    static TESTING_SHEETS_ID = "1TJUhILyqBYsXWaPSUGwN1EvzBFeRNg1MgXH_SVqjQJo"
 
     static  getUrl (range) {
         return `https://sheets.googleapis.com/v4/spreadsheets/${GoogleSheetsAPIManager.SHEETS_ID}/values/${range}?key=${GoogleSheetsAPIManager.API_KEY}`
@@ -97,9 +98,19 @@ class GoogleSheetsCompanyProblemDataFetcher {
     }
 }
 
+class GoogleSheetsTopProblemDataFetcher { 
+    constructor() { 
+
+    }
+    fetchData() { 
+
+    }
+}
+
 export { 
     GoogleSheetsAPIManager, 
     GoogleSheetsProblemFrequencyDataFetcher, 
-    GoogleSheetsCompanyProblemDataFetcher
+    GoogleSheetsCompanyProblemDataFetcher, 
+    GoogleSheetsTopProblemDataFetcher
 }
 

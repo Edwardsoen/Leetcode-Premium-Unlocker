@@ -1,6 +1,6 @@
 
 import { CompanySwipperElementModifier } from "../ElementModifier/CompanySwipperElementModifier"
-import {TableContentBuilder} from "../ContentManager"
+import {TableContentBuilder} from "../TableContentBuilder"
 import {modalManager} from "../ContainerManager"
 import { GoogleSheetsCompanyProblemDataFetcher } from "../DataFetcher/GoogleSheetsDataFetcher"
 
@@ -44,11 +44,6 @@ class CompaniesProblemUnlocker {
         targetParent.appendChild(tableBuilder.getResult())
         this.containerManager.openModal()
     }
-
-
-
-
-
 }
 
 

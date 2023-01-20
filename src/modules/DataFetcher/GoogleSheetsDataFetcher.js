@@ -1,4 +1,4 @@
-import {CompanyProblemInfo, CompanyProblemInfoList} from "../Objects"
+import {ProblemInfo, CompanyProblemInfo, CompanyProblemInfoList} from "../Objects"
 
 class GoogleSheetsAPIManager{   
     static API_KEY =  "AIzaSyDDAE3rf1fjLGKM0FUHQeTcsmS6fCQjtDs"
@@ -102,8 +102,22 @@ class GoogleSheetsTopProblemDataFetcher {
     constructor() { 
 
     }
-    fetchData() { 
+    
+    fetchData(itemName) { 
+        let range = `${itemName}!A:F`
+        let url = GoogleSheetsAPIManager.getUrl(range)    
+        return fetch(url)
+        .then(data => data.json())
+        .then(data => {this.parseTopQuestionData(data["values"])})
+    }
 
+    parseTopQuestionData(data){ 
+        let problemInfoList = []
+        for(let i =0; i <= data.length; i ++) { 
+            let problemInfo = new ProblemInfo()
+            problemInfoList.push(problemInfo)
+        }
+        return problemInfoList
     }
 }
 

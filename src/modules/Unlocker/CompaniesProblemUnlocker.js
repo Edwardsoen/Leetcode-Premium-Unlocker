@@ -1,6 +1,6 @@
 
 import { CompanySwipperElementModifier } from "../ElementModifier/CompanySwipperElementModifier"
-import {TableContentManager} from "../ContentManager"
+import {TableContentBuilder} from "../ContentManager"
 import {modalManager} from "../ContainerManager"
 import { GoogleSheetsCompanyProblemDataFetcher } from "../DataFetcher/GoogleSheetsDataFetcher"
 
@@ -30,10 +30,25 @@ class CompaniesProblemUnlocker {
     }
 
     onFetchSuccess(data) { 
-        let tableManagerObject = new TableContentManager(data, this.containerManager.getModalContentBox())
-        tableManagerObject.appendToContainer()
+        let targetParent = this.containerManager.getModalContentBox()
+        let tableBuilder = new TableContentBuilder(data)
+        let durations = data.getKeys()
+        for(let i =0; i <= durations.length -1; i ++) { 
+            tableBuilder.addDurationData(durations[i], data.getList(durations[i]))
+        }
+        tableBuilder.buildDurationsRow()
+        tableBuilder.setShownData(data.getList(durations[0]))
+        tableBuilder.buildHeaderRow()
+        tableBuilder.buildTable()
+        this.containerManager.clearModalContent()
+        targetParent.appendChild(tableBuilder.getResult())
         this.containerManager.openModal()
     }
+
+
+
+
+
 }
 
 

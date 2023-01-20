@@ -21,6 +21,11 @@ class CompanyProblemInfo extends ProblemInfo {
 class CompanyProblemInfoList{ 
     constructor() { 
         this.data = {}
+
+    }
+
+    getKeys() { 
+        return Object.keys(this.data)
     }
 
     getList(key) { 

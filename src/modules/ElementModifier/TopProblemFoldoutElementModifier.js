@@ -1,3 +1,6 @@
+
+import { CSSStyler } from "../Objects";
+
 class TopProblemFoldoutElementModifier{ 
     constructor() {
         this.elementModifier = []
@@ -30,6 +33,7 @@ class TopProblemFoldoutElementModifier{
                 foldoutItem[i].getElementsByTagName('a')[0].href = "javascript:void(0)"
                 let itemName = foldoutItem[i].textContent.replaceAll(" ", "")
                 foldoutItem[i].setAttribute("item", itemName)
+                foldoutItem[i].style.color = CSSStyler.COLOR_ACCENT
                 lockLogo[0].remove()
                 let oldNode = foldoutItem[i]
                 let newNode = foldoutItem[i].cloneNode(true)
@@ -45,6 +49,5 @@ class TopProblemFoldoutElementModifier{
         this.observer.disconnect()
     }
 }
-
 
 export {TopProblemFoldoutElementModifier}

@@ -145,7 +145,8 @@ class TableElementGenerator{
         let button = document.createElement('button')   
         button.innerText =data
         button.style = ` 
-        width:5%
+        width:auto; 
+        margin-right: 2%; 
         `
         button.setAttribute("duration", data)
         return button

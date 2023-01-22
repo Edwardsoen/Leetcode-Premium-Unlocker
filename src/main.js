@@ -2,6 +2,7 @@
 import { CompaniesProblemUnlocker } from "./modules/Unlocker/CompaniesProblemUnlocker";
 import { ProblemFrequncyUnlocker } from "./modules/Unlocker/ProblemsFrequencyUnlocker";
 import { TopProblemUnlocker } from "./modules/Unlocker/TopProblemUnlocker";
+import { ProblemTagsUnlocker } from "./modules/Unlocker/ProblemTagsUnlocker";
 
 function evaluate(dataObj) { 
     for(const url in dataObj) { 
@@ -24,7 +25,9 @@ function evaluate(dataObj) {
 function main() {
     let urls = {
         "https://leetcode.com/problemset": [ProblemFrequncyUnlocker, CompaniesProblemUnlocker, TopProblemUnlocker], 
-        "https://leetcode.com/problem-list": [ProblemFrequncyUnlocker]
+        "https://leetcode.com/problem-list": [ProblemFrequncyUnlocker], 
+        "https://leetcode.com/problems":[ProblemTagsUnlocker]
+
     }
     evaluate(urls)
 }

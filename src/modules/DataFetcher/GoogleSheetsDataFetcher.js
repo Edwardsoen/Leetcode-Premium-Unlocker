@@ -99,10 +99,6 @@ class GoogleSheetsCompanyProblemDataFetcher {
 }
 
 class GoogleSheetsTopProblemDataFetcher { 
-    constructor() { 
-
-    }
-
     fetchData(itemName) { 
         let range = `${itemName}!A2:F`
         let url = GoogleSheetsAPIManager.getUrl(range)    
@@ -125,6 +121,9 @@ class GoogleSheetsTopProblemDataFetcher {
         }
         return problemInfoList
     }
+}
+
+class GoogleSheetsProblemTagsDataFetcher {
 }
 
 export { 

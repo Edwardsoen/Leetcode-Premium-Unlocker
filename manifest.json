@@ -1,6 +1,6 @@
 {
     "name": "Leetcode Premium Unlocker",
-    "version": "0.1.0",
+    "version": "0.2.0",
     "description": "Unlock Leetcode premium features",
     "permissions": ["activeTab"],
     "action": {

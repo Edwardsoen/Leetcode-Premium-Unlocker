@@ -13,7 +13,7 @@ class ProblemTagsUnlocker{
     unlock() { 
         this.elementModifier.modifyElement()
         let url = document.URL
-        this.dataFetcher.fetchData(url).then(data => this.elementModifier.setData(data))
+        this.dataFetcher.fetchData(url).then(data => console.log(data))
     }
 
 }

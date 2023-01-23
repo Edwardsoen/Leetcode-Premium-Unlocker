@@ -26,10 +26,9 @@ class ProblemTag{
     }
 }
 
-class CompanyProblemInfoList{ 
+class InfoList{ 
     constructor() { 
         this.data = {}
-
     }
 
     getKeys() { 
@@ -40,7 +39,22 @@ class CompanyProblemInfoList{
         if (key in this.data) return this.data[key]
         return []
     }
+}
 
+
+class ProblemInfoList extends InfoList{ 
+    push(key, value) { 
+        if (key in this.data) { 
+            this.data[key].push(value)
+            return; 
+        }
+        let arr = []
+        arr.push(value)
+        this.data[key] = arr
+    }
+}
+
+class CompanyProblemInfoList extends InfoList{ 
     push(key, value) { 
         if (key in this.data) { 
             this.data[key].push(value)
@@ -85,5 +99,6 @@ export {ProblemInfo
     , CompanyProblemDurations
     , ProblemArray
     ,  CSSStyler
-    ,ProblemTag
+    , ProblemTag
+    , ProblemInfoList
 }

@@ -12,12 +12,8 @@ class ProblemTagsUnlocker{
 
     unlock() { 
         this.elementModifier.modifyElement()
-        // this.elementModifier.addTagButtonOnClickListener(this.onTagClicked)
-    }
-
-    onTagClicked = () => { 
         let url = document.URL
-        this.dataFetcher.fetchData(url).then(data => console.log(data))
+        this.dataFetcher.fetchData(url).then(data => this.elementModifier.setData(data))
     }
 
 }

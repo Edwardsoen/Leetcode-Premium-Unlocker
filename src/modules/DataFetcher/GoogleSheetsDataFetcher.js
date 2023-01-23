@@ -1,4 +1,4 @@
-import {ProblemInfo, CompanyProblemInfo, CompanyProblemInfoList, ProblemArray, ProblemT, ProblemTag} from "../Objects"
+import {ProblemInfo,ProblemInfoList,  CompanyProblemInfo, CompanyProblemInfoList, ProblemArray, ProblemT, ProblemTag} from "../Objects"
 
 class GoogleSheetsAPIManager{   
     static API_KEY =  "AIzaSyDDAE3rf1fjLGKM0FUHQeTcsmS6fCQjtDs"
@@ -145,7 +145,7 @@ class GoogleSheetsProblemTagsDataFetcher {
     }
 
     parseProblemTagData(data) {
-        let tagList = []
+        let tagList = new ProblemInfoList()
         for(let i =0; i <= data.length -1; i ++) { 
             let link = data[i][0]
             let duration = data[i][1]
@@ -154,7 +154,7 @@ class GoogleSheetsProblemTagsDataFetcher {
             problemTagObject.duration = duration
             problemTagObject.company = company
             problemTagObject.url = link
-            tagList.push(problemTagObject)
+            tagList.push(duration, problemTagObject)
         }
         return tagList
     }

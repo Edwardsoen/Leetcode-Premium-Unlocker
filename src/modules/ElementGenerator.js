@@ -166,5 +166,5 @@ class TableElementGenerator{
 export {
 TableElementGenerator, 
 generateInnerProgressbar, 
-styleHeader
+styleHeader, 
 }

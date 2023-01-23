@@ -1,4 +1,4 @@
-import {ProblemInfo, CompanyProblemInfo, CompanyProblemInfoList, ProblemArray} from "../Objects"
+import {ProblemInfo, CompanyProblemInfo, CompanyProblemInfoList, ProblemArray, ProblemT, ProblemTag} from "../Objects"
 
 class GoogleSheetsAPIManager{   
     static API_KEY =  "AIzaSyDDAE3rf1fjLGKM0FUHQeTcsmS6fCQjtDs"
@@ -124,12 +124,67 @@ class GoogleSheetsTopProblemDataFetcher {
 }
 
 class GoogleSheetsProblemTagsDataFetcher {
+    constructor() { 
+        this.map = {}
+        this.mapFetched = false
+    }
+
+    fetchData(url) { 
+        if(this.mapFetched) return this.fetchProblemTag(url)
+        return this.getProblemTagsMap().then(data => this.fetchProblemTag(url))
+    }
+    
+    fetchProblemTag(url) { 
+        if(!(url in this.map)) return new Promise()
+        let startRow = this.map[url][0]
+        let endRow = this.map[url][1]
+        let range = `ProblemCompaniesTags!A${startRow}:C${endRow}`
+        let fetchUrl = GoogleSheetsAPIManager.getUrl(range)
+        return fetch(fetchUrl).then(data=> data.json())
+        .then(data => this.parseProblemTagData(data["values"]))
+    }
+
+    parseProblemTagData(data) {
+        let tagList = []
+        for(let i =0; i <= data.length -1; i ++) { 
+            let link = data[i][0]
+            let duration = data[i][1]
+            let company = data[i][2]
+            let problemTagObject = new ProblemTag()
+            problemTagObject.duration = duration
+            problemTagObject.company = company
+            problemTagObject.url = link
+            tagList.push(problemTagObject)
+        }
+        return tagList
+    }
+
+    getProblemTagsMap(){ 
+        let range = `ProblemCompaniesTags_Map!A:C`
+        let url = GoogleSheetsAPIManager.getUrl(range)
+        return fetch(url)
+        .then(data => data.json())
+        .then(data => this.setProblemTagMap(data["values"]))
+    }
+
+    setProblemTagMap(data) { 
+        for(let i =0; i <= data.length-1; i ++){ 
+            let url = data[i][0]
+            let startRow = data[i][1]
+            let endRow = data[i][2]
+            this.map[url] = [startRow, endRow]
+        }
+    }
+
+
+
 }
 
 export { 
     GoogleSheetsAPIManager, 
     GoogleSheetsProblemFrequencyDataFetcher, 
     GoogleSheetsCompanyProblemDataFetcher, 
-    GoogleSheetsTopProblemDataFetcher
+    GoogleSheetsTopProblemDataFetcher, 
+    GoogleSheetsProblemTagsDataFetcher
 }
 

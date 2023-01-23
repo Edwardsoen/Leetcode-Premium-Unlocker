@@ -18,6 +18,14 @@ class CompanyProblemInfo extends ProblemInfo {
     }
 }
 
+class ProblemTag{ 
+    constructor(duration, company, url) { 
+        this.url  = url
+        this.duration = duration
+        this.company = company
+    }
+}
+
 class CompanyProblemInfoList{ 
     constructor() { 
         this.data = {}
@@ -76,4 +84,6 @@ export {ProblemInfo
     , CompanyProblemInfoList
     , CompanyProblemDurations
     , ProblemArray
-    ,  CSSStyler}
+    ,  CSSStyler
+    ,ProblemTag
+}

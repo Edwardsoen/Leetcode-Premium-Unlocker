@@ -27,7 +27,6 @@ function main() {
         "https://leetcode.com/problemset": [ProblemFrequncyUnlocker, CompaniesProblemUnlocker, TopProblemUnlocker], 
         "https://leetcode.com/problem-list": [ProblemFrequncyUnlocker], 
         "https://leetcode.com/problems":[ProblemTagsUnlocker]
-
     }
     evaluate(urls)
 }

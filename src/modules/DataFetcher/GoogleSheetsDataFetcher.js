@@ -127,11 +127,12 @@ class GoogleSheetsProblemTagsDataFetcher {
     constructor() { 
         this.map = {}
         this.mapFetched = false
+        this.fetchtProblemTagsMap()
     }
 
     fetchData(url) { 
         if(this.mapFetched) return this.fetchProblemTag(url)
-        return this.getProblemTagsMap().then(data => this.fetchProblemTag(url))
+        return this.fetchtProblemTagsMap().then(data => this.fetchProblemTag(url))
     }
     
     fetchProblemTag(url) { 
@@ -159,7 +160,7 @@ class GoogleSheetsProblemTagsDataFetcher {
         return tagList
     }
 
-    getProblemTagsMap(){ 
+    fetchtProblemTagsMap(){ 
         let range = `ProblemCompaniesTags_Map!A:C`
         let url = GoogleSheetsAPIManager.getUrl(range)
         return fetch(url)
@@ -174,6 +175,7 @@ class GoogleSheetsProblemTagsDataFetcher {
             let endRow = data[i][2]
             this.map[url] = [startRow, endRow]
         }
+        this.mapFetched = true
     }
 
 

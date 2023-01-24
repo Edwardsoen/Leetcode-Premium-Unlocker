@@ -18,7 +18,7 @@ class ProblemTagsUnlocker{
         let problemName = document.URL.split('/')[4]
         this.dataFetcher.fetchData(problemName)
         .then(data => this.onFetchSucces(data)) 
-        .then(data=>{this.isFetching=true})
+        .then(data=>{this.isFetching=false})
         .catch( e => {console.log(this, e);
         this.isFetching=false})
     }

@@ -1,6 +1,6 @@
 
 import { CompanySwipperElementModifier } from "../ElementModifier/CompanySwipperElementModifier"
-import {TableContentBuilder} from "../TableContentBuilder"
+import { TableContentBuilder } from "../ContentBuilder/TableContentBuilder"
 import {modalManager} from "../ContainerManager"
 import { GoogleSheetsCompanyProblemDataFetcher } from "../DataFetcher/GoogleSheetsDataFetcher"
 

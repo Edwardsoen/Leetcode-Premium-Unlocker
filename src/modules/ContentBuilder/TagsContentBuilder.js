@@ -1,5 +1,5 @@
 
-import { TagsElementGenerator } from "../ElementGenerator"
+import { TagsElementGenerator } from "../ElementGenerator/TagContentElementGenerator"
 
 class TagsContentBuilder{ 
     constructor() { 

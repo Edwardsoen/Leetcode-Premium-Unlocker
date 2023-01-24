@@ -2,7 +2,7 @@
 import { modalManager } from "../ContainerManager"
 import { GoogleSheetsTopProblemDataFetcher } from "../DataFetcher/GoogleSheetsDataFetcher"
 import { TopProblemFoldoutElementModifier } from "../ElementModifier/TopProblemFoldoutElementModifier"
-import { TableContentBuilder } from "../TableContentBuilder"
+import { TableContentBuilder } from "../ContentBuilder/TableContentBuilder"
 
 class TopProblemUnlocker { 
     constructor() {     

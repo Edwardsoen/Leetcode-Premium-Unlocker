@@ -1,5 +1,5 @@
 import { ProblemTableElementModifier } from "../ElementModifier/ProblemTableElementModifier";
-import { generateInnerProgressbar } from "../ElementGenerator";
+import { generateInnerProgressbar } from "../ElementGenerator/ElementHelperClass";
 import { GoogleSheetsProblemFrequencyDataFetcher } from "../DataFetcher/GoogleSheetsDataFetcher";
 
 class ProblemFrequncyUnlocker{ 
@@ -8,10 +8,6 @@ class ProblemFrequncyUnlocker{
         this.dataFetcher = new GoogleSheetsProblemFrequencyDataFetcher()
     }
 
-    onFetchFail () {
-        console.log("Problem Frequency Fetch Fail")
-    }
-    
     onFetchSuccess() {
         this.elementModifier.injectFunctionToTargetElement(ProblemFrequncyUnlocker.removeProgressbarUnlockButton)
         this.elementModifier.injectFunctionToTargetElement(this.insertInnerProgressbar)
@@ -22,7 +18,7 @@ class ProblemFrequncyUnlocker{
         this.dataFetcher.fetchData()
         .then(data => {this.problemData = data})
         .then(this.onFetchSuccess.bind(this))
-        .catch(this.onFetchFail)
+        .catch(e => (console.log(this, e)))
     }
 
     insertInnerProgressbar = (progressBar) =>  { 

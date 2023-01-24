@@ -10,6 +10,7 @@ class CompaniesProblemUnlocker {
         this.elementModifier = new CompanySwipperElementModifier()
         this.dataFetcher = new GoogleSheetsCompanyProblemDataFetcher()
         this.containerManager = modalManager
+        this.isFetching = false
     }
 
     unlock() { 
@@ -23,10 +24,13 @@ class CompaniesProblemUnlocker {
         }
     }
 
-    onCompanyButtonClick = (event) => {
+    onCompanyButtonClick = (event) => { 
+        if(this.isFetching) return;
+        this.isFetching = true
         let companyName = event.currentTarget.getAttribute("company-name")
         this.dataFetcher.fetchData(companyName)
-        .then(data => this.onFetchSuccess(data, companyName))
+        .then(data => this.onFetchSuccess(data, companyName)).then(data => {this.isFetching = false})
+        .catch(e =>{this.isFetching=false} )
     }
 
     onFetchSuccess(data, companyName) { 

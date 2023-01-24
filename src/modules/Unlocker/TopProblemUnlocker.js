@@ -9,6 +9,7 @@ class TopProblemUnlocker {
         this.elementModifier =  new TopProblemFoldoutElementModifier()
         this.dataFetcher = new GoogleSheetsTopProblemDataFetcher()
         this.containerManager = modalManager
+        this.isFetching = false
     }
 
     unlock( ){ 
@@ -17,14 +18,20 @@ class TopProblemUnlocker {
     }
 
     onTopProblemClicked = (event) => {
+        if(this.isFetching)return
+        this.isFetching=true
         let itemName = event.currentTarget.getAttribute("item")
         this.dataFetcher.fetchData(itemName)
         .then(data => this.onFetchSuccess(data, itemName))
-        .catch(e => {console.log(this, "Fetch Error" + e)})
+        .then(data =>{this.isFetching=false})
+        .catch(e => {
+            console.log(this, "Fetch Error" + e); 
+            this.isFetching=false
+        })
     }
 
     onFetchSuccess(data, itemName){
-        console.log(data)
+
         let tableBulder = new TableContentBuilder()
         tableBulder.setShownData(data)
         tableBulder.buildTitleRow(itemName)

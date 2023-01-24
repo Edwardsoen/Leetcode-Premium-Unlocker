@@ -7,8 +7,25 @@ class ProblemTagsElementModifier {
     }
 
     modifyElement() { 
-        this.modifyCompaniesTagButton()
+        if(this.isDescriptionTabActive()) this.modifyCompaniesTagButton()
+        this.addObserverToLeftTab()
     }
+
+    addObserverToLeftTab() { 
+        let tabElement = document.getElementsByClassName('overflow-x-auto')[0]
+        let config = {childList: true, subtree: true,  attributes: true, attributeFilter: ['class']};
+        let observer = new MutationObserver(() => { 
+            if(this.isDescriptionTabActive()) this.modifyCompaniesTagButton()
+        })
+        observer.observe(tabElement, config)
+    }
+
+    isDescriptionTabActive() { 
+        return document.getElementsByClassName('overflow-x-auto')[0]
+        .getElementsByClassName('bg-layer-1')[0].textContent  == 'Description'
+    }
+
+
 
     modifyCompaniesTagButton() { 
         let tagButton = document.getElementsByClassName('pt-3')[0]

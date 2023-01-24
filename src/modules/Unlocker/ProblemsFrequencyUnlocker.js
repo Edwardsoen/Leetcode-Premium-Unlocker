@@ -3,7 +3,7 @@ import { generateInnerProgressbar } from "../ElementGenerator/ElementHelperClass
 import { GoogleSheetsProblemFrequencyDataFetcher } from "../DataFetcher/GoogleSheetsDataFetcher";
 
 class ProblemFrequncyUnlocker{ 
-    constructor(dataFetcher) { 
+    constructor() { 
         this.elementModifier =  new ProblemTableElementModifier()
         this.dataFetcher = new GoogleSheetsProblemFrequencyDataFetcher()
     }

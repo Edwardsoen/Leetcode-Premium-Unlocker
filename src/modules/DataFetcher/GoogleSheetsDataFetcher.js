@@ -135,7 +135,7 @@ class GoogleSheetsProblemTagsDataFetcher {
     }
     
     fetchProblemTag(url) { 
-        if(!(url in this.map)) return new Promise()
+        if(!(url in this.map)) { return new Promise((resolve, reject) => resolve(new ProblemInfoList()))}
         let startRow = this.map[url][0]
         let endRow = this.map[url][1]
         let range = `ProblemCompaniesTags!A${startRow}:C${endRow}`

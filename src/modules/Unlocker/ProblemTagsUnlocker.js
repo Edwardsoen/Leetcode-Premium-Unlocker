@@ -11,12 +11,18 @@ class ProblemTagsUnlocker{
         this.containerManager = modalManager
     }
 
-    unlock() { 
-        this.elementModifier.modifyElement()
-        let url = document.URL
-        this.dataFetcher.fetchData(url)
+    onTagButtonClicked = () => { 
+        let problemName = document.URL.split('/')[4]
+        this.dataFetcher.fetchData(problemName)
         .then(data => this.onFetchSucces(data))
         .catch( e => {console.log(this, e)})
+    }
+
+
+
+    unlock() { 
+        this.elementModifier.modifyElement()
+        this.elementModifier.addTagButtonOnClickListener(this.onTagButtonClicked)
     }
 
     onFetchSucces = (data) =>  { 
@@ -31,6 +37,8 @@ class ProblemTagsUnlocker{
         targetParent.appendChild(builder.getResult())
         this.containerManager.openModal()
     }
+
+
 }
 
 

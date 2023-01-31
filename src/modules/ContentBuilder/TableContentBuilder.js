@@ -1,8 +1,8 @@
 
-import { CompanyProblemDurations } from "./Objects"
-import {AcceptanceSorter, DifficultySorter, NameSorter, IDSorter, FrequencySorter} from "./ProblemSorter"
-import { TableElementGenerator, styleHeader } from "./ElementGenerator"
-
+import { CompanyProblemDurations } from "../Objects"
+import {AcceptanceSorter, DifficultySorter, NameSorter, IDSorter, FrequencySorter} from "../ProblemSorter"
+import { TableElementGenerator } from "../ElementGenerator/TableContentElementGenerator"
+import { styleHeader } from "../ElementGenerator/ElementHelperClass"
 class TableContentBuilder{ 
     constructor() {
         this.tableId = "table-content"

@@ -1,12 +1,8 @@
 {
-<<<<<<< HEAD
     "name": "Leetcode Premium Unlocker",
-=======
-    "name": "Leetcode Premium Data Injector",
->>>>>>> 02c5d4e5153c4f20218229225d67038dc1f4fc27
     "version": "0.3.0",
     "description": "Inject crowdsourced Leetcode premium data",
-    "permissions": ["activeTab"],
+    "permissions": [],
     "action": {
       "default_popup": "dist/index.html"
     },

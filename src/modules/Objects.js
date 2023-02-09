@@ -90,7 +90,10 @@ class ProblemArray extends Array {
 
 class CSSStyler { 
     static COLOR_ACCENT = "#62C555"
-
+    static BACKGROUND_CONTAINER_COLOR = '#101010'
+    static SUB_BACKGROUND_CONTAINER_COLOR = '#282828'
+    static TEXT_COLOR = '#dcdcdc'
+    static TEXT_COLOR_SELECTED = '#7d7d7d'
 }
 
 export {ProblemInfo

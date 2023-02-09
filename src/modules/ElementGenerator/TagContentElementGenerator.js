@@ -1,3 +1,4 @@
+import { CSSStyler } from "../Objects"
 
 class TagsElementGenerator{
     static  generateHeader(text) {
@@ -27,7 +28,7 @@ class TagsElementGenerator{
         row.style = `
         display:flex;
         flex-wrap: wrap;
-        border-top: solid 1px black;
+        border-top: solid 1px darkgrey;
 
         `
         return row

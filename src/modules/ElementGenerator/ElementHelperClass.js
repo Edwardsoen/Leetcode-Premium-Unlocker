@@ -22,7 +22,7 @@ function styleHeader(headerElement) {
     headerElement.style.textDecoration = "underline"
     headerElement.style.cursor = "pointer"
     headerElement.style.fontWeight = "bold"
-    headerElement.style.color = "blue"
+    headerElement.style.color = CSSStyler.TEXT_COLOR
 } 
 
 export { 

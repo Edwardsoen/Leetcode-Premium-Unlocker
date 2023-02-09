@@ -1,12 +1,11 @@
 
-
+import { CSSStyler } from "../Objects"
 class TableElementGenerator{ 
-
     static generateTextElement(text) { 
         let div = document.createElement('div')
         let h3 = document.createElement('h3')
         h3.textContent = text
-        h3.style = `color: black;
+        h3.style = `color: ${CSSStyler.TEXT_COLOR};
         text-align: center;
         `
         div.appendChild(h3)
@@ -29,7 +28,7 @@ class TableElementGenerator{
         height: 1rem;
         overflow: hidden;
         font-size: .75rem;
-        background-color: #e9ecef;
+        background-color: ${CSSStyler.SUB_BACKGROUND_CONTAINER_COLOR};
         border-radius: 0.5rem;
         margin-top: auto;
         margin-bottom: auto;
@@ -46,7 +45,7 @@ class TableElementGenerator{
         justify-content: center;
         overflow: hidden;
         color: #fff;
-        background-color: #0d6efd;
+        background-color: ${CSSStyler.COLOR_ACCENT};
         `
         progressBar.appendChild(progress)
         return progressBar
@@ -58,7 +57,7 @@ class TableElementGenerator{
         a.href = problem_url
         a.textContent = problem_name
         a.style = `
-            color:black; 
+            color:${CSSStyler.TEXT_COLOR}; 
         `
         problemCell.appendChild(a)
         problemCell.style = `
@@ -72,6 +71,18 @@ class TableElementGenerator{
         div.style = `
         width: 12%
         `
+        
+        switch(text) { 
+            case "Hard":
+                div.children[0].style.color = "#FF375F"
+                break  
+            case "Medium": 
+            div.children[0].style.color = "Orange"
+                break ; 
+            case "Easy": 
+            div.children[0].style.color = "Green"
+                break ; 
+        }
         return div
     }
 
@@ -87,7 +98,7 @@ class TableElementGenerator{
         let row = document.createElement('div')
         row.style = `
         display:flex;
-        border-top: solid 1px black;
+        border-top: solid 1px ${CSSStyler.SUB_BACKGROUND_CONTAINER_COLOR};
         `
         return row
     }
@@ -124,6 +135,14 @@ class TableElementGenerator{
         margin-right: 2%; 
         `
         button.setAttribute("duration", data)
+
+        button.addEventListener('select', () => {
+            button.style.color = "red"
+        })
+
+        button.addEventListener('unselect', () => {
+            button.style.color = "black"
+        })
         return button
     }
 
@@ -131,7 +150,7 @@ class TableElementGenerator{
         let h2 = document.createElement('h2')
         h2.innerText = title
         h2.style = `
-        color:black; 
+        color:${CSSStyler.TEXT_COLOR}; 
         font-size:1.5em;`
         return h2
     }

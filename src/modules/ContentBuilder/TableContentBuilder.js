@@ -1,17 +1,17 @@
 
-import { CompanyProblemDurations } from "../Objects"
 import {AcceptanceSorter, DifficultySorter, NameSorter, IDSorter, FrequencySorter} from "../ProblemSorter"
 import { TableElementGenerator } from "../ElementGenerator/TableContentElementGenerator"
 import { styleHeader } from "../ElementGenerator/ElementHelperClass"
+
 class TableContentBuilder{ 
     constructor() {
         this.tableId = "table-content"
         this.shownData = []
         this.currentlySortedBy = ""
         this.isReverseSorted = false
-
         this.parentDiv = document.createElement('div')
         this.durationData = {}
+        this.currentlySelectedDuration = undefined
     } 
 
     setShownData(data) { 
@@ -33,12 +33,14 @@ class TableContentBuilder{
 
     buildDurationsRow() { 
         let row =  TableElementGenerator.generateRowElement()
+        
         for(let duration in this.durationData) { 
             let element = TableElementGenerator.generateDurationElement(duration)
             styleHeader(element)
             element.addEventListener('click', this.onDurationButtonClicked)
             row.appendChild(element)
-        }    
+            if(this.currentlySelectedDuration == undefined) this.currentlySelectedDuration = element 
+        }  
         this.parentDiv.appendChild(row)
         return this
     }
@@ -87,6 +89,12 @@ class TableContentBuilder{
 
     
     onDurationButtonClicked = (event) => {
+        let selectEvent = new Event('select');
+        event.currentTarget.dispatchEvent(selectEvent)
+        let unselectEvent = new Event('unselect');
+        this.currentlySelectedDuration.dispatchEvent(unselectEvent)
+        this.currentlySelectedDuration = event.currentTarget
+
         this.shownData = this.durationData[event.currentTarget.getAttribute("duration")]
         this.swapContentTableElement(this.shownData)
     }

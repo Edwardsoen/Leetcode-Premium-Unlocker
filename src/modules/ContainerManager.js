@@ -1,3 +1,4 @@
+import { CSSStyler } from "./Objects"
 
 
 class ModalManager{ 
@@ -15,13 +16,15 @@ class ModalManager{
     createModalContentBox() {
         let modalContentBox = document.createElement('div')
         modalContentBox.style = `
-        background-color: #fefefe;
+        background-color: ${CSSStyler.BACKGROUND_CONTAINER_COLOR};
         margin-top:1%; 
         margin-left: auto;
         margin-right: auto;
         padding: 20px;
-        width: 80%;
-        mid-height: 15%
+        max-width: 80%;
+        min-width: 60%
+        mid-height: 15%; 
+        border-radius:15px; 
         `
         return modalContentBox
     }

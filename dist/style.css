@@ -37,6 +37,10 @@
     color:var(--default-text-color)
 }
 
+.sub-title-text-color { 
+    color:var(--selected-text-color)
+
+}
 .default-text-color {
     color:var(--default-text-color)
 }

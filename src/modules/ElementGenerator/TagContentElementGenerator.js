@@ -3,7 +3,7 @@ import { CSSStyler } from "../Objects"
 class TagsElementGenerator{
     static  generateHeader(text) {
         let h3 = document.createElement('h3')
-        h3.style.color = 'black'
+        h3.classList.add("default-text-color")
         h3.textContent = text
         return h3
     }
@@ -13,11 +13,12 @@ class TagsElementGenerator{
         div.style = `
         min-width:7%;
         margin-right: 3%;
+        margin-bottom: 1%;
         max-width:15%; 
-        color:black; 
         text-align:center; 
         border-radius: 21px;
         `
+        div.classList.add("sub-title-text-color")
         div.textContent = text; 
         return div
 

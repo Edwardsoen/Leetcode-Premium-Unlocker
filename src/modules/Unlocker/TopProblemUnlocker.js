@@ -21,6 +21,9 @@ class TopProblemUnlocker {
         if(this.isFetching)return
         this.isFetching=true
         let itemName = event.currentTarget.getAttribute("item")
+        this.containerManager.clearModalContent()
+        this.containerManager.openModal()
+        this.containerManager.showLoadingIcon()
         this.dataFetcher.fetchData(itemName)
         .then(data => this.onFetchSuccess(data, itemName))
         .then(data =>{this.isFetching=false})
@@ -31,7 +34,6 @@ class TopProblemUnlocker {
     }
 
     onFetchSuccess(data, itemName){
-
         let tableBulder = new TableContentBuilder()
         tableBulder.setShownData(data)
         tableBulder.buildTitleRow(itemName)
@@ -40,7 +42,6 @@ class TopProblemUnlocker {
         let table = tableBulder.getResult()
         this.containerManager.clearModalContent()
         this.containerManager.getModalContentBox().appendChild(table)
-        this.containerManager.openModal()
     } 
 
     getFunctionToBeInjected() { 

@@ -16,6 +16,8 @@ class ProblemTagsUnlocker{
         if(this.isFetching) return 
         this.isFetching=true
         let problemName = document.URL.split('/')[4]
+        this.containerManager.clearModalContent()
+        this.containerManager.openModal()
         this.dataFetcher.fetchData(problemName)
         .then(data => this.onFetchSucces(data)) 
         .then(data=>{this.isFetching=false})
@@ -38,9 +40,7 @@ class ProblemTagsUnlocker{
             builder.buildTagsBox(data.getList(keys[i]))
         }
         let targetParent = this.containerManager.getModalContentBox()
-        this.containerManager.clearModalContent()
         targetParent.appendChild(builder.getResult())
-        this.containerManager.openModal()
     }
 
 

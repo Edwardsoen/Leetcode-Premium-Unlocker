@@ -28,6 +28,9 @@ class CompaniesProblemUnlocker {
         if(this.isFetching) return;
         this.isFetching = true
         let companyName = event.currentTarget.getAttribute("company-name")
+        this.containerManager.clearModalContent()
+        this.containerManager.openModal()
+        this.containerManager.showLoadingIcon()
         this.dataFetcher.fetchData(companyName)
         .then(data => this.onFetchSuccess(data, companyName)).then(data => {this.isFetching = false})
         .catch(e =>{this.isFetching=false} )
@@ -47,7 +50,7 @@ class CompaniesProblemUnlocker {
         tableBuilder.buildTable()
         this.containerManager.clearModalContent()
         targetParent.appendChild(tableBuilder.getResult())
-        this.containerManager.openModal()
+        
     }
 }
 

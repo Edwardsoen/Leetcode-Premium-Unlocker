@@ -45,6 +45,12 @@ class ModalManager{
         this.modalContentBox.appendChild(targetElement)
     }
 
+    showLoadingIcon() { 
+        let loadingDiv = document.createElement('div')
+        loadingDiv.classList.add('loading-logo')
+        this.modalContentBox.appendChild(loadingDiv)
+    }
+
     createCloseButton() { 
         let closeButton = document.createElement('span')
         closeButton.style = ` 

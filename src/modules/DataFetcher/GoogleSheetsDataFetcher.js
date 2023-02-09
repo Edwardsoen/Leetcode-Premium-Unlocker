@@ -37,6 +37,7 @@ class GoogleSheetsProblemFrequencyDataFetcher {
 class GoogleSheetsCompanyProblemDataFetcher { 
     constructor() { 
         this.companyPageTableData = {}
+        this.cachedData = {}
         this.tableDataFetched = false
         this.fetchCompanyPageTable() //cache company map data
     }
@@ -59,6 +60,7 @@ class GoogleSheetsCompanyProblemDataFetcher {
     }
 
     fetchCompanyProblemData(companyName){ 
+        if(companyName in this.cachedData) { return new Promise((resolve, reject) => resolve(this.cachedData[companyName]))}
         if(companyName in this.companyPageTableData == false) { return new Promise((resolve, reject) => resolve(new CompanyProblemInfoList()))}
         let startRow =  this.companyPageTableData[companyName][0]
         let endRow =  this.companyPageTableData[companyName][1]
@@ -67,7 +69,7 @@ class GoogleSheetsCompanyProblemDataFetcher {
         let url = GoogleSheetsAPIManager.getUrl(range)    
         return fetch(url)
         .then(data => data.json())
-        .then(data =>this.parseCompanyProblemData(data["values"]))
+        .then(data =>this.parseCompanyProblemData(companyName, data["values"]))
     }
 
     parseCompanyPageTableData(data) {
@@ -80,7 +82,7 @@ class GoogleSheetsCompanyProblemDataFetcher {
         return this.companyPageTableData
     }
 
-    parseCompanyProblemData(data) { 
+    parseCompanyProblemData(companyName, data) { 
         let companyProblemInfoList = new CompanyProblemInfoList()
         for(let i =0; i <= data.length - 1; i ++ ){ 
             let frequency =  data[i][2]
@@ -94,6 +96,7 @@ class GoogleSheetsCompanyProblemDataFetcher {
             let problemInfo = new CompanyProblemInfo(frequency,id,difficulty,problemUrl,problemName,acceptance,companyName,duration)
             companyProblemInfoList.push(duration, problemInfo)
         }
+        this.cachedData[companyName] = companyProblemInfoList
         return companyProblemInfoList
     }
 }
@@ -144,8 +147,7 @@ class GoogleSheetsProblemTagsDataFetcher {
         let endRow = this.map[url][1]
         let range = `ProblemCompaniesTags!A${startRow}:C${endRow}`
         let fetchUrl = GoogleSheetsAPIManager.getUrl(range)
-        return fetch(fetchUrl).then(data=> data.json())
-        .then(data => this.parseProblemTagData(data["values"]))
+        return fetch(fetchUrl).then(data=> data.json()).then(data => this.parseProblemTagData(data["values"]))
     }
 
     parseProblemTagData(data) {
@@ -160,9 +162,7 @@ class GoogleSheetsProblemTagsDataFetcher {
             problemTagObject.url = link
             tagList.push(duration, problemTagObject)
         }
-        console.log(this.cachedData)
         this.cachedData = tagList
-        console.log(this.cachedData)
         return tagList
     }
 

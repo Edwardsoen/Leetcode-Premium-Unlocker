@@ -7,7 +7,7 @@ import { modalManager } from "../ContainerManager"
 class ProblemTagsUnlocker{ 
     constructor() { 
         this.elementModifier = new ProblemTagsElementModifier()
-        this.dataFetcher = new GoogleSheetsProblemTagsDataFetcher(document.URL.split('/')[4])
+        this.dataFetcher = new GoogleSheetsProblemTagsDataFetcher()
         this.containerManager = modalManager
         this.isFetching = false
     }
@@ -18,14 +18,13 @@ class ProblemTagsUnlocker{
         let problemName = document.URL.split('/')[4]
         this.containerManager.clearModalContent()
         this.containerManager.openModal()
+        this.containerManager.showLoadingIcon()
         this.dataFetcher.fetchData(problemName)
         .then(data => this.onFetchSucces(data)) 
         .then(data=>{this.isFetching=false})
         .catch( e => {console.log(this, e);
         this.isFetching=false})
     }
-
-
 
     unlock() { 
         this.elementModifier.modifyElement()
@@ -40,6 +39,7 @@ class ProblemTagsUnlocker{
             builder.buildTagsBox(data.getList(keys[i]))
         }
         let targetParent = this.containerManager.getModalContentBox()
+        this.containerManager.clearModalContent()
         targetParent.appendChild(builder.getResult())
     }
 

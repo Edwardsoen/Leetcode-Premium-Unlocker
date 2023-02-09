@@ -45,8 +45,6 @@
     color:var(--default-text-color)
 }
 
-
-
 .loading-logo {
     border: 8px solid #f3f3f3; /* Light grey */
     border-top: 8px solid var(--accent-color); /* Blue */

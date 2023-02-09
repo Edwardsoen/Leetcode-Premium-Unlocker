@@ -7,6 +7,12 @@ class ProblemTagsElementModifier {
     }
 
     modifyElement() { 
+        let tabs = document.getElementsByClassName('overflow-x-auto')[0]
+        console.log(tabs)
+        if(!tabs) {
+            window.setTimeout(() => {this.modifyElement()} ,500);
+            return;
+        }
         if(this.isDescriptionTabActive()) this.modifyCompaniesTagButton()
         this.addObserverToLeftTab()
     }
@@ -29,11 +35,11 @@ class ProblemTagsElementModifier {
 
     modifyCompaniesTagButton() { 
         let tagButton = document.getElementsByClassName('pt-3')[0]
-        let lockicon = tagButton.getElementsByTagName('svg')[0]
-        if(!lockicon) {
+        if(!tagButton) {
             window.setTimeout(() => {this.modifyCompaniesTagButton.bind(this)()} ,500);
             return;
         }
+        let lockicon = tagButton.getElementsByTagName('svg')[0]
         let tagDiv  = lockicon.parentElement
         lockicon.remove()
         let newNode = tagDiv.cloneNode(true)

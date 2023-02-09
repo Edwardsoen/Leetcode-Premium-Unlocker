@@ -50,7 +50,7 @@ class CompanySwipperElementModifier {
         });
     
         if(!swipper) {
-            window.setTimeout(() => {addObserverToCompaniesSection()} ,500);
+            window.setTimeout(() => {this.addObserverToCompaniesSection()} ,500);
             return;
         }
         var config = {childList: true, subtree: true,  attributes: true, attributeFilter: ['class']};

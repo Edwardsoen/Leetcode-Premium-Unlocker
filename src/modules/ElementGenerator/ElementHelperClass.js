@@ -1,7 +1,5 @@
 import { CSSStyler } from "../Objects"
 
-
-
 function generateInnerProgressbar(width) { 
     let progress = document.createElement('div')
     progress.style = `
@@ -16,16 +14,6 @@ function generateInnerProgressbar(width) {
     return progress
 }
 
-
-function styleHeader(headerElement) { 
-    //TODO: move styling to CSS file
-    headerElement.style.textDecoration = "underline"
-    headerElement.style.cursor = "pointer"
-    headerElement.style.fontWeight = "bold"
-    headerElement.style.color = CSSStyler.TEXT_COLOR
-} 
-
 export { 
 generateInnerProgressbar, 
-styleHeader, 
 }

@@ -9,6 +9,7 @@
     "manifest_version": 3, 
     "content_scripts": [
         {
+          "css": ["dist/style.css"], 
           "js": ["/dist/main.js"],
           "matches": [
             "https://leetcode.com/*"

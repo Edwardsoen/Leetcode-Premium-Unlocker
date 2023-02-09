@@ -1,0 +1,43 @@
+
+:root {
+    --accent-color: #62C555;
+    --container-background: #101010; 
+    --container-sub-background: #282828; 
+    --default-text-color:rgb(247, 247, 247); 
+    --selected-text-color:rgb(134, 134, 134); 
+}
+
+.clickable{ 
+    text-decoration: underline;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.green-text{
+    color:var(--accent-color)
+}
+
+.green-background{ 
+    background-color: var(--accent-color);
+}
+
+.black-background { 
+    background-color:var(--container-background)
+}
+
+.dark-grey-background{ 
+    color:var(--container-sub-background)
+}
+
+.selected-duration-button{ 
+    color:var(--selected-text-color);
+}
+
+.unselected-duration-button{ 
+    color:var(--default-text-color)
+}
+
+.default-text-color {
+    color:var(--default-text-color)
+}
+

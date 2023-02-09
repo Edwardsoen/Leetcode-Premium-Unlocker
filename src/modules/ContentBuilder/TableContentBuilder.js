@@ -1,7 +1,6 @@
 
 import {AcceptanceSorter, DifficultySorter, NameSorter, IDSorter, FrequencySorter} from "../ProblemSorter"
 import { TableElementGenerator } from "../ElementGenerator/TableContentElementGenerator"
-import { styleHeader } from "../ElementGenerator/ElementHelperClass"
 
 class TableContentBuilder{ 
     constructor() {
@@ -36,10 +35,14 @@ class TableContentBuilder{
         
         for(let duration in this.durationData) { 
             let element = TableElementGenerator.generateDurationElement(duration)
-            styleHeader(element)
+            element.classList.add("clickable")
             element.addEventListener('click', this.onDurationButtonClicked)
             row.appendChild(element)
-            if(this.currentlySelectedDuration == undefined) this.currentlySelectedDuration = element 
+            if(this.currentlySelectedDuration == undefined) {
+                this.currentlySelectedDuration = element
+                let selectEvent = new Event('select');
+                this.currentlySelectedDuration.dispatchEvent(selectEvent)
+            } 
         }  
         this.parentDiv.appendChild(row)
         return this
@@ -52,12 +55,18 @@ class TableContentBuilder{
         let acceptanceHeaderCell= TableElementGenerator.generateProblemAcceptanceElement("Acceptance")
         let difficultyHeaderCell= TableElementGenerator.generateProblemDifficultyElement("Difficulty")
         let frequencyHeaderCell= TableElementGenerator.generateProblemAcceptanceElement("Frequency")
+     
+        idHeaderCell.firstChild.classList.add("clickable")
+        titleHeaderCell.firstChild.classList.add("clickable")
+        acceptanceHeaderCell.firstChild.classList.add("clickable")
+        difficultyHeaderCell.firstChild.classList.add("clickable")
+        frequencyHeaderCell.firstChild.classList.add("clickable")
 
-        styleHeader(idHeaderCell.firstChild)
-        styleHeader(titleHeaderCell.firstChild)
-        styleHeader(acceptanceHeaderCell.firstChild)
-        styleHeader(difficultyHeaderCell.firstChild)
-        styleHeader(frequencyHeaderCell.firstChild)
+        idHeaderCell.firstChild.classList.add("default-text-color")
+        titleHeaderCell.firstChild.classList.add("default-text-color")
+        acceptanceHeaderCell.firstChild.classList.add("default-text-color")
+        difficultyHeaderCell.firstChild.classList.add("default-text-color")
+        frequencyHeaderCell.firstChild.classList.add("default-text-color")
 
         idHeaderCell.addEventListener('click', this.getOnHeaderClickedFunction(IDSorter).bind(this))
         titleHeaderCell.addEventListener('click', this.getOnHeaderClickedFunction(NameSorter).bind(this))

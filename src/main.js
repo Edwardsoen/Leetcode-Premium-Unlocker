@@ -4,6 +4,7 @@ import { ProblemFrequncyUnlocker } from "./modules/Unlocker/ProblemsFrequencyUnl
 import { TopProblemUnlocker } from "./modules/Unlocker/TopProblemUnlocker";
 import { ProblemTagsUnlocker } from "./modules/Unlocker/ProblemTagsUnlocker";
 
+
 function evaluate(dataObj) { 
     for(const url in dataObj) { 
         if (window.location.href.includes(url)) { 
@@ -30,4 +31,7 @@ function main() {
     }
     evaluate(urls)
 }
+
+
+
 main()

@@ -71,16 +71,15 @@ class TableElementGenerator{
         div.style = `
         width: 12%
         `
-        
         switch(text) { 
             case "Hard":
-                div.children[0].style.color = "#FF375F"
+                div.children[0].style.color = "red"
                 break  
             case "Medium": 
-            div.children[0].style.color = "Orange"
+                div.children[0].style.color = "orange"
                 break ; 
             case "Easy": 
-            div.children[0].style.color = "Green"
+                div.children[0].style.color = "green"
                 break ; 
         }
         return div
@@ -137,12 +136,15 @@ class TableElementGenerator{
         button.setAttribute("duration", data)
 
         button.addEventListener('select', () => {
-            button.style.color = "red"
+            button.classList.add("selected-duration-button")
+            button.classList.remove("unselected-duration-button")
         })
 
         button.addEventListener('unselect', () => {
-            button.style.color = "black"
+            button.classList.add("unselected-duration-button")
+            button.classList.remove("selected-duration-button")
         })
+        button.classList.add("unselected-duration-button")
         return button
     }
 

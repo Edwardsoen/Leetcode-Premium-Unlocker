@@ -7,7 +7,7 @@ import { modalManager } from "../ContainerManager"
 class ProblemTagsUnlocker{ 
     constructor() { 
         this.elementModifier = new ProblemTagsElementModifier()
-        this.dataFetcher = new GoogleSheetsProblemTagsDataFetcher()
+        this.dataFetcher = new GoogleSheetsProblemTagsDataFetcher(document.URL.split('/')[4])
         this.containerManager = modalManager
         this.isFetching = false
     }

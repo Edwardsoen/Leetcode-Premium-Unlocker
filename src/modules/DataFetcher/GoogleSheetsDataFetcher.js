@@ -124,13 +124,16 @@ class GoogleSheetsTopProblemDataFetcher {
 }
 
 class GoogleSheetsProblemTagsDataFetcher {
-    constructor() { 
+    constructor(url = "") { 
+        //TODO: Fix this, 1. map for some reason is fetched twice 2. when tag is clicked before pre fetched data arrive, another request is sent.  
         this.map = {}
         this.mapFetched = false
-        this.fetchtProblemTagsMap()
+        this.cachedData = undefined
+        this.fetchData(url)
     }
 
     fetchData(url) { 
+        if(this.cachedData != undefined) {return new Promise((resolve, reject) => resolve(this.cachedData))}
         if(this.mapFetched) return this.fetchProblemTag(url)
         return this.fetchtProblemTagsMap().then(data => this.fetchProblemTag(url))
     }
@@ -157,10 +160,14 @@ class GoogleSheetsProblemTagsDataFetcher {
             problemTagObject.url = link
             tagList.push(duration, problemTagObject)
         }
+        console.log(this.cachedData)
+        this.cachedData = tagList
+        console.log(this.cachedData)
         return tagList
     }
 
     fetchtProblemTagsMap(){ 
+        console.log("test")
         let range = `ProblemCompaniesTags_Map!A:C`
         let url = GoogleSheetsAPIManager.getUrl(range)
         return fetch(url)

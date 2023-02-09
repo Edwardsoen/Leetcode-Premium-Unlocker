@@ -8,7 +8,6 @@ class ProblemTagsElementModifier {
 
     modifyElement() { 
         let tabs = document.getElementsByClassName('overflow-x-auto')[0]
-        console.log(tabs)
         if(!tabs) {
             window.setTimeout(() => {this.modifyElement()} ,500);
             return;

@@ -21,11 +21,12 @@ class TopProblemUnlocker {
         if(this.isFetching)return
         this.isFetching=true
         let itemName = event.currentTarget.getAttribute("item")
+        let title = event.currentTarget.getElementsByClassName("font-medium")[0].textContent
         this.containerManager.clearModalContent()
         this.containerManager.openModal()
         this.containerManager.showLoadingIcon()
         this.dataFetcher.fetchData(itemName)
-        .then(data => this.onFetchSuccess(data, itemName))
+        .then(data => this.onFetchSuccess(data, title))
         .then(data =>{this.isFetching=false})
         .catch(e => {
             console.log(this, "Fetch Error" + e); 

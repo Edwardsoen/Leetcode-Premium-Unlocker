@@ -28,11 +28,12 @@ class CompaniesProblemUnlocker {
         if(this.isFetching) return;
         this.isFetching = true
         let companyName = event.currentTarget.getAttribute("company-name")
+        let title = event.currentTarget.getElementsByClassName("text-label-2")[0].textContent
         this.containerManager.clearModalContent()
         this.containerManager.openModal()
         this.containerManager.showLoadingIcon()
         this.dataFetcher.fetchData(companyName)
-        .then(data => this.onFetchSuccess(data, companyName)).then(data => {this.isFetching = false})
+        .then(data => this.onFetchSuccess(data, title)).then(data => {this.isFetching = false})
         .catch(e =>{this.isFetching=false} )
     }
 

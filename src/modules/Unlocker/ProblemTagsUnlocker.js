@@ -42,8 +42,6 @@ class ProblemTagsUnlocker{
         this.containerManager.clearModalContent()
         targetParent.appendChild(builder.getResult())
     }
-
-
 }
 
 

@@ -5,7 +5,7 @@ class TableElementGenerator{
         let div = document.createElement('div')
         let h3 = document.createElement('h3')
         h3.textContent = text
-        h3.style = `color: ${CSSStyler.TEXT_COLOR};
+        h3.style = `
         text-align: center;
         `
         div.appendChild(h3)
@@ -28,7 +28,7 @@ class TableElementGenerator{
         height: 1rem;
         overflow: hidden;
         font-size: .75rem;
-        background-color: ${CSSStyler.SUB_BACKGROUND_CONTAINER_COLOR};
+        background-color: ${CSSStyler.getComplementaryColor()}; 
         border-radius: 0.5rem;
         margin-top: auto;
         margin-bottom: auto;
@@ -56,9 +56,6 @@ class TableElementGenerator{
         let a = document.createElement('a')
         a.href = problem_url
         a.textContent = problem_name
-        a.style = `
-            color:${CSSStyler.TEXT_COLOR}; 
-        `
         problemCell.appendChild(a)
         problemCell.style = `
         width: 50%
@@ -97,7 +94,7 @@ class TableElementGenerator{
         let row = document.createElement('div')
         row.style = `
         display:flex;
-        border-top: solid 1px ${CSSStyler.SUB_BACKGROUND_CONTAINER_COLOR};
+        border-top: solid 1px ${CSSStyler.getComplementaryColor()};
         `
         return row
     }
@@ -152,7 +149,6 @@ class TableElementGenerator{
         let h2 = document.createElement('h2')
         h2.innerText = title
         h2.style = `
-        color:${CSSStyler.TEXT_COLOR}; 
         font-size:1.5em;`
         return h2
     }

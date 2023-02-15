@@ -16,7 +16,7 @@ class ModalManager{
     createModalContentBox() {
         let modalContentBox = document.createElement('div')
         modalContentBox.style = `
-        background-color: ${CSSStyler.BACKGROUND_CONTAINER_COLOR};
+        background-color: ${CSSStyler.getContainerBackgroundColor()};
         margin-top:1%; 
         margin-left: auto;
         margin-right: auto;

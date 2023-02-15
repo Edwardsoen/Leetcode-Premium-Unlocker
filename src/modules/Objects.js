@@ -89,6 +89,28 @@ class ProblemArray extends Array {
 
 
 class CSSStyler { 
+
+    static getContainerBackgroundColor() { 
+        let isDarkMode = document.body.classList.contains("chakra-ui-dark")
+        switch (isDarkMode){ 
+            case true: 
+                return "#151515"
+            case false: 
+                return "#f3f3f3"
+        }
+    }
+
+    static getComplementaryColor() { 
+        let isDarkMode = document.body.classList.contains("chakra-ui-dark")
+        switch (isDarkMode){ 
+            case true: 
+                return "#282828"
+            case false: 
+                return "#dcdcdc"
+        }
+    }
+
+
     static COLOR_ACCENT = "#62C555"
     static BACKGROUND_CONTAINER_COLOR = '#101010'
     static SUB_BACKGROUND_CONTAINER_COLOR = '#282828'

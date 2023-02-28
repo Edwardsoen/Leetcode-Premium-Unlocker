@@ -3,7 +3,7 @@ import { CompaniesProblemUnlocker } from "./modules/Unlocker/CompaniesProblemUnl
 import { ProblemFrequncyUnlocker } from "./modules/Unlocker/ProblemsFrequencyUnlocker";
 import { TopProblemUnlocker } from "./modules/Unlocker/TopProblemUnlocker";
 import { ProblemTagsUnlocker } from "./modules/Unlocker/ProblemTagsUnlocker";
-
+import { PremiumProblemUnlocker } from "./modules/Unlocker/PremiumProblemUnlocker";
 
 function evaluate(dataObj) { 
     for(const url in dataObj) { 
@@ -33,5 +33,8 @@ function main() {
 }
 
 
+
+
+// new PremiumProblemUnlocker().unlock()
 
 main()

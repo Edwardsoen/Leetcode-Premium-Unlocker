@@ -23,11 +23,12 @@ class ProblemTableElementModifier{
         for(let i =0; i <= problemsets.length -1 ; i ++) { 
             let cells = problemsets[i].querySelectorAll('[role="cell"]')
             let problemName = cells[1].textContent
-            let problemFrequencyProgressbar = cells[cells.length -1]
             let id = problemName.split(".")[0]
-            problemFrequencyProgressbar.setAttribute("problem-id", String(id))
+            problemsets[i].setAttribute("problem-id", String(id))
+            let isPremium = problemsets[i].getElementsByTagName("rect").length > 0
+            problemsets[i].setAttribute("is-premium", isPremium)
             for(let ii = 0; ii <= this.elementModifier.length -1; ii ++) { 
-                this.elementModifier[ii](problemFrequencyProgressbar)
+                this.elementModifier[ii](problemsets[i])
             }
         }
         this.addObserverToProblemTable()

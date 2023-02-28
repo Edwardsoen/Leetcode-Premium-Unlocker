@@ -11,6 +11,7 @@ class ProblemFrequncyUnlocker{
     onFetchSuccess() {
         this.elementModifier.injectFunctionToTargetElement(ProblemFrequncyUnlocker.removeProgressbarUnlockButton)
         this.elementModifier.injectFunctionToTargetElement(this.insertInnerProgressbar)
+        this.elementModifier.injectFunctionToTargetElement(this.removePremiumLockLogo)
         this.elementModifier.modifyElement()
     }
 
@@ -21,8 +22,24 @@ class ProblemFrequncyUnlocker{
         .catch(e => (console.log(this, e)))
     }
 
-    insertInnerProgressbar = (progressBar) =>  { 
-        let id = progressBar.getAttribute("problem-id")
+    removePremiumLockLogo = (row) => {
+        let isPremium = Boolean(row.getAttribute("problem-id"))
+        if(isPremium){
+            row.style.color = "red"
+        }
+        else { 
+            row.style.color ="black"
+        }
+        
+        // cells[1].getElementsByTagName("svg")[0].remove()
+        // cells[0].getElementsByTagName("svg")[0].remove()
+    }
+
+    insertInnerProgressbar = (row) =>  { 
+        let cells = row.querySelectorAll('[role="cell"]')
+        let progressBar = cells[cells.length -1]
+
+        let id = row.getAttribute("problem-id")
         let width = this.problemData[id] 
         if(width == undefined) width = 0
         width *= 100
@@ -37,7 +54,10 @@ class ProblemFrequncyUnlocker{
         outerProgressbar.appendChild(progress)
     }
 
-    static removeProgressbarUnlockButton(progressbar) {
+    static removeProgressbarUnlockButton(row) {
+        let cells = row.querySelectorAll('[role="cell"]')
+        let progressbar = cells[cells.length -1]
+
         let lockLogo = progressbar.getElementsByTagName("svg")[0]
         let leftBar = progressbar.getElementsByClassName('rounded-r-lg')[0]
         let rightBar = progressbar.getElementsByClassName('rounded-l-lg')[0]

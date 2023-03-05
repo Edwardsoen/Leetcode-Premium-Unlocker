@@ -1,6 +1,6 @@
 
 import { CompaniesProblemUnlocker } from "./modules/Unlocker/CompaniesProblemUnlocker";
-import { ProblemFrequncyUnlocker } from "./modules/Unlocker/ProblemsFrequencyUnlocker";
+import { ProblemTableUnlocker } from "./modules/Unlocker/ProblemTableUnlocker";
 import { TopProblemUnlocker } from "./modules/Unlocker/TopProblemUnlocker";
 import { ProblemTagsUnlocker } from "./modules/Unlocker/ProblemTagsUnlocker";;
 
@@ -24,8 +24,8 @@ function evaluate(dataObj) {
 
 function main() {
     let urls = {
-        "https://leetcode.com/problemset": [ProblemFrequncyUnlocker, CompaniesProblemUnlocker, TopProblemUnlocker], 
-        "https://leetcode.com/problem-list": [ProblemFrequncyUnlocker], 
+        "https://leetcode.com/problemset": [ProblemTableUnlocker, CompaniesProblemUnlocker, TopProblemUnlocker], 
+        "https://leetcode.com/problem-list": [ProblemTableUnlocker], 
         "https://leetcode.com/problems":[ProblemTagsUnlocker]
     }
     evaluate(urls)

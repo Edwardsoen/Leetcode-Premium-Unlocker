@@ -1,30 +1,25 @@
 import { ProblemTableElementModifier } from "../ElementModifier/ProblemTableElementModifier";
 import { generateInnerProgressbar } from "../ElementGenerator/ElementHelperClass";
-import { GoogleSheetsProblemFrequencyDataFetcher } from "../DataFetcher/GoogleSheetsDataFetcher";
+import { GoogleSheetsProblemTableDataFetcher } from "../DataFetcher/GoogleSheetsDataFetcher";
 import { CSSStyler } from "../Objects";
+import { modalManager } from "../ContainerManager";
 
-class ProblemFrequncyUnlocker{ 
+class ProblemTableUnlocker{ 
     constructor() { 
         this.elementModifier =  new ProblemTableElementModifier()
-        this.dataFetcher = new GoogleSheetsProblemFrequencyDataFetcher()
+        this.dataFetcher = new GoogleSheetsProblemTableDataFetcher()
+        this.containerManager = modalManager
+        this.isFetching = false; 
     }
 
     onFetchSuccess() {
-        this.elementModifier.injectFunctionToTargetElement(ProblemFrequncyUnlocker.removeProgressbarUnlockButton)
+        this.elementModifier.injectFunctionToTargetElement(ProblemTableUnlocker.removeProgressbarUnlockButton)
         this.elementModifier.injectFunctionToTargetElement(this.insertInnerProgressbar)
-        this.elementModifier.injectFunctionToTargetElement(this.removePremiumLockLogo)
+        this.elementModifier.injectFunctionToTargetElement(this.modifyPremiumProblemHref)
         this.elementModifier.modifyElement()
     }
 
-    unlock() { 
-        this.dataFetcher.fetchData()
-        .then(data => {this.problemData = data})
-        .then(this.onFetchSuccess.bind(this))
-        .catch(e => (console.log(this, e)))
-        this.dataFetcher.fetchProblem("2")
-    }
-
-    removePremiumLockLogo = (row) => {
+    modifyPremiumProblemHref = (row) => {
         let isPremium = row.getAttribute("is-premium") == "true"
         if(isPremium){
             let problemId = row.getAttribute("problem-id")
@@ -38,8 +33,26 @@ class ProblemFrequncyUnlocker{
         }
     }
 
+    unlock() { 
+        this.dataFetcher.fetchData()
+        .then(data => {this.problemData = data})
+        .then(this.onFetchSuccess.bind(this))
+        .catch(e => (console.log(this, e)))
+    }
+
     onPremiumProblemClicked = (problemId) => { 
-        this.dataFetcher.fetchProblem(parseInt(problemId))
+        this.containerManager.clearModalContent()
+        this.containerManager.openModal()
+        this.containerManager.showLoadingIcon()
+        this.dataFetcher.fetchPremiumProblem(parseInt(problemId))
+        .then(data => console.log(data))
+
+    }
+
+    onProblemFetchSuccess(data){ 
+        let targetParent = this.containerManager.getModalContentBox()
+        this.containerManager.clearModalContent()
+        targetParent.innerHTML = data
     }
 
     removeLockLogo(row) { 
@@ -87,4 +100,4 @@ class ProblemFrequncyUnlocker{
 
 }
 
-export {ProblemFrequncyUnlocker}
+export {ProblemTableUnlocker}

@@ -10,25 +10,25 @@ class GoogleSheetsAPIManager{
     }
 }
 
-class GoogleSheetsProblemFrequencyDataFetcher { 
+class GoogleSheetsProblemTableDataFetcher { 
     constructor() { 
         this.cachedData = {}; 
     }
 
     fetchData() { 
-        return this.fetchProblemData()
+        return this.fetchProblemFrequencyData()
     }
 
-    async fetchProblemData() { 
+    async fetchProblemFrequencyData() { 
         let range =  "Problem!A:B"
         let url = GoogleSheetsAPIManager.getUrl(range)
         let response = await fetch(url)
         let data = await response.json();
-        let parsedData =  this.parseProblemData(data["values"])
+        let parsedData =  this.parseProblemFrequencyData(data["values"])
         return parsedData
     }
 
-    parseProblemData(data) { 
+    parseProblemFrequencyData(data) { 
         let returnData = {}
         for(let i =0; i<=data.length -1; i ++) { 
             let id = data[i][0]
@@ -39,16 +39,21 @@ class GoogleSheetsProblemFrequencyDataFetcher {
         return returnData
     }
 
-    async fetchProblem(problemId) { 
+    fetchPremiumProblem(problemId) { 
+        return this.fetchProblemData(problemId)
+    }
+    
+    async fetchProblemData(problemId) { 
         if(problemId in this.cachedData == false) return 
         let row = this.cachedData[problemId]
         let range = "Problem!K" + row
         let url = GoogleSheetsAPIManager.getUrl(range)
         let response = await fetch(url)
-        return response
+        let data = await response.json()
+        console.log(data)
+        return data["values"]
     }
 }
-
 
 
 class GoogleSheetsCompanyProblemDataFetcher { 
@@ -204,7 +209,7 @@ class GoogleSheetsProblemTagsDataFetcher {
 
 export { 
     GoogleSheetsAPIManager, 
-    GoogleSheetsProblemFrequencyDataFetcher, 
+    GoogleSheetsProblemTableDataFetcher, 
     GoogleSheetsCompanyProblemDataFetcher, 
     GoogleSheetsTopProblemDataFetcher, 
     GoogleSheetsProblemTagsDataFetcher

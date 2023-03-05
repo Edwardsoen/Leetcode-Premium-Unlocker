@@ -11,6 +11,10 @@ class GoogleSheetsAPIManager{
 }
 
 class GoogleSheetsProblemFrequencyDataFetcher { 
+    constructor() { 
+        this.cachedData = {}; 
+    }
+
     fetchData() { 
         return this.fetchProblemData()
     }
@@ -20,7 +24,8 @@ class GoogleSheetsProblemFrequencyDataFetcher {
         let url = GoogleSheetsAPIManager.getUrl(range)
         let response = await fetch(url)
         let data = await response.json();
-        return this.parseProblemData(data["values"])
+        let parsedData =  this.parseProblemData(data["values"])
+        return parsedData
     }
 
     parseProblemData(data) { 
@@ -29,10 +34,22 @@ class GoogleSheetsProblemFrequencyDataFetcher {
             let id = data[i][0]
             let frequency = data[i][1]
             returnData[id] = frequency
+            this.cachedData[id] = i
         }
         return returnData
     }
+
+    async fetchProblem(problemId) { 
+        if(problemId in this.cachedData == false) return 
+        let row = this.cachedData[problemId]
+        let range = "Problem!K" + row
+        let url = GoogleSheetsAPIManager.getUrl(range)
+        let response = await fetch(url)
+        return response
+    }
 }
+
+
 
 class GoogleSheetsCompanyProblemDataFetcher { 
     constructor() { 

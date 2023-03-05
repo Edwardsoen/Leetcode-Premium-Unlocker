@@ -1,6 +1,7 @@
 import { ProblemTableElementModifier } from "../ElementModifier/ProblemTableElementModifier";
 import { generateInnerProgressbar } from "../ElementGenerator/ElementHelperClass";
 import { GoogleSheetsProblemFrequencyDataFetcher } from "../DataFetcher/GoogleSheetsDataFetcher";
+import { CSSStyler } from "../Objects";
 
 class ProblemFrequncyUnlocker{ 
     constructor() { 
@@ -20,19 +21,31 @@ class ProblemFrequncyUnlocker{
         .then(data => {this.problemData = data})
         .then(this.onFetchSuccess.bind(this))
         .catch(e => (console.log(this, e)))
+        this.dataFetcher.fetchProblem("2")
     }
 
     removePremiumLockLogo = (row) => {
-        let isPremium = Boolean(row.getAttribute("problem-id"))
+        let isPremium = row.getAttribute("is-premium") == "true"
         if(isPremium){
-            row.style.color = "red"
+            let problemId = row.getAttribute("problem-id")
+            let problemUrl = row.getElementsByTagName("a")[0] 
+            problemUrl.href = "javascript:void(0)"
+            problemUrl.style.color = CSSStyler.COLOR_ACCENT; 
+            problemUrl.addEventListener('click', () => {
+                this.onPremiumProblemClicked(problemId)
+            }
+            )
         }
-        else { 
-            row.style.color ="black"
-        }
-        
-        // cells[1].getElementsByTagName("svg")[0].remove()
-        // cells[0].getElementsByTagName("svg")[0].remove()
+    }
+
+    onPremiumProblemClicked = (problemId) => { 
+        this.dataFetcher.fetchProblem(parseInt(problemId))
+    }
+
+    removeLockLogo(row) { 
+        let cells = row.querySelectorAll('[role="cell"]')
+        cells[0].getElementsByTagName("svg")[0].remove()
+        cells[1].getElementsByTagName("svg")[0].remove()
     }
 
     insertInnerProgressbar = (row) =>  { 

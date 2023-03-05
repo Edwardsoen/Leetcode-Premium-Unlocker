@@ -41,18 +41,33 @@ class ProblemTableUnlocker{
     }
 
     onPremiumProblemClicked = (problemId) => { 
+        if(this.isFetching) return 
+        this.isFetching = true; 
         this.containerManager.clearModalContent()
         this.containerManager.openModal()
         this.containerManager.showLoadingIcon()
         this.dataFetcher.fetchPremiumProblem(parseInt(problemId))
-        .then(data => console.log(data))
-
+        .then(data => this.onProblemFetchSuccess(data))
+        .then(this.isFetching = false)
     }
 
     onProblemFetchSuccess(data){ 
         let targetParent = this.containerManager.getModalContentBox()
         this.containerManager.clearModalContent()
-        targetParent.innerHTML = data
+        let htmlString = String(data).replaceAll("<strong>", "<br><strong>")
+        targetParent.innerHTML = htmlString
+        let pres = targetParent.getElementsByTagName("pre")
+        for(let i =0; i <= pres.length-1; i ++) { 
+            pres[i].style = `
+            border-radius: 0.5rem;
+            font-family: Menlo,sans-serif;
+            font-size: .875rem;
+            line-height: 1.25rem;
+            margin-bottom: 1rem;
+            margin-top: 1rem;
+            padding: 1rem;
+    `
+        }
     }
 
     removeLockLogo(row) { 

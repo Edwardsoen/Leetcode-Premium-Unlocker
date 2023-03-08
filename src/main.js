@@ -31,9 +31,4 @@ function main() {
     evaluate(urls)
 }
 
-
-
-
-// new PremiumProblemUnlocker().unlock()
-
 main()

@@ -44,14 +44,13 @@ class GoogleSheetsProblemTableDataFetcher {
     }
     
     async fetchProblemData(problemId) { 
-        if(problemId in this.cachedData == false) return 
+        if(problemId in this.cachedData == false)  return new Promise((resolve, reject) => resolve("<h1>No data</h1>")) 
         let row = this.cachedData[problemId]
         let range = "Problem!K" + row
         let url = GoogleSheetsAPIManager.getUrl(range)
         let response = await fetch(url)
         let data = await response.json()
-        console.log(data)
-        return data["values"]
+        return data["values"][0]
     }
 }
 

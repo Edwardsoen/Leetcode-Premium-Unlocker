@@ -1,0 +1,23 @@
+on: 
+  push: 
+    branches: 
+    - master
+    
+    
+jobs: 
+  update_chrome_build: 
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - run: git config --global user.name 'Edward'
+      - run: git config --global user.email 'edwardsoen@gmail.com'
+      - run: git checkout Chrome-build
+      - run: git checkout master dist/main.js 
+      - run: git checkout master manifest.json
+      - run: git add . 
+      - run: git commit -m "update from master"
+      
+      
+
+    
+      

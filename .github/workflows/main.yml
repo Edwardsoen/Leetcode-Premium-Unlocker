@@ -11,7 +11,7 @@ jobs:
       - uses: actions/checkout@v3
       - run: git config --global user.name 'Edward'
       - run: git config --global user.email 'edwardsoen@gmail.com'
-      - run: git checkout Chrome-build
+      - run: git pull Chrome-build
       - run: git checkout master dist/main.js 
       - run: git checkout master manifest.json
       - run: git add . 

@@ -18,6 +18,7 @@ jobs:
       - run: git checkout master manifest.json
       - run: git add . 
       - run: git commit -m "update from master"
+      - run: git push
       
       
 

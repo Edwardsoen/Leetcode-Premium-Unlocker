@@ -1,0 +1,23 @@
+on: 
+  push: 
+    branches: 
+    - master
+    
+    
+jobs: 
+  update_chrome_build: 
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+      - run: git config --global user.name 'Edward'
+      - run: git config --global user.email 'edwardsoen@gmail.com'
+      - run: git checkout Firefox-build
+      - run: git checkout master dist/main.js 
+      - run: git checkout master firefox-manifest.json
+      - run : rm manifest.json
+      - run : mv firefox-manifest.json manfiest.json
+      - run: git add . 
+      - run: git commit -m "update from master"
+      

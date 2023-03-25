@@ -5,7 +5,7 @@ on:
     
     
 jobs: 
-  update_chrome_build: 
+  update_firefox_build: 
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -20,4 +20,5 @@ jobs:
       - run : mv firefox-manifest.json manfiest.json
       - run: git add . 
       - run: git commit -m "update from master"
+      - run: git push
       

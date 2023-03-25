@@ -3,6 +3,7 @@ import { generateInnerProgressbar } from "../ElementGenerator/ElementHelperClass
 import { GoogleSheetsProblemTableDataFetcher } from "../DataFetcher/GoogleSheetsDataFetcher";
 import { CSSStyler } from "../Objects";
 import { modalManager } from "../ContainerManager";
+import * as DOMPurify from 'dompurify';
 
 class ProblemTableUnlocker{ 
     constructor() { 
@@ -56,7 +57,7 @@ class ProblemTableUnlocker{
         let targetParent = this.containerManager.getModalContentBox()
         this.containerManager.clearModalContent()
         let htmlString = String(data).replaceAll("<strong>", "<br><strong>")
-        targetParent.innerHTML = htmlString
+        targetParent.innerHTML= DOMPurify.sanitize(htmlString);
         let pres = targetParent.getElementsByTagName("pre")
         for(let i =0; i <= pres.length-1; i ++) { 
             pres[i].style = `

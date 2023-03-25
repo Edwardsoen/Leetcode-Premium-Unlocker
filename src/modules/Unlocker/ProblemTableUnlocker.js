@@ -3,6 +3,7 @@ import { generateInnerProgressbar } from "../ElementGenerator/ElementHelperClass
 import { GoogleSheetsProblemTableDataFetcher } from "../DataFetcher/GoogleSheetsDataFetcher";
 import { CSSStyler } from "../Objects";
 import { modalManager } from "../ContainerManager";
+import * as DOMPurify from 'dompurify';
 
 class ProblemTableUnlocker{ 
     constructor() { 
@@ -22,6 +23,7 @@ class ProblemTableUnlocker{
     modifyPremiumProblemHref = (row) => {
         let isPremium = row.getAttribute("is-premium") == "true"
         if(isPremium){
+            this.removePremiumIcons(row)
             let problemId = row.getAttribute("problem-id")
             let problemUrl = row.getElementsByTagName("a")[0] 
             problemUrl.href = "javascript:void(0)"
@@ -55,7 +57,7 @@ class ProblemTableUnlocker{
         let targetParent = this.containerManager.getModalContentBox()
         this.containerManager.clearModalContent()
         let htmlString = String(data).replaceAll("<strong>", "<br><strong>")
-        targetParent.innerHTML = htmlString
+        targetParent.innerHTML= DOMPurify.sanitize(htmlString);
         let pres = targetParent.getElementsByTagName("pre")
         for(let i =0; i <= pres.length-1; i ++) { 
             pres[i].style = `
@@ -70,10 +72,12 @@ class ProblemTableUnlocker{
         }
     }
 
-    removeLockLogo(row) { 
+    removePremiumIcons(row) { 
         let cells = row.querySelectorAll('[role="cell"]')
-        cells[0].getElementsByTagName("svg")[0].remove()
-        cells[1].getElementsByTagName("svg")[0].remove()
+        let lockLogo = cells[0].getElementsByTagName("svg")[0]
+        let premiumLogo = cells[1].getElementsByTagName("svg")[0]
+        if(lockLogo != undefined) lockLogo.style.opacity = 0; 
+        if(premiumLogo != undefined) premiumLogo.style.opacity = 0; 
     }
 
     insertInnerProgressbar = (row) =>  { 

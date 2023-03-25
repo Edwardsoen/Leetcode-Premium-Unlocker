@@ -83,7 +83,7 @@ class NameSorter extends Sorter {
     }
     
     doSwap(left, right) {
-        let alphabet = "abcdefghijklmnopqrstuvwxyz"
+        let alphabet = "abcdefghijklmnopqrstuvwxyz0123456789"
         let firstWordLeft = left[0].toLowerCase()
         let firstWordRight = right[0].toLowerCase()
         return alphabet.indexOf(firstWordLeft) < alphabet.indexOf(firstWordRight)

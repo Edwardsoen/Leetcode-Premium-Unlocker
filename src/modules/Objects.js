@@ -36,6 +36,7 @@ class InfoList{
     }
 
     getList(key) { 
+        if (key == undefined) throw new Error("Key cannot be undefined")
         if (key in this.data) return this.data[key]
         return []
     }
@@ -44,6 +45,7 @@ class InfoList{
 
 class ProblemInfoList extends InfoList{ 
     push(key, value) { 
+        if(key == undefined || value == undefined ) throw new Error("Key/Value error")
         if (key in this.data) { 
             this.data[key].push(value)
             return; 
@@ -126,4 +128,5 @@ export {ProblemInfo
     ,  CSSStyler
     , ProblemTag
     , ProblemInfoList
+    , InfoList
 }

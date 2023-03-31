@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "mocha tests/* --require @babel/register --recursive --require tests/init.js",
+    "test": "mocha tests/* --require @babel/register --recursive",
     "build": "webpack"
   },
   "keywords": [],

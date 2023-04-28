@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "mocha tests/* --require @babel/register --recursive",
     "build": "webpack"
   },
   "keywords": [],
@@ -12,5 +12,11 @@
   "license": "ISC",
   "dependencies": {
     "dompurify": "^3.0.1"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.1.2",
+    "@babel/preset-env": "^7.5.4",
+    "@babel/register": "^7.4.4",
+    "mocha": "^6.1.4"
   }
 }

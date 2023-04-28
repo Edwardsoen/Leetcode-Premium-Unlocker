@@ -35,11 +35,8 @@ class TopProblemFoldoutElementModifier{
                 foldoutItem[i].setAttribute("item", itemName)
                 foldoutItem[i].style.color = CSSStyler.COLOR_ACCENT
                 lockLogo[0].remove()
-                let oldNode = foldoutItem[i]
-                let newNode = foldoutItem[i].cloneNode(true)
-                foldout.replaceChild(newNode, oldNode) //replace node to remove all listener
                 for(let iii = 0; iii <= this.elementModifier.length -1; iii++) { 
-                    this.elementModifier[iii](newNode)
+                    this.elementModifier[iii](foldoutItem[i])
                 }
             }
         }

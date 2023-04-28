@@ -27,7 +27,7 @@ class ProblemTagsElementModifier {
 
     isDescriptionTabActive() { 
         return document.getElementsByClassName('overflow-x-auto')[0]
-        .getElementsByClassName('bg-layer-1')[0].textContent  == 'Description'
+        .getElementsByClassName("flex")[0].textContent  == 'Description'
     }
 
 

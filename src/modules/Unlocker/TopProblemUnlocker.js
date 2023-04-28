@@ -32,6 +32,7 @@ class TopProblemUnlocker {
             console.log(this, "Fetch Error" + e); 
             this.isFetching=false
         })
+        event.stopImmediatePropagation();
     }
 
     onFetchSuccess(data, itemName){

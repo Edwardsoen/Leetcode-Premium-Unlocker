@@ -17,7 +17,8 @@ class CompanySwipperElementModifier {
     }
 
     modifyActiveElement() { 
-        let swipers = document.getElementsByClassName('swiper-slide-active')
+        let parentSwipper = document.getElementsByClassName("swiper-autoheight")[0]
+        let swipers = parentSwipper.getElementsByClassName('swiper-slide-active')
         let swiper = swipers[swipers.length-1]
         let links = swiper.getElementsByTagName('a')
         for(let ii = 0; ii <= links.length-1; ii ++) {
@@ -44,7 +45,7 @@ class CompanySwipperElementModifier {
     }
 
     addObserverToCompaniesSection() {
-        var swipper =  document.getElementsByClassName("mt-0")[0]
+        var swipper =  document.getElementsByClassName("swiper-autoheight")[0].parentNode.parentNode
         const observer = new MutationObserver(() => {
             this.modifyActiveElement()
         });

@@ -26,6 +26,10 @@ class TopProblemFoldoutElementModifier{
 
     modifyLockedElement = () => { 
         let foldout = document.getElementsByClassName("space-y-1.5")[0]
+        if(!foldout) {
+            window.setTimeout(() => {this.modifyLockedElement.bind(this)()} ,500);
+            return;
+        }
         let foldoutItem = foldout.children 
         for(let i =0; i <= foldoutItem.length -2; i ++){ 
             let lockLogo = foldoutItem[i].getElementsByTagName('svg') 

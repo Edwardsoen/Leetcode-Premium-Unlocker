@@ -16,7 +16,17 @@ class ProblemTableElementModifier{
         this.elementModifier.push(func)
     }
 
+    isTableLoading() {
+        let table = document.querySelector('[role="rowgroup"]')
+        let problemsets = table.querySelectorAll('[role="row"]')
+        return problemsets[0].querySelectorAll('[role="cell"]')[1].textContent == ''
+    }
+
     modifyActiveElement = () => {     
+        if(this.isTableLoading()) { 
+            window.setTimeout(() => {this.modifyActiveElement.bind(this)()} ,1500);
+            return; 
+        }
         this.disconnectObserverToProblemTable()
         let table = document.querySelector('[role="rowgroup"]')
         let problemsets = table.querySelectorAll('[role="row"]')

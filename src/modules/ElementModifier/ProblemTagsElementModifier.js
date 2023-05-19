@@ -9,7 +9,7 @@ class ProblemTagsElementModifier {
     modifyElement() { 
         let tabs = document.getElementsByClassName('gap-8')[0].children[0].children
         if(tabs.length == 0) {
-            window.setTimeout(() => {this.modifyElement()} ,500);
+            window.setTimeout(() => {this.modifyElement()} ,100);
             return;
         }
         if(this.isDescriptionTabActive()) this.modifyCompaniesTagButton()
@@ -35,7 +35,7 @@ class ProblemTagsElementModifier {
     modifyCompaniesTagButton() { 
         let tagButton = document.getElementsByClassName('pt-3')[0]
         if(!tagButton) {
-            window.setTimeout(() => {this.modifyCompaniesTagButton.bind(this)()} ,500);
+            window.setTimeout(() => {this.modifyCompaniesTagButton.bind(this)()} ,100);
             return;
         }
         let lockicon = tagButton.getElementsByTagName('svg')[0]

@@ -10,12 +10,20 @@ class TopProblemFoldoutElementModifier{
         this.elementModifier.push(func)
     }
 
-    modifyElement() { 
+    modifyElement() {
+        if(this.isloading()) { 
+            window.setTimeout(() => {this.modifyElement()} ,100);
+            return;
+        } 
         this.observer = new MutationObserver(() => {
             this.modifyLockedElement()
         });
         this.modifyLockedElement()
         this.addObsersverToFoldout()
+    }
+
+    isloading() { 
+        return document.getElementsByClassName("space-y-1.5")[0] == undefined
     }
 
     addObsersverToFoldout() { 
@@ -27,7 +35,7 @@ class TopProblemFoldoutElementModifier{
     modifyLockedElement = () => { 
         let foldout = document.getElementsByClassName("space-y-1.5")[0]
         if(!foldout) {
-            window.setTimeout(() => {this.modifyLockedElement.bind(this)()} ,500);
+            window.setTimeout(() => {this.modifyLockedElement.bind(this)()} ,100);
             return;
         }
         let foldoutItem = foldout.children 

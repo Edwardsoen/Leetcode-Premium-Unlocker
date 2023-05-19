@@ -24,7 +24,7 @@ class ProblemTableElementModifier{
 
     modifyActiveElement = () => {     
         if(this.isTableLoading()) { 
-            window.setTimeout(() => {this.modifyActiveElement.bind(this)()} ,1500);
+            window.setTimeout(() => {this.modifyActiveElement.bind(this)()} ,100);
             return; 
         }
         this.disconnectObserverToProblemTable()

@@ -19,7 +19,7 @@ class CompanySwipperElementModifier {
     modifyActiveElement() { 
         let parentSwipper = document.getElementsByClassName("swiper-autoheight")[0]
         if(!parentSwipper) { 
-            window.setTimeout(() => {this.modifyActiveElement.bind(this)()} ,1500);
+            window.setTimeout(() => {this.modifyActiveElement.bind(this)()} ,100);
             return 
         }
         let swipers = parentSwipper.getElementsByClassName('swiper-slide-active')
@@ -55,7 +55,7 @@ class CompanySwipperElementModifier {
         });
     
         if(!swipper) {
-            window.setTimeout(() => {this.addObserverToCompaniesSection()} ,500);
+            window.setTimeout(() => {this.addObserverToCompaniesSection()} ,100);
             return;
         }
         var config = {childList: true, subtree: true,  attributes: true, attributeFilter: ['class']};

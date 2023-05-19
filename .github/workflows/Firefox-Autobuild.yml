@@ -26,6 +26,8 @@ jobs:
       - run: git checkout Firefox-build
       - run: git checkout temp dist
       - run: git checkout temp firefox-manifest.json
+      - run: rm manifest.json
+      - run: mv firefox-manifest.json manifest.json
       - run: git add . 
       - run: git commit -m "update from master"
       - run: git push

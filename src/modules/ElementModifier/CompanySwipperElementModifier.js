@@ -18,6 +18,10 @@ class CompanySwipperElementModifier {
 
     modifyActiveElement() { 
         let parentSwipper = document.getElementsByClassName("swiper-autoheight")[0]
+        if(!parentSwipper) { 
+            window.setTimeout(() => {this.modifyActiveElement.bind(this)()} ,1500);
+            return 
+        }
         let swipers = parentSwipper.getElementsByClassName('swiper-slide-active')
         let swiper = swipers[swipers.length-1]
         let links = swiper.getElementsByTagName('a')

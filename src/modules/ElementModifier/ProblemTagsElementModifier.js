@@ -7,9 +7,9 @@ class ProblemTagsElementModifier {
     }
 
     modifyElement() { 
-        let tabs = document.getElementsByClassName('overflow-x-auto')[0]
-        if(!tabs) {
-            window.setTimeout(() => {this.modifyElement()} ,500);
+        let tabs = document.getElementsByClassName('gap-8')[0].children[0].children
+        if(tabs.length == 0) {
+            window.setTimeout(() => {this.modifyElement()} ,100);
             return;
         }
         if(this.isDescriptionTabActive()) this.modifyCompaniesTagButton()
@@ -17,7 +17,7 @@ class ProblemTagsElementModifier {
     }
 
     addObserverToLeftTab() { 
-        let tabElement = document.getElementsByClassName('overflow-x-auto')[0]
+        let tabElement = document.getElementsByClassName('gap-8')[0]
         let config = {childList: true, subtree: true,  attributes: true, attributeFilter: ['class']};
         let observer = new MutationObserver(() => { 
             if(this.isDescriptionTabActive()) this.modifyCompaniesTagButton()
@@ -26,8 +26,8 @@ class ProblemTagsElementModifier {
     }
 
     isDescriptionTabActive() { 
-        return document.getElementsByClassName('overflow-x-auto')[0]
-        .getElementsByClassName("flex")[0].textContent  == 'Description'
+        return document.getElementsByClassName('gap-8')[0]
+        .children[0].children[0].childElementCount == 2
     }
 
 
@@ -35,7 +35,7 @@ class ProblemTagsElementModifier {
     modifyCompaniesTagButton() { 
         let tagButton = document.getElementsByClassName('pt-3')[0]
         if(!tagButton) {
-            window.setTimeout(() => {this.modifyCompaniesTagButton.bind(this)()} ,500);
+            window.setTimeout(() => {this.modifyCompaniesTagButton.bind(this)()} ,100);
             return;
         }
         let lockicon = tagButton.getElementsByTagName('svg')[0]

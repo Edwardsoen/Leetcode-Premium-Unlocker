@@ -34,7 +34,7 @@ class GoogleSheetsProblemTableDataFetcher {
             let id = data[i][0]
             let frequency = data[i][1]
             returnData[id] = frequency
-            this.cachedData[id] = i
+            this.cachedData[id] = i + 1
         }
         return returnData
     }

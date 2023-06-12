@@ -6,8 +6,14 @@ class ProblemTagsElementModifier {
         this.tagButtonListener = []
     }
 
+    getTabMenu() { 
+        let tabMenu = document.getElementsByClassName('gap-8')[0]
+        if (tabMenu == undefined) tabMenu = document.getElementsByClassName('gap-6')[0]
+        return tabMenu
+    }
+
     modifyElement() { 
-        let tabs = document.getElementsByClassName('gap-8')[0].children[0].children
+        let tabs = this.getTabMenu().children[0].children
         if(tabs.length == 0) {
             window.setTimeout(() => {this.modifyElement()} ,100);
             return;
@@ -17,7 +23,7 @@ class ProblemTagsElementModifier {
     }
 
     addObserverToLeftTab() { 
-        let tabElement = document.getElementsByClassName('gap-8')[0]
+        let tabElement = this.getTabMenu()
         let config = {childList: true, subtree: true,  attributes: true, attributeFilter: ['class']};
         let observer = new MutationObserver(() => { 
             if(this.isDescriptionTabActive()) this.modifyCompaniesTagButton()
@@ -26,8 +32,7 @@ class ProblemTagsElementModifier {
     }
 
     isDescriptionTabActive() { 
-        return document.getElementsByClassName('gap-8')[0]
-        .children[0].children[0].childElementCount == 2
+        return this.getTabMenu().children[0].children[0].childElementCount == 2
     }
 
 
@@ -39,6 +44,7 @@ class ProblemTagsElementModifier {
             return;
         }
         let lockicon = tagButton.getElementsByTagName('svg')[0]
+        if(lockicon == undefined) return
         let tagDiv  = lockicon.parentElement
         lockicon.remove()
         let newNode = tagDiv.cloneNode(true)

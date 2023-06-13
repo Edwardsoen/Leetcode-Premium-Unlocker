@@ -2,8 +2,6 @@
 var assert = require('assert');
 const { ProblemInfoList, CompanyProblemInfoList, InfoList } = require('../src/modules/Objects');
 
-
-
 describe("Objects", function() { 
     describe("InfoList", function(){
         describe("#getList()", function(){
@@ -134,3 +132,5 @@ describe("Objects", function() {
 
     })
 })
+
+

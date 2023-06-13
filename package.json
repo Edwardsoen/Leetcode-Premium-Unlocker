@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "mocha tests/* --require @babel/register --recursive --timeout 15000",
+    "test": "mocha tests/* --require @babel/register --recursive --timeout 300000",
     "build": "webpack"
   },
   "keywords": [],

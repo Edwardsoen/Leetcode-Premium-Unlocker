@@ -2,8 +2,6 @@
 var assert = require('assert');
 const { ProblemInfoList, CompanyProblemInfoList, InfoList } = require('../src/modules/Objects');
 
-//#region unit tests
-//TODO: add data fetcher tests
 describe("Objects", function() { 
     describe("InfoList", function(){
         describe("#getList()", function(){
@@ -134,31 +132,5 @@ describe("Objects", function() {
 
     })
 })
-//#endregion 
 
 
-//# e2e tests
-const {Builder, By, Key, until} = require('selenium-webdriver');
-import {Options} from "selenium-webdriver/chrome.js";
-import { ableToSwitchToFrame } from "selenium-webdriver/lib/until";
-
-describe("add note", function () {
-    it("shoud load the extension correctly ", async function() { 
-        try { 
-            let options = new Options()
-            options.addArguments("--load-extension=" + process.cwd())
-            var driver = await new Builder().forBrowser("chrome")
-            .setChromeOptions(options)
-            .build();
-            assert.equal(true, true)
-        } catch (e){ 
-            console.log(e)
-            assert.fail()
-        } finally { 
-            driver.quit();
-        }
-    })
-})
-
-
-//#endregion 

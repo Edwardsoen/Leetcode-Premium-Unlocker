@@ -1,7 +1,6 @@
 import { GoogleSheetsAPIManager, GoogleSheetsProblemTableDataFetcher } from "../DataFetcher/GoogleSheetsDataFetcher";
 
 
-
 class GoogleSheetBufferManager { 
     constructor() { 
         this.cachedData = {}

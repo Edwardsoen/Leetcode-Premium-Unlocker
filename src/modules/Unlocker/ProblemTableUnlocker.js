@@ -1,5 +1,5 @@
 import { ProblemTableElementModifier } from "../ElementModifier/ProblemTableElementModifier";
-import { generateInnerProgressbar } from "../ElementGenerator/ElementHelperClass";
+import { generateInnerProgressbar, generateRedInnerProgressBar } from "../ElementGenerator/ElementHelperClass";
 import { GoogleSheetsProblemTableDataFetcher } from "../DataFetcher/GoogleSheetsDataFetcher";
 import { CSSStyler } from "../Objects";
 import { modalManager } from "../ContainerManager";
@@ -88,15 +88,20 @@ class ProblemTableUnlocker{
 
         let id = row.getAttribute("problem-id")
         let width = this.problemData[id] 
-        if(width == undefined) width = 0
+        if(width == undefined) width = 100
         width *= 100
-
         let innerProgressbarClassName = "inner-progressbar"
         let innerProgressbar = progressBar.getElementsByClassName(innerProgressbarClassName)
         let outerProgressbar = progressBar.getElementsByClassName('rounded-l-lg')[0]
         if(innerProgressbar.length > 0) { innerProgressbar[0].remove()}
-        outerProgressbar.setAttribute("title", `${Math.round(width)}%`)
-        let progress = generateInnerProgressbar(width)
+        let progress; 
+        if(id in this.problemData) { 
+            progress = generateInnerProgressbar(width)
+            outerProgressbar.setAttribute("title", `${Math.round(width)}%`)
+        } else { 
+            progress = generateRedInnerProgressBar(width)
+            outerProgressbar.setAttribute("title", `No Data`)
+        }
         progress.classList.add(innerProgressbarClassName)
         outerProgressbar.appendChild(progress)
     }

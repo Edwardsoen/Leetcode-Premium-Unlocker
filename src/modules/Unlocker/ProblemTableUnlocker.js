@@ -4,10 +4,12 @@ import { GoogleSheetsProblemTableDataFetcher } from "../DataFetcher/GoogleSheets
 import { CSSStyler } from "../Objects";
 import { modalManager } from "../ContainerManager";
 import * as DOMPurify from 'dompurify';
+import { LocalStorageFrequencyDataFetcher } from "../DataFetcher/LocalStorageDataFetcher";
 
 class ProblemTableUnlocker{ 
     constructor() { 
         this.elementModifier =  new ProblemTableElementModifier()
+        this.localFetcher = new LocalStorageFrequencyDataFetcher()
         this.dataFetcher = new GoogleSheetsProblemTableDataFetcher()
         this.containerManager = modalManager
         this.isFetching = false; 
@@ -36,7 +38,7 @@ class ProblemTableUnlocker{
     }
 
     unlock() { 
-        this.dataFetcher.fetchData()
+        this.localFetcher.fetchData()
         .then(data => {this.problemData = data})
         .then(this.onFetchSuccess.bind(this))
         .catch(e => (console.log(this, e)))

@@ -45,7 +45,7 @@ class TopProblemUnlocker {
         this.containerManager.clearModalContent()
         this.containerManager.getModalContentBox().appendChild(table)
     } 
-
+    
     getFunctionToBeInjected() { 
         return (element) => {
             element.addEventListener("click", this.onTopProblemClicked);

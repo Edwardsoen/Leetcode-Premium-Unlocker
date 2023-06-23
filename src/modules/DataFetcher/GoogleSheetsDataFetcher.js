@@ -201,9 +201,6 @@ class GoogleSheetsProblemTagsDataFetcher {
         }
         this.mapFetched = true
     }
-
-
-
 }
 
 export { 

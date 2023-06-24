@@ -9,12 +9,12 @@ class LocalStorageFrequencyDataFetcher{
     }
 
     fetchData() { 
-        return chrome.storage.local.get(["TableFrequencyData"])
+        return this.bufferManager.getBufferedData("TableFrequencyData")
         .then(data => this.onDataFetched(data))
     }; 
 
     onDataFetched(data) { 
-        if(Object.keys(data).length ==0){ 
+        if(Object.keys(data).length == 0 || data == undefined){ 
             return this.bufferManager.refreshTableData()
             .then(data => chrome.storage.local.get("TableFrequencyData"))
             .then(data => data["TableFrequencyData"]["data"])

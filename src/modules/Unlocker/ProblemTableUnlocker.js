@@ -5,6 +5,7 @@ import { CSSStyler } from "../Objects";
 import { modalManager } from "../ContainerManager";
 import * as DOMPurify from 'dompurify';
 import { LocalStorageFrequencyDataFetcher } from "../DataFetcher/LocalStorageDataFetcher";
+import { analyticsManager } from "../AnalyticsManager";
 
 class ProblemTableUnlocker{ 
     constructor() { 
@@ -13,6 +14,8 @@ class ProblemTableUnlocker{
         this.dataFetcher = new GoogleSheetsProblemTableDataFetcher()
         this.containerManager = modalManager
         this.isFetching = false; 
+        this.premiumProblemButtonId = 2; 
+        this.analyticsManager = analyticsManager; 
     }
 
     onFetchSuccess() {
@@ -46,6 +49,7 @@ class ProblemTableUnlocker{
 
     onPremiumProblemClicked = (problemId) => { 
         if(this.isFetching) return 
+        this.analyticsManager.fireModifiedButtonClickedEvent(this.premiumProblemButtonId, "PremiumProblem", problemId)
         this.isFetching = true; 
         this.containerManager.clearModalContent()
         this.containerManager.openModal()

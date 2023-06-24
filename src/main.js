@@ -2,7 +2,9 @@
 import { CompaniesProblemUnlocker } from "./modules/Unlocker/CompaniesProblemUnlocker";
 import { ProblemTableUnlocker } from "./modules/Unlocker/ProblemTableUnlocker";
 import { TopProblemUnlocker } from "./modules/Unlocker/TopProblemUnlocker";
-import { ProblemTagsUnlocker } from "./modules/Unlocker/ProblemTagsUnlocker";;
+import { ProblemTagsUnlocker } from "./modules/Unlocker/ProblemTagsUnlocker";
+import { analyticsManager } from "./modules/AnalyticsManager";
+;
 
 function evaluate(dataObj) { 
     for(const url in dataObj) { 

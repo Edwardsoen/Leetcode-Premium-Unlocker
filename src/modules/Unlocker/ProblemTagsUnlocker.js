@@ -3,6 +3,7 @@ import { GoogleSheetsProblemTagsDataFetcher } from "../DataFetcher/GoogleSheetsD
 import { ProblemTagsElementModifier } from "../ElementModifier/ProblemTagsElementModifier"
 import { TagsContentBuilder } from "../ContentBuilder/TagsContentBuilder"
 import { modalManager } from "../ContainerManager"
+import { analyticsManager } from "../AnalyticsManager"
 
 class ProblemTagsUnlocker{ 
     constructor() { 
@@ -10,12 +11,15 @@ class ProblemTagsUnlocker{
         this.dataFetcher = new GoogleSheetsProblemTagsDataFetcher()
         this.containerManager = modalManager
         this.isFetching = false
+        this.problemTagButtonId = 3;
+        this.analyticsManager = analyticsManager; 
     }
 
     onTagButtonClicked = () => { 
         if(this.isFetching) return 
         this.isFetching=true
         let problemName = document.URL.split('/')[4]
+        this.analyticsManager.fireModifiedButtonClickedEvent(this.problemTagButtonId, "ProblemTagButton", problemName)
         this.containerManager.clearModalContent()
         this.containerManager.openModal()
         this.containerManager.showLoadingIcon()

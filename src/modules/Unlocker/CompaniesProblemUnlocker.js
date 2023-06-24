@@ -3,6 +3,7 @@ import { CompanySwipperElementModifier } from "../ElementModifier/CompanySwipper
 import { TableContentBuilder } from "../ContentBuilder/TableContentBuilder"
 import {modalManager} from "../ContainerManager"
 import { GoogleSheetsCompanyProblemDataFetcher } from "../DataFetcher/GoogleSheetsDataFetcher"
+import { analyticsManager } from "../AnalyticsManager"
 
 
 class CompaniesProblemUnlocker {
@@ -11,6 +12,8 @@ class CompaniesProblemUnlocker {
         this.dataFetcher = new GoogleSheetsCompanyProblemDataFetcher()
         this.containerManager = modalManager
         this.isFetching = false
+        this.analyticsManager = analyticsManager
+        this.companyProblemButtonId = 1
     }
 
     unlock() { 
@@ -28,6 +31,7 @@ class CompaniesProblemUnlocker {
         if(this.isFetching) return;
         this.isFetching = true
         let companyName = event.currentTarget.getAttribute("company-name")
+        this.analyticsManager.fireModifiedButtonClickedEvent(this.companyProblemButtonId, "CompanyButton", companyName)
         let title = event.currentTarget.getElementsByClassName("text-label-2")[0].textContent
         this.containerManager.clearModalContent()
         this.containerManager.openModal()

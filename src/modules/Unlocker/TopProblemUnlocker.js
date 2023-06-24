@@ -3,6 +3,7 @@ import { modalManager } from "../ContainerManager"
 import { GoogleSheetsTopProblemDataFetcher } from "../DataFetcher/GoogleSheetsDataFetcher"
 import { TopProblemFoldoutElementModifier } from "../ElementModifier/TopProblemFoldoutElementModifier"
 import { TableContentBuilder } from "../ContentBuilder/TableContentBuilder"
+import { analyticsManager } from "../AnalyticsManager"
 
 class TopProblemUnlocker { 
     constructor() {     
@@ -10,6 +11,8 @@ class TopProblemUnlocker {
         this.dataFetcher = new GoogleSheetsTopProblemDataFetcher()
         this.containerManager = modalManager
         this.isFetching = false
+        this.topProblemButtonId = 4; 
+        this.analyticsManager = analyticsManager; 
     }
 
     unlock( ){ 
@@ -22,6 +25,7 @@ class TopProblemUnlocker {
         this.isFetching=true
         let itemName = event.currentTarget.getAttribute("item")
         let title = event.currentTarget.getElementsByClassName("font-medium")[0].textContent
+        this.analyticsManager.fireModifiedButtonClickedEvent(this.topProblemButtonId, "TopProblem", title)
         this.containerManager.clearModalContent()
         this.containerManager.openModal()
         this.containerManager.showLoadingIcon()

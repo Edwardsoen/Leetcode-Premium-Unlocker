@@ -68,7 +68,7 @@ class FirebaseAnalyticsManager{
             );
     }
 
-    async firePopupClickedEvent(){ 
+    async fireErrorEvent(url, error, unlocker){ 
         if(!this.enableAnalytics) return;
         fetch(
             `${this.GA_ENDPOINT}?measurement_id=${this.MEASUREMENT_ID}&api_secret=${this.API_SECRET}`,
@@ -78,8 +78,12 @@ class FirebaseAnalyticsManager{
                 client_id: await this.getOrCreateClientId(), 
                 events: [
                     {
-                    name: 'page_view',
-                    params: {},
+                    name: 'unlock_error',
+                    params: {
+                        error_type: error, 
+                        url: url, 
+                        unlocker_name : unlocker
+                    },  
                     },
                 ],
                 }),

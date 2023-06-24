@@ -11,12 +11,13 @@ function evaluate(dataObj) {
         if (window.location.href.includes(url)) { 
             let unlockers = dataObj[url]
             for(let i =0; i <= unlockers.length -1; i ++) { 
+                let unlocker = new unlockers[i]()
                 try { 
-                    let unlocker = new unlockers[i]()
                     unlocker.unlock()
                 }
                 catch (e) { 
-                    console.log(unlockers[i].constructor.name + " Error " + e)
+                    analyticsManager.fireErrorEvent(url, e.message, unlocker.name)
+                    console.log(unlocker.name + " Error " + e)
                 }
             }
             break; 

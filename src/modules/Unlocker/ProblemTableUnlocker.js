@@ -16,6 +16,7 @@ class ProblemTableUnlocker{
         this.isFetching = false; 
         this.premiumProblemButtonId = 2; 
         this.analyticsManager = analyticsManager; 
+        this.name = "ProblemTableUnlocker"
     }
 
     onFetchSuccess() {
@@ -44,6 +45,7 @@ class ProblemTableUnlocker{
         this.localFetcher.fetchData()
         .then(data => {this.problemData = data})
         .then(this.onFetchSuccess.bind(this))
+        .then(this.analyticsManager.fireUnlockedDataEvent(this.name))
         .catch(e => (console.log(this, e)))
     }
 

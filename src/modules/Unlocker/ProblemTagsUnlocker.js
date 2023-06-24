@@ -13,6 +13,7 @@ class ProblemTagsUnlocker{
         this.isFetching = false
         this.problemTagButtonId = 3;
         this.analyticsManager = analyticsManager; 
+        this.name = "ProblemTagsUnlocker"
     }
 
     onTagButtonClicked = () => { 
@@ -33,6 +34,7 @@ class ProblemTagsUnlocker{
     unlock() { 
         this.elementModifier.modifyElement()
         this.elementModifier.addTagButtonOnClickListener(this.onTagButtonClicked)
+        this.analyticsManager.fireUnlockedDataEvent(this.name)
     }
 
     onFetchSucces = (data) =>  { 

@@ -12,12 +12,14 @@ class TopProblemUnlocker {
         this.containerManager = modalManager
         this.isFetching = false
         this.topProblemButtonId = 4; 
-        this.analyticsManager = analyticsManager; 
+        this.analyticsManager = analyticsManager;
+        this.name = "TopProblemUnlocker" 
     }
 
     unlock( ){ 
         this.elementModifier.injectFunctionToTargetElement(this.getFunctionToBeInjected())
         this.elementModifier.modifyElement()
+        this.analyticsManager.fireUnlockedDataEvent(this.name)
     }
 
     onTopProblemClicked = (event) => {

@@ -14,11 +14,13 @@ class CompaniesProblemUnlocker {
         this.isFetching = false
         this.analyticsManager = analyticsManager
         this.companyProblemButtonId = 1
+        this.name = "CompaniesProblemUnlocker"
     }
 
     unlock() { 
         this.elementModifier.injectFunctionToTargetElement(this.getFunctionToBeInjected())
         this.elementModifier.modifyElement()
+        this.analyticsManager.fireUnlockedDataEvent(this.name)
     }
 
     getFunctionToBeInjected() { 
@@ -55,7 +57,6 @@ class CompaniesProblemUnlocker {
         tableBuilder.buildTable()
         this.containerManager.clearModalContent()
         targetParent.appendChild(tableBuilder.getResult())
-        
     }
 }
 

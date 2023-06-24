@@ -2,7 +2,7 @@
     "name": "Leetcode Premium Unlocker",
     "version": "0.5.4",
     "description": "Inject crowdsourced Leetcode premium data",
-    "permissions": ["https://sheets.googleapis.com/v4/spreadsheets*"],
+    "permissions": ["https://sheets.googleapis.com/v4/spreadsheets*", "storage"],
     "browser_action": {
       "default_popup": "dist/index.html"
     },

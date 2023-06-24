@@ -4,7 +4,10 @@ import { GoogleSheetsAPIManager, GoogleSheetsProblemTableDataFetcher } from "../
 class GoogleSheetBufferManager { 
     constructor() { 
         this.cachedData = {}
-        this.isFirefox = typeof InstallTrigger !== 'undefined';
+        this.browser = browser;
+        if(this.browser == undefined) { 
+            this.browser = chrome; 
+        }
     }
 
     refreshTableData() { 
@@ -16,19 +19,11 @@ class GoogleSheetBufferManager {
     }
 
     onDataFetched(savedData) { 
-        if(!this.isFirefox) { 
-            chrome.storage.local.set({"TableFrequencyData":savedData})
-        }else { 
-            browser.storage.local.set({"TableFrequencyData":savedData})
-        }   
+        this.browser.storage.local.set({"TableFrequencyData":savedData})
     }
 
     getBufferedData(key) {
-        if(!this.isFirefox) { 
-            return chrome.storage.local.get(key)
-        }else { 
-            return browser.storage.local.get(key)
-        }   
+        return this.browser.storage.local.get(key)
     }
 }
 

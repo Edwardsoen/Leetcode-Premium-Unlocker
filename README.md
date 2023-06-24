@@ -7,12 +7,15 @@
   </a>
 
 <h3 align="center">Leetcode premium unlocker</h3>
-
+      <img src = "https://storage.googleapis.com/web-dev-uploads/image/WlD8wC6g8khYWPJUsQceQkhXSlv1/YT2Grfi9vEBa2wAPzhWa.png" alt = "Chrome web store", width = 150 height = 50><a href = "https://chrome.google.com/webstore/detail/leetcode-premium-unlocker/gnpcbhmchfdadabkcmooljbhgdemgiof"></a>
+ <img src = "https://i.kinja-img.com/gawker-media/image/upload/c_fit,f_auto,g_center,q_60,w_645/nlbrylijmas67fus1avr.jpg" alt = "Firefox web store", width = 150 height = 50><a href = "https://addons.mozilla.org/en-US/firefox/addon/leetcode-premium-unlocker/"></a>
+      
   <p align="center">
     ·
     <a href="https://github.com/Edwardsoen/Leetcode-Premium-Unlocker/issues">Report Bug</a>
     ·
     <a href="https://github.com/Edwardsoen/Leetcode-Premium-Unlocker/issues">Request Feature</a>
+
   </p>
 </div>
 

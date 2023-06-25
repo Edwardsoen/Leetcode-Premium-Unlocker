@@ -17,7 +17,7 @@ class LocalStorageFrequencyDataFetcher{
     onDataFetched(data) { 
         if(Object.keys(data).length == 0 || data == undefined){ 
             return this.bufferManager.refreshTableData()
-            .then(data => chrome.storage.local.get("TableFrequencyData"))
+            .then(data => this.bufferManager.getBufferedData("TableFrequencyData"))
             .then(data => data["TableFrequencyData"]["data"])
         }
         //refresh data if over ttl duration. The cost refreshing the whole data  is the same as checking if there is new update or not

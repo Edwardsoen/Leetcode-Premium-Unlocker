@@ -1,4 +1,5 @@
 import { GoogleSheetBufferManager } from "../BufferManager/GoogleSheetsBufferManager"
+import { GoogleSheetsProblemTableDataFetcher } from "./GoogleSheetsDataFetcher";
 
 
 
@@ -24,6 +25,26 @@ class LocalStorageFrequencyDataFetcher{
             this.bufferManager.refreshTableData()
         }
         return data["TableFrequencyData"]["data"]
+    }
+
+    fetchPremiumProblem(problemId) { 
+        return this.fetchProblemData(problemId)
+    }
+    
+    fetchProblemData(problemId) {
+        return this.bufferManager.getRowOffsetData()
+        .then(data => this.onPremiumProblemDataFetched(problemId, data))
+    }
+
+    onPremiumProblemDataFetched(problemId, data) { 
+        data = data["rowOffset"]
+        console.log(data)
+        if(problemId in data == false){ 
+            return "<h1>No data</h1>";
+        }else { 
+            let row = data[problemId]
+            return GoogleSheetsProblemTableDataFetcher.fetchProblemDataByRow(row)
+        }
     }
 }
 

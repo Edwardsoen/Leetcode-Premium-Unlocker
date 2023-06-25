@@ -10,8 +10,7 @@ import { analyticsManager } from "../AnalyticsManager";
 class ProblemTableUnlocker{ 
     constructor() { 
         this.elementModifier =  new ProblemTableElementModifier()
-        this.localFetcher = new LocalStorageFrequencyDataFetcher()
-        this.dataFetcher = new GoogleSheetsProblemTableDataFetcher()
+        this.dataFetcher = new LocalStorageFrequencyDataFetcher()
         this.containerManager = modalManager
         this.isFetching = false; 
         this.premiumProblemButtonId = 2; 
@@ -42,7 +41,7 @@ class ProblemTableUnlocker{
     }
 
     unlock() { 
-        this.localFetcher.fetchData()
+        this.dataFetcher.fetchData()
         .then(data => {this.problemData = data})
         .then(this.onFetchSuccess.bind(this))
         .then(this.analyticsManager.fireUnlockedDataEvent(this.name))

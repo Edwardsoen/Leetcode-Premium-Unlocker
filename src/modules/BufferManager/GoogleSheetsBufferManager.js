@@ -15,12 +15,34 @@ class GoogleSheetBufferManager {
         .then(data => this.onDataFetched(savedData))
     }
 
-    onDataFetched(savedData) { 
-        if(!this.isFirefox) { 
+    onDataFetched(savedData) {
+        let rowOffsetData = this.parseRowOffsetData(savedData["data"]) 
+        if(!this.isFirefox) {
+            chrome.storage.local.set({"rowOffset":rowOffsetData})
             chrome.storage.local.set({"TableFrequencyData":savedData})
         }else { 
+            browser.storage.local.set({"rowOffset":rowOffsetData})
             browser.storage.local.set({"TableFrequencyData":savedData})
+        } 
+    }
+
+    getRowOffsetData() { 
+        if(!this.isFirefox) { 
+            return chrome.storage.local.get("rowOffset")
+        }else { 
+            return browser.storage.local.get("rowOffset")
         }   
+    }
+
+    parseRowOffsetData(data) {
+        console.log(data)
+        let rowOffsetData = {}
+        let i = 2
+        for(let key in data) { 
+            rowOffsetData[key] = i 
+            i +=1 
+        }
+        return rowOffsetData; 
     }
 
     getBufferedData(key) {

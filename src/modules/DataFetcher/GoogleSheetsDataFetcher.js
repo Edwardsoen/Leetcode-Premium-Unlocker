@@ -52,6 +52,14 @@ class GoogleSheetsProblemTableDataFetcher {
         let data = await response.json()
         return data["values"][0]
     }
+
+    static async fetchProblemDataByRow(row) { 
+        let range = "Problem!K" + row
+        let url = GoogleSheetsAPIManager.getUrl(range)
+        let response = await fetch(url)
+        let data = await response.json()
+        return data["values"][0][0]
+    }
 }
 
 

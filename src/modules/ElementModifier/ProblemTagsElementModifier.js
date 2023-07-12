@@ -35,8 +35,6 @@ class ProblemTagsElementModifier {
         return this.getTabMenu().children[0].children[0].childElementCount == 2
     }
 
-
-
     modifyCompaniesTagButton() { 
         let tagButton = document.getElementsByClassName('pt-3')[0]
         if(!tagButton) {
@@ -54,7 +52,6 @@ class ProblemTagsElementModifier {
         for(let i =0; i <= this.tagButtonListener.length -1; i ++) {
             newNode.addEventListener('click', this.tagButtonListener[i])
         }
-        
     }
 
     addTagButtonOnClickListener(func){ 

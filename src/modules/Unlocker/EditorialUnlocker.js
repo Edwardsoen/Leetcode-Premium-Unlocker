@@ -9,6 +9,7 @@ class EditorialUnlocker{
     }
 
     unlock(){
+        console.log("here")
         this.elementModifier.modifyElement()
     }
 }

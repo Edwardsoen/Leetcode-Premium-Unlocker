@@ -1,10 +1,15 @@
 import { GoogleSheetsAPIManager, GoogleSheetsProblemTableDataFetcher } from "../DataFetcher/GoogleSheetsDataFetcher";
 
 
+function getBrowser() { 
+    if (typeof browser === 'undefined') return chrome
+    return browser
+}
+
 class GoogleSheetBufferManager { 
     constructor() { 
         this.cachedData = {}
-        this.isFirefox = typeof InstallTrigger !== 'undefined';
+        this.browser = getBrowser(); 
     }
 
     refreshTableData() { 
@@ -17,25 +22,15 @@ class GoogleSheetBufferManager {
 
     onDataFetched(savedData) {
         let rowOffsetData = this.parseRowOffsetData(savedData["data"]) 
-        if(!this.isFirefox) {
-            chrome.storage.local.set({"rowOffset":rowOffsetData})
-            chrome.storage.local.set({"TableFrequencyData":savedData})
-        }else { 
-            browser.storage.local.set({"rowOffset":rowOffsetData})
-            browser.storage.local.set({"TableFrequencyData":savedData})
-        } 
+        this.browser.storage.local.set({"rowOffset":rowOffsetData})
+        this.browser.storage.local.set({"TableFrequencyData":savedData})
     }
 
     getRowOffsetData() { 
-        if(!this.isFirefox) { 
-            return chrome.storage.local.get("rowOffset")
-        }else { 
-            return browser.storage.local.get("rowOffset")
-        }   
+        return this.browseQr.storage.local.get("rowOffset")
     }
 
     parseRowOffsetData(data) {
-        console.log(data)
         let rowOffsetData = {}
         let i = 2
         for(let key in data) { 
@@ -46,11 +41,7 @@ class GoogleSheetBufferManager {
     }
 
     getBufferedData(key) {
-        if(!this.isFirefox) { 
-            return chrome.storage.local.get(key)
-        }else { 
-            return browser.storage.local.get(key)
-        }   
+        return this.browser.storage.local.get(key)
     }
 }
 

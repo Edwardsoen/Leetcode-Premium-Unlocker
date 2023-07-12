@@ -14,10 +14,12 @@
     "dompurify": "^3.0.3"
   },
   "devDependencies": {
-    "selenium-webdriver": "^4.10.0", 
     "@babel/core": "^7.21.8",
     "@babel/preset-env": "^7.21.5",
     "@babel/register": "^7.21.0",
-    "mocha": "^10.2.0"
+    "mocha": "^10.2.0",
+    "selenium-webdriver": "^4.10.0",
+    "webpack": "^5.88.1",
+    "webpack-cli": "^5.1.4"
   }
 }

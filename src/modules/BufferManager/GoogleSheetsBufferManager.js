@@ -27,7 +27,7 @@ class GoogleSheetBufferManager {
     }
 
     getRowOffsetData() { 
-        return this.browseQr.storage.local.get("rowOffset")
+        return this.browser.storage.local.get("rowOffset")
     }
 
     parseRowOffsetData(data) {

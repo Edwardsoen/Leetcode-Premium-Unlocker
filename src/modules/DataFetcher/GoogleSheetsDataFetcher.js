@@ -211,11 +211,24 @@ class GoogleSheetsProblemTagsDataFetcher {
     }
 }
 
+
+
+class GoogleSheetsEditorialDataFetcher{ 
+    static async fetchEditorialDataByRow(row) { 
+        let range = "Problem!L" + row
+        let url = GoogleSheetsAPIManager.getUrl(range)
+        let response = await fetch(url)
+        let data = await response.json()
+        return data["values"][0][0]
+    }
+}
+
 export { 
     GoogleSheetsAPIManager, 
     GoogleSheetsProblemTableDataFetcher, 
     GoogleSheetsCompanyProblemDataFetcher, 
     GoogleSheetsTopProblemDataFetcher, 
-    GoogleSheetsProblemTagsDataFetcher
+    GoogleSheetsProblemTagsDataFetcher, 
+    GoogleSheetsEditorialDataFetcher
 }
 

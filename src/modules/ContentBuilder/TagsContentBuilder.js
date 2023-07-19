@@ -30,6 +30,14 @@ class TagsContentBuilder{
         this.parentDiv.appendChild(row)
         return this
     }
+
+    buildRateUsText() { 
+        let row = TagsElementGenerator.generateRow()
+        row.style.justifyContent = 'center'
+        row.appendChild(getRateUsElement())
+        this.parentDiv.appendChild(row)
+        return this
+    }
 }
 
 

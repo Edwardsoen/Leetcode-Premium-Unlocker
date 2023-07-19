@@ -44,6 +44,7 @@ class ProblemTagsUnlocker{
             builder.buildHeader(keys[i])
             builder.buildTagsBox(data.getList(keys[i]))
         }
+        builder.buildRateUsText()
         let targetParent = this.containerManager.getModalContentBox()
         this.containerManager.clearModalContent()
         targetParent.appendChild(builder.getResult())

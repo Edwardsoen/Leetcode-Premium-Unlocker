@@ -1,6 +1,7 @@
 
 import {AcceptanceSorter, DifficultySorter, NameSorter, IDSorter, FrequencySorter} from "../ProblemSorter"
 import { TableElementGenerator } from "../ElementGenerator/TableContentElementGenerator"
+import { getRateUsElement } from "../ElementGenerator/ElementHelperClass"
 
 class TableContentBuilder{ 
     constructor() {
@@ -18,6 +19,14 @@ class TableContentBuilder{
         return this
     }
 
+    buildRateUsRow() { 
+        let row = TableElementGenerator.generateRowElement()
+        row.style.justifyContent = "center";
+        row.appendChild(getRateUsElement())
+        this.parentDiv.appendChild(row)
+        return this
+    }
+
     buildTitleRow(title) {
         let row =  TableElementGenerator.generateRowElement()
         row.style.justifyContent = "center"; 
@@ -32,7 +41,6 @@ class TableContentBuilder{
 
     buildDurationsRow() { 
         let row =  TableElementGenerator.generateRowElement()
-        
         for(let duration in this.durationData) { 
             let element = TableElementGenerator.generateDurationElement(duration)
             element.classList.add("clickable")

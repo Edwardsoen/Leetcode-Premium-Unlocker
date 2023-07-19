@@ -55,6 +55,7 @@ class CompaniesProblemUnlocker {
         tableBuilder.setShownData(data.getList(durations[0]))
         tableBuilder.buildHeaderRow()
         tableBuilder.buildTable()
+        tableBuilder.buildRateUsRow()
         this.containerManager.clearModalContent()
         targetParent.appendChild(tableBuilder.getResult())
     }

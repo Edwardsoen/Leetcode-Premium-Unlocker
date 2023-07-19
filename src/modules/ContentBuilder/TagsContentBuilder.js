@@ -1,5 +1,7 @@
 
+import { getRateUsElement } from "../ElementGenerator/ElementHelperClass"
 import { TagsElementGenerator } from "../ElementGenerator/TagContentElementGenerator"
+
 
 class TagsContentBuilder{ 
     constructor() { 

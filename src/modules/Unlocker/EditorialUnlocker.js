@@ -14,7 +14,6 @@ class EditorialUnlocker{
         this.elementModifier.modifyElement()
     }
 
-
     onEditorialTabClicked = (button) => { 
         let problemId = button.getAttribute("problem-id")
         if (problemId == undefined) return; 

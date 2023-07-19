@@ -13,7 +13,12 @@ class ProblemTagsElementModifier {
     }
 
     modifyElement() { 
-        let tabs = this.getTabMenu().children[0].children
+        let tabMenu = this.getTabMenu()
+        if(tabMenu == undefined) {
+            window.setTimeout(() => {this.modifyElement()} ,100);
+            return;
+        }
+        let tabs = tabMenu.children[0].children
         if(tabs.length == 0) {
             window.setTimeout(() => {this.modifyElement()} ,100);
             return;
@@ -24,6 +29,10 @@ class ProblemTagsElementModifier {
 
     addObserverToLeftTab() { 
         let tabElement = this.getTabMenu()
+        if(tabElement == undefined) {
+            window.setTimeout(() => {this.addObserverToLeftTab()} ,100);
+            return;
+        }
         let config = {childList: true, subtree: true,  attributes: true, attributeFilter: ['class']};
         let observer = new MutationObserver(() => { 
             if(this.isDescriptionTabActive()) this.modifyCompaniesTagButton()
@@ -31,7 +40,7 @@ class ProblemTagsElementModifier {
         observer.observe(tabElement, config)
     }
 
-    isDescriptionTabActive() { 
+    isDescriptionTabActive() {
         return this.getTabMenu().children[0].children[0].childElementCount == 2
     }
 

@@ -5,6 +5,7 @@ EditorialPageElementModifier
 
 class EditorialUnlocker{
     constructor() {
+        this.name = "EditorialUnlocker"
         this.elementModifier = new EditorialPageElementModifier()
         this.dataFetcher = new LocalStorageEditorialDataFetcher()
     }

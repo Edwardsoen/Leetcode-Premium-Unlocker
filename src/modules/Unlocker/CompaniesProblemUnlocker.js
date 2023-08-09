@@ -50,12 +50,12 @@ class CompaniesProblemUnlocker {
         for(let i =0; i <= durations.length -1; i ++) { 
             tableBuilder.addDurationData(durations[i], data.getList(durations[i]))
         }
+        tableBuilder.buildRateUsRow()
         tableBuilder.buildTitleRow(companyName)
         tableBuilder.buildDurationsRow()
         tableBuilder.setShownData(data.getList(durations[0]))
         tableBuilder.buildHeaderRow()
         tableBuilder.buildTable()
-        tableBuilder.buildRateUsRow()
         this.containerManager.clearModalContent()
         targetParent.appendChild(tableBuilder.getResult())
     }

@@ -1,3 +1,6 @@
+import { CSSStyler } from "../Objects"
+
+
 
 
 class EditorialPageElementModifier { 
@@ -16,19 +19,13 @@ class EditorialPageElementModifier {
     }
 
     modifyElement() { 
-        let tabs = this.getTabMenu().children[1].children
-        if(tabs.length == 0) {
+        let tabs = this.getTabMenu()
+        if(tabs == undefined) {
             window.setTimeout(() => {this.modifyElement()} ,100);
             return;
         }
         this.removeEditorialLockLogo(); 
         this.addObserverToLeftTab();
-    }
-
-    getTabMenu() { 
-        let tabMenu = document.getElementsByClassName('gap-8')[0]
-        if (tabMenu == undefined) tabMenu = document.getElementsByClassName('gap-6')[0]
-        return tabMenu
     }
 
     addObserverToLeftTab() { 
@@ -75,8 +72,17 @@ class EditorialPageElementModifier {
         .children[0].getElementsByTagName('svg')[0]
         if(lockLogo == undefined) return 
         lockLogo.style.opacity = 0; 
+        this.addUnlockedIndicator()
         editorialButton.setAttribute("problem-name", document.URL.split("/")[4])
         editorialButton.setAttribute("problem-id", this.getProblemId())
+    }
+
+    addUnlockedIndicator(){ 
+        let editorialTabElement = this.getTabMenu().children[1]; 
+        editorialTabElement.style.borderWidth = '1px';
+        editorialTabElement.style.borderRadius = '3px'; 
+        editorialTabElement.style.borderColor = CSSStyler.COLOR_ACCENT
+
     }
 
     getProblemId() { 

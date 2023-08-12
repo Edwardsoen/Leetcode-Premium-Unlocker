@@ -12,13 +12,13 @@ function evaluate(dataObj) {
             let unlockers = dataObj[url]
             for(let i =0; i <= unlockers.length -1; i ++) { 
                 let unlocker = new unlockers[i]()
-                // try { 
+                try { 
                     unlocker.unlock()
-                // }
-                // catch (e) { 
-                //     analyticsManager.fireErrorEvent(url, e.message, unlocker.name)
-                //     console.log(unlocker.name + " Error " + e)
-                // }
+                }
+                catch (e) { 
+                    analyticsManager.fireErrorEvent(url, e.message, unlocker.name)
+                    console.log(unlocker.name + " Error " + e)
+                }
             }
             break; 
         }

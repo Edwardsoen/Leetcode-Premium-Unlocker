@@ -24,22 +24,22 @@ class EditorialPageElementModifier {
             window.setTimeout(() => {this.modifyElement()} ,100);
             return;
         }
+        this.addEventListenerToEditorialButton();
         this.removeEditorialLockLogo(); 
-        this.addObserverToLeftTab();
     }
 
-    addObserverToLeftTab() { 
-        let tabElement = this.getTabMenu()
-        let config = {childList: true, subtree: true,  attributes: true, attributeFilter: ['class']};
-        let observer = new MutationObserver(() => { 
-            if(this.isEditorialTabActive()) {
-                this.hidePremiumLogo() 
-                for(let iii = 0; iii <= this.elementModifier.length -1; iii++) { 
-                    this.elementModifier[iii](this.getEditorialButton())
-                }
-            } 
+    addEventListenerToEditorialButton() { 
+        let button = this.getEditorialButton()
+        if (button == undefined) { 
+            window.setTimeout(() => {this.addEventListenerToEditorialButton()}, 100)
+            return
+        }
+        button.addEventListener('click', () => {
+            this.hidePremiumLogo()                       
+            for(let iii = 0; iii <= this.elementModifier.length -1; iii++) { 
+                this.elementModifier[iii](button)
+            }
         })
-        observer.observe(tabElement, config)
     }
 
     isEditorialTabActive() { 

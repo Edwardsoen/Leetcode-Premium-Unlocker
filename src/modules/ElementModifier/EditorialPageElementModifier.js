@@ -25,21 +25,20 @@ class EditorialPageElementModifier {
             return;
         }
         this.addEventListenerToEditorialButton();
-        this.removeEditorialLockLogo(); 
     }
 
     addEventListenerToEditorialButton() { 
         let button = this.getEditorialButton()
         if (button == undefined) { 
-            window.setTimeout(() => {this.addEventListenerToEditorialButton()}, 100)
+            window.setTimeout(() => {this.addEventListenerToEditorialButton()}, 30)
             return
         }
-        button.addEventListener('click', () => {
-            this.hidePremiumLogo()                       
+        button.addEventListener('click', () => {                  
             for(let iii = 0; iii <= this.elementModifier.length -1; iii++) { 
                 this.elementModifier[iii](button)
             }
         })
+        this.removeEditorialLockLogo(); 
     }
 
     isEditorialTabActive() { 
@@ -64,7 +63,7 @@ class EditorialPageElementModifier {
     removeEditorialLockLogo() { 
         let editorialButton = this.getEditorialButton()
         if (editorialButton == undefined) {
-            window.setTimeout(() => {this.removeEditorialLockLogo()} ,200);
+            window.setTimeout(() => {this.removeEditorialLockLogo()} ,50);
             return;
         }
         let lockLogo = document.getElementsByClassName('gap-8')[0].children[1]
@@ -72,9 +71,10 @@ class EditorialPageElementModifier {
         .children[0].getElementsByTagName('svg')[0]
         if(lockLogo == undefined) return 
         lockLogo.style.opacity = 0; 
-        this.addUnlockedIndicator()
         editorialButton.setAttribute("problem-name", document.URL.split("/")[4])
         editorialButton.setAttribute("problem-id", this.getProblemId())
+        
+        window.setTimeout(() => {this.addUnlockedIndicator()}, 1000)
     }
 
     addUnlockedIndicator(){ 
@@ -91,8 +91,31 @@ class EditorialPageElementModifier {
     }
     
     insertEditorialInnerHtml(innerHtml) { 
-        document.getElementsByClassName("gap-4")[0]
-        .getElementsByClassName("h-full")[0].innerHTML = innerHtml
+        let targetElement = document.getElementsByClassName("gap-4")[0]
+        .getElementsByClassName("h-full")[0]
+        if (targetElement == undefined) { 
+            window.setTimeout(() =>{this.insertEditorialInnerHtml(innerHtml)}, 50)
+            return
+        }
+        let subscribeElement = document.getElementsByClassName("text-2xl")[0]
+        if(subscribeElement == undefined) { //wait until subscribe elemtn is loaded, otherwise innerHTML will be overwriten 
+            window.setTimeout(() =>{this.insertEditorialInnerHtml(innerHtml)}, 50)
+            return
+        }
+        targetElement.innerHTML = innerHtml
+    }
+
+    showLoadingIcon() {
+        this.insertEditorialInnerHtml('')
+        let loadingDiv = document.createElement('div')
+        loadingDiv.classList.add('loading-logo')
+        let targetElement = document.getElementsByClassName("gap-4")[0]
+        .getElementsByClassName("h-full")[0]
+        if (targetElement == undefined) {  
+            window.setTimeout(() =>{this.showLoadingIcon()}, 50)
+            return
+        }
+        targetElement.appendChild(loadingDiv)
     }
 
 }

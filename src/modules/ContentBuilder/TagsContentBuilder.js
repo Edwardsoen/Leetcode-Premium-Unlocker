@@ -8,7 +8,6 @@ class TagsContentBuilder{
         this.parentDiv = document.createElement('div')
     }
 
-
     buildHeader(headerName) {
         let row = TagsElementGenerator.generateRow()
         row.style.justifyContent = 'center'

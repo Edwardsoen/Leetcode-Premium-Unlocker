@@ -30,6 +30,7 @@ class EditorialUnlocker{
     
     onDataFetched(innerHtml) { 
         let builder = new EditorialContentBuilder()
+        builder.buildRateUsText()
         builder.buildContent(innerHtml)
         let targetParent = this.containerManager.getModalContentBox()
         this.containerManager.clearModalContent()

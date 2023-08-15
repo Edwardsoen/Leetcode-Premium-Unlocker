@@ -1,3 +1,7 @@
+import { getRateUsElement } from "../ElementGenerator/ElementHelperClass"
+import { TagsElementGenerator } from "../ElementGenerator/TagContentElementGenerator"
+
+
 class EditorialContentBuilder{ 
     constructor() { 
         this.parentDiv = document.createElement('div')
@@ -14,7 +18,14 @@ class EditorialContentBuilder{
     getResult() { 
         return this.parentDiv
     }
-
+    
+    buildRateUsText() { 
+        let row = TagsElementGenerator.generateRow()
+        row.style.justifyContent = 'center'
+        row.appendChild(getRateUsElement())
+        this.parentDiv.appendChild(row)
+        return this
+    }
 }
 
 

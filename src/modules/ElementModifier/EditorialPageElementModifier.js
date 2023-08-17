@@ -38,7 +38,7 @@ class EditorialPageElementModifier {
             for(let iii = 0; iii <= this.elementModifier.length -1; iii++) { 
                 this.elementModifier[iii](button)
             }
-            event.stopImmediatePropagation()
+            if(button.getAttribute("problem-id") != undefined) event.stopImmediatePropagation() 
         })
         this.disableEditorialRedirect()
         this.removeEditorialLockLogo(); 
@@ -54,6 +54,7 @@ class EditorialPageElementModifier {
     }
 
     removeEditorialLockLogo() { 
+        console.log("removing lock logo")
         let editorialButton = this.getEditorialButton()
         if (editorialButton == undefined) {
             window.setTimeout(() => {this.removeEditorialLockLogo()} ,50);

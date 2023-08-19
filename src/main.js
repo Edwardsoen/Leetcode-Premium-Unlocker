@@ -29,7 +29,7 @@ function main() {
     let urls = {
         "https://leetcode.com/problemset": [ProblemTableUnlocker, CompaniesProblemUnlocker, TopProblemUnlocker], 
         "https://leetcode.com/problem-list": [ProblemTableUnlocker, TopProblemUnlocker], 
-        "https://leetcode.com/problems":[ProblemTagsUnlocker], 
+        "https://leetcode.com/problems":[ProblemTagsUnlocker, EditorialUnlocker], 
         "https://leetcode.com/study-plan":[TopProblemUnlocker], 
     }
     evaluate(urls)

@@ -1,7 +1,7 @@
 
 function fetchLatestUpdate() { 
     let range = "metadata!A:B"
-    let url =  `https://sheets.googleapis.com/v4/spreadsheets/1hW-bfeFKSkEDzfjaDMjDQmgsupEZz3gysXpG0mrf6QE/values/${range}?key=AIzaSyDDAE3rf1fjLGKM0FUHQeTcsmS6fCQjtDs`
+    let url =  `https://sheets.googleapis.com/v4/spreadsheets/1ilv8yYAIcggzTkehjuB_dsRI4LUxjkTPZz4hsBKJvwo/values/${range}?key=AIzaSyDDAE3rf1fjLGKM0FUHQeTcsmS6fCQjtDs`
     fetch(url)
     .then(data => data.json())
     .then(data => setTextToElement(data))

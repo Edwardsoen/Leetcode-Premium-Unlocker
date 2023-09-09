@@ -54,7 +54,6 @@ class EditorialPageElementModifier {
     }
 
     removeEditorialLockLogo() { 
-        console.log("removing lock logo")
         let editorialButton = this.getEditorialButton()
         if (editorialButton == undefined) {
             window.setTimeout(() => {this.removeEditorialLockLogo()} ,50);

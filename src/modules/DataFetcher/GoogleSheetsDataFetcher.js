@@ -219,7 +219,9 @@ class GoogleSheetsEditorialDataFetcher{
         let url = GoogleSheetsAPIManager.getUrl(range)
         let response = await fetch(url)
         let data = await response.json()
-        return data["values"][0][0]
+        let values = data["values"]
+        if (values == undefined) return "<h1>No data</h1>"
+        return values[0][0]
     }
 }
 

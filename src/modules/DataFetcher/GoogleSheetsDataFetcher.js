@@ -68,7 +68,7 @@ class GoogleSheetsCompanyProblemDataFetcher {
         this.companyPageTableData = {}
         this.cachedData = {}
         this.tableDataFetched = false
-        this.fetchCompanyPageTable() //cache company map data
+        // this.fetchCompanyPageTable() //cache company map data
     }
 
     fetchData(companyName) { 
@@ -159,7 +159,7 @@ class GoogleSheetsProblemTagsDataFetcher {
     constructor() { 
         this.map = {}
         this.mapFetched = false
-        this.fetchtProblemTagsMap()
+        // this.fetchtProblemTagsMap()
     }
 
     fetchData(url) { 

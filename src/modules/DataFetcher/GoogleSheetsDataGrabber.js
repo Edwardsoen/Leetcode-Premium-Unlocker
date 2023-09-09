@@ -5,7 +5,7 @@ import { GoogleSheetsAPIManager } from "./GoogleSheetsDataFetcher";
 
 class ProblemDataGrabber {
     fetchData() { 
-        return this.fetchTableData
+        return this.fetchTableData()
     }
 
     async fetchTableData() { 
@@ -13,23 +13,22 @@ class ProblemDataGrabber {
         let url = GoogleSheetsAPIManager.getUrl(range)
         let response = await fetch(url)
         let data = await response.json();
-        let parsedData =  this.parseProblemFrequencyData(data["values"])
-        return parsedData
-    }
-
-    parseProblemFrequencyData(data) {   
-        console.log(data)
-
-
+        return data["values"]
     }
 }
 
+class CompanyProblemDataGrabber {   
+    fetchData() { 
+        return this.fetchCompanyProblemData()
+    }
 
-
-class CompanyProblemDataGrabber { 
-
-
-
+    async fetchCompanyProblemData() { 
+        let range =  "CompaniesProblem!A:H"
+        let url = GoogleSheetsAPIManager.getUrl(range)
+        let response = await fetch(url)
+        let data = await response.json();
+        return data["values"]
+    }
 }
 
 class TopProblemDataGrabber { 
@@ -41,12 +40,39 @@ class TopProblemDataGrabber {
 }
 
 class ProblemCompanyTagsDataGrabber { 
+    fetchData() { 
+        return this.fetchCompanyProblemData()
+    }
 
+    async fetchCompanyProblemData() { 
+        let range =  "CompaniesProblem!A:H"
+        let url = GoogleSheetsAPIManager.getUrl(range)
+        let response = await fetch(url)
+        let data = await response.json();
+        return data["values"]
+    }
+}
 
+class ProblemCompaniesTagsDataGrabber { 
+    fetchData() { 
+        return this.fetchProblemCompaniesTagData()
+    }
 
-
+    async fetchProblemCompaniesTagData() { 
+        let range =  "ProblemCompaniesTags!A:C"
+        let url = GoogleSheetsAPIManager.getUrl(range)
+        let response = await fetch(url)
+        let data = await response.json();
+        return data["values"]
+    }
 }
 
 
 
 
+
+export { 
+    ProblemDataGrabber, 
+    CompanyProblemDataGrabber
+
+}

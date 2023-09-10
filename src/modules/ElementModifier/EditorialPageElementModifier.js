@@ -76,9 +76,10 @@ class EditorialPageElementModifier {
 
     addUnlockedIndicator(){ 
         let editorialTabElement = this.getTabMenu().children[1]; 
-        editorialTabElement.style.borderWidth = '1px';
-        editorialTabElement.style.borderRadius = '3px'; 
-        editorialTabElement.style.borderColor = CSSStyler.COLOR_ACCENT
+        editorialTabElement.getElementsByTagName('span')[0].style.color = CSSStyler.COLOR_ACCENT
+        // editorialTabElement.style.borderWidth = '1px';
+        // editorialTabElement.style.borderRadius = '3px'; 
+        // editorialTabElement.style.borderColor = CSSStyler.COLOR_ACCENT
 
     }
 

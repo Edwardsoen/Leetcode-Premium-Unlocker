@@ -33,6 +33,7 @@ class GoogleSheetBufferManager {
     parseRowOffsetData(data) {
         let rowOffsetData = {}
         let i = 2
+        // {ProblemID: Row}
         for(let key in data) { 
             rowOffsetData[key] = i 
             i +=1 

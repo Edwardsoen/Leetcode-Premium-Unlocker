@@ -6,7 +6,7 @@ import { GoogleSheetsEditorialDataFetcher, GoogleSheetsProblemTableDataFetcher }
 class LocalStorageFrequencyDataFetcher{ 
     constructor() { 
         this.bufferManager = new GoogleSheetBufferManager()
-        this.dataTTL = 604800000; //one week in milliseconds
+        this.dataTTL = 1209600000; //two weeks in milliseconds
     }
 
     fetchData() { 
@@ -65,8 +65,10 @@ class LocalStorageEditorialDataFetcher {
     }
 }
 
+
+
+
+
 export {LocalStorageFrequencyDataFetcher, 
     LocalStorageEditorialDataFetcher
-
-
 }

@@ -5,7 +5,6 @@ import { TopProblemUnlocker } from "./modules/Unlocker/TopProblemUnlocker";
 import { ProblemTagsUnlocker } from "./modules/Unlocker/ProblemTagsUnlocker";
 import { analyticsManager } from "./modules/AnalyticsManager";
 import { EditorialUnlocker } from "./modules/Unlocker/EditorialUnlocker";
-import { CompanyProblemDataGrabber } from "./modules/DataFetcher/GoogleSheetsDataGrabber";
 
 
 

@@ -31,7 +31,7 @@ function generateRedInnerProgressBar(width) {
 function getRateUsElement() { 
     let span = document.createElement('span')
     let innerHtml =  `<h3>
-    if you enjoy our app rate us <a href = "https://chrome.google.com/webstore/detail/leetcode-premium-unlocker/gnpcbhmchfdadabkcmooljbhgdemgiof">here</a> or contribute to our <a href = "https://github.com/Edwardsoen/Leetcode-Premium-Unlocker">Github</a>
+    if you enjoy our app rate us <a href = "https://chrome.google.com/webstore/detail/leetcode-premium-unlocker/gnpcbhmchfdadabkcmooljbhgdemgiof">here</a> or consider donating to our <a href = "https://www.patreon.com/PremiumUnlocker"> Patreon </a> or <a href = "https://ko-fi.com/edwardsoen"> Ko-fi</a> support long term development. 
     </h3>
     `
     span.innerHTML = innerHtml;

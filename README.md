@@ -23,7 +23,6 @@
 
 ## Leetcode Premium Unlocker 
 Unlock some leetcode premium features without subscription/login <br>
-Click <a href = "https://docs.google.com/spreadsheets/d/1ilv8yYAIcggzTkehjuB_dsRI4LUxjkTPZz4hsBKJvwo/edit#gid=1555553759"> here </a> to view the raw data 
 
 ## Features 
 <li>Display problem frequency</li>

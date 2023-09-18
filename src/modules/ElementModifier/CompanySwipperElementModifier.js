@@ -17,7 +17,7 @@ class CompanySwipperElementModifier {
     }
 
     isSwiperLoading() { 
-        return document.getElementsByClassName("swiper-autoheight")[0] == undefined
+        return document.getElementsByClassName("swiper-autoheight")[1] == undefined
     }
     
     modifyActiveElement() { 
@@ -25,7 +25,7 @@ class CompanySwipperElementModifier {
             window.setTimeout(() => {this.modifyActiveElement.bind(this)()} ,100);
             return 
         }
-        let parentSwipper = document.getElementsByClassName("swiper-autoheight")[0]
+        let parentSwipper = document.getElementsByClassName("swiper-autoheight")[1]
         let swipers = parentSwipper.getElementsByClassName('swiper-slide-active')
         let swiper = swipers[swipers.length-1]
         let links = swiper.getElementsByTagName('a')
@@ -57,7 +57,7 @@ class CompanySwipperElementModifier {
             window.setTimeout(() => {this.addObserverToCompaniesSection.bind(this)()} ,100);
             return 
         }
-        let parentSwipper = document.getElementsByClassName("swiper-autoheight")[0]
+        let parentSwipper = document.getElementsByClassName("swiper-autoheight")[1]
         var swipper =  parentSwipper.parentNode.parentNode
         const observer = new MutationObserver(() => {
             this.modifyActiveElement()

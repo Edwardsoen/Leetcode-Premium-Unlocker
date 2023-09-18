@@ -17,7 +17,7 @@ class ProblemTableElementModifier{
     }
 
     isTableLoading() {
-        let table = document.querySelector('[role="rowgroup"]')
+        let table = document.querySelectorAll('[role="rowgroup"]')[1]
         let problemsets = table.querySelectorAll('[role="row"]')
         return problemsets[0].querySelectorAll('[role="cell"]')[1].textContent == ''
     }
@@ -28,7 +28,7 @@ class ProblemTableElementModifier{
             return; 
         }
         this.disconnectObserverToProblemTable()
-        let table = document.querySelector('[role="rowgroup"]')
+        let table = document.querySelectorAll('[role="rowgroup"]')[1]
         let problemsets = table.querySelectorAll('[role="row"]')
         for(let i =0; i <= problemsets.length -1 ; i ++) { 
             let cells = problemsets[i].querySelectorAll('[role="cell"]')

@@ -9,7 +9,7 @@ class FirebaseAnalyticsManager{
         this.MEASUREMENT_ID = `G-9B493T8583`;
         this.API_SECRET = `Q-G1HeKRTtGyXkBh9aKL7Q`;
         this.SESSION_EXPIRATION_IN_MIN = 30;
-        this.enableAnalytics = true; 
+        this.enableAnalytics = false; 
     }
 
     async getOrCreateClientId() {

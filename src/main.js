@@ -6,6 +6,8 @@ import { ProblemTagsUnlocker } from "./modules/Unlocker/ProblemTagsUnlocker";
 import { analyticsManager } from "./modules/AnalyticsManager";
 import { EditorialUnlocker } from "./modules/Unlocker/EditorialUnlocker";
 
+
+
 function evaluate(dataObj) { 
     for(const url in dataObj) { 
         if (window.location.href.includes(url)) { 

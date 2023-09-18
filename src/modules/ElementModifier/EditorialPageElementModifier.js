@@ -54,7 +54,6 @@ class EditorialPageElementModifier {
     }
 
     removeEditorialLockLogo() { 
-        console.log("removing lock logo")
         let editorialButton = this.getEditorialButton()
         if (editorialButton == undefined) {
             window.setTimeout(() => {this.removeEditorialLockLogo()} ,50);
@@ -77,10 +76,7 @@ class EditorialPageElementModifier {
 
     addUnlockedIndicator(){ 
         let editorialTabElement = this.getTabMenu().children[1]; 
-        editorialTabElement.style.borderWidth = '1px';
-        editorialTabElement.style.borderRadius = '3px'; 
-        editorialTabElement.style.borderColor = CSSStyler.COLOR_ACCENT
-
+        editorialTabElement.getElementsByTagName('span')[0].style.color = CSSStyler.COLOR_ACCENT
     }
 
     getProblemId() { 

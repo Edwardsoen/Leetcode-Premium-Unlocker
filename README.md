@@ -1,7 +1,7 @@
 # Project Deprecated - Moved to [New Repository](https://github.com/31b4/Leetcode-Premium-Bypass)
 
-This repository is no longer actively maintained. The latest releases and updates are now available in the new repository at https://github.com/31b4/Leetcode-Premium-Bypass.
-
+This repository is **no longer maintained**. The latest releases and updates are now available in the new repository at https://github.com/31b4/Leetcode-Premium-Bypass.
+#
 <br />
 <div align="center">
   <a href="https://github.com/Edwardsoen/Leetcode-Premium-Unlocker">

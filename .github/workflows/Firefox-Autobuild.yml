@@ -1,0 +1,33 @@
+on: 
+  workflow_dispatch:
+    
+    
+jobs: 
+  update_chrome_build: 
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 14
+      - run: npm install 
+      - run: npm install webpack 
+      - run: npm install -D webpack-cli
+      - run: npm run build
+      - run: git config --global user.name 'Edward'
+      - run: git config --global user.email 'edwardsoen@gmail.com'
+      - run: git add . 
+      - run: git add dist/main.js -f 
+      - run: git checkout -b temp 
+      - run: git commit -m "update"
+      - run: git clean -xdf
+      - run: git checkout Firefox-build
+      - run: git checkout temp dist
+      - run: git checkout temp firefox-manifest.json
+      - run: rm manifest.json
+      - run: mv firefox-manifest.json manifest.json
+      - run: git add . 
+      - run: git commit -m "update from master"
+      - run: git push

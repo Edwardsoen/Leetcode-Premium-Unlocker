@@ -1,0 +1,16 @@
+on: 
+  workflow_dispatch:
+    
+    
+jobs: 
+  run_end_to_end_tests: 
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 14
+      - run: npm install 
+      - run: npm run test 
